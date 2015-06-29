@@ -3,7 +3,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.json({ message: 'hooray! welcome to our api!' });
+   // res.render('index', { header: 'The index page!' })
+  res.redirect('/products');
 });
 
 module.exports = router;

@@ -1,0 +1,57 @@
+{% extends '../layout.html' %}
+
+{% block content %}
+
+<h1 class="page-header">
+  {{ product.name }}
+  <div class="btn-group pull-right" role="group" aria-label="...">
+    <a class="btn btn-danger" data-method="delete" data-confirm="Are you sure?" href="/products/{{product.id}}">Delete</a>
+  </div>
+</h1>
+
+<div class="row">
+  <div class="col-xs-12 col-md-4">
+    <h2>Product Info</h2>
+    <ul>
+      <li><strong>UPC</strong>: {{product.upc}}</li>
+      <li><strong>Type</strong>: {{product.type}}</li>
+      <li><strong>Name</strong>: {{product.name}}</li>
+      <li><strong>Store</strong>: {{product.store}}</li>
+      <li><strong>Zip</strong>: 34994</li>
+      <li><strong>Date</strong>: 10/20/2015</li>
+    </ul>
+  </div>
+  <div class="col-xs-12 col-md-4">
+    <h2>Customer Info</h2>
+    <ul>
+      <li><strong>Age</strong>: 34</li>
+      <li><strong>Gender</strong>: Female</li>
+    </ul>
+  </div>
+  <div class="col-xs-12 col-md-4">
+    <h2>Usage Info</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Color</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>10/20/2015</td>
+          <td>1:00 pm</td>
+          <td style="background-color: #ff0000"></td>
+        </tr>
+        <tr>
+          <td>10/24/2015</td>
+          <td>9:00 pm</td>
+          <td style="background-color: #0000ff"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
