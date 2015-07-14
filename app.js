@@ -10,6 +10,8 @@ var methodOverride = require('method-override')
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var products = require('./routes/products');
+var stores = require('./routes/stores');
+var useages = require('./routes/useages');
 
 var app = express();
 
@@ -42,6 +44,8 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/api/v1/products', products);
 app.use('/products', products);
+app.use('/stores', stores);
+app.use('/useages', useages);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

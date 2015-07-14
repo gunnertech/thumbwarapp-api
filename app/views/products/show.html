@@ -6,6 +6,7 @@
   {{ product.name }}
   <div class="btn-group pull-right" role="group" aria-label="...">
     <a class="btn btn-danger" data-method="delete" data-confirm="Are you sure?" href="/products/{{product.id}}">Delete</a>
+    <a class="btn btn-primary btn-export" href="">Export</a>
   </div>
 </h1>
 
@@ -16,14 +17,16 @@
       <li><strong>UPC</strong>: {{product.upc}}</li>
       <li><strong>Type</strong>: {{product.type}}</li>
       <li><strong>Name</strong>: {{product.name}}</li>
-      <li><strong>Store</strong>: {{product.store}}</li>
-      <li><strong>Zip</strong>: 34994</li>
-      <li><strong>Date</strong>: 10/20/2015</li>
+      <li><strong>Store</strong>: <a href="/stores/{{product.store.id}}">{{product.store.name}}</a></li>
+      <li><strong>Zip</strong>: {{product.store.zipCode}}</li>
+      <li><strong>Date</strong>: {{ product.purchaseDate | date('m/d/Y') }}</li>
     </ul>
   </div>
   <div class="col-xs-12 col-md-4">
     <h2>Customer Info</h2>
     <ul>
+      <!-- TODO: Wire this up -->
+      <li><a href="/users/55a470ba48b83b072ea8de7b">codyswadd</a></li>
       <li><strong>Age</strong>: 34</li>
       <li><strong>Gender</strong>: Female</li>
     </ul>
@@ -34,21 +37,22 @@
       <thead>
         <tr>
           <th>Date</th>
-          <th>Time</th>
-          <th>Color</th>
+          <th>Value</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>10/20/2015</td>
-          <td>1:00 pm</td>
-          <td style="background-color: #ff0000"></td>
-        </tr>
-        <tr>
-          <td>10/24/2015</td>
-          <td>9:00 pm</td>
-          <td style="background-color: #0000ff"></td>
-        </tr>
+        
+        {% for useage in useages %}
+          <tr>
+            <td>{{ useage.datetime | date('m/d/Y G:i') }}</td>
+            {% if useage.product.type == 'iarmor' %}
+              <td style="background-color: #0000FF; opacity: {{useage.value}}">{{ useage.value }}</td>
+            {% else %}
+              <td style="background-color: {{ useage.value }};}">{{ useage.value }}</td>
+            {% endif %}
+          </tr> 
+        {% endfor %}
+
       </tbody>
     </table>
   </div>

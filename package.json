@@ -16,6 +16,8 @@
     "lodash": ">0",
     "method-override": ">0",
     "swig": ">0",
+    "jsonwebtoken": ">= 0.0.0",
+    "bcrypt": ">= 0.8",
     "morgan": "~1.5.3",
     "serve-favicon": "~2.2.1",
     "mongoose": "~4.0.6"

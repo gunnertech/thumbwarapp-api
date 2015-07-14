@@ -27,9 +27,9 @@
       <div class="form-group">
         <label for="product-store">Store</label>
         <select class="form-control" id="product-store" name="product[store]">
-          <option value="Walgreens">Walgreens</option>
-          <option value="CVS">CVS</option>
-          <option value="Target">Target</option>
+          {% for store in stores %}
+            <option value="{{ store.id }}">{{ store.name }} - {{ store.zipCode }}</option>
+          {% endfor %}
         </select>
       </div>
       <button type="submit" class="btn btn-primary btn-bloc btn-default">Submit</button>
