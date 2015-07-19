@@ -46,8 +46,7 @@ router.get('/', function(req, res) {
   .populate('user')
   .sort({purchaseDate: -1})
   .exec(function(err, products) {
-    if (err)
-      res.send(err);
+    if (err) { console.log(err); res.status(500).json(err); return; }
 
     res.format({
       html: function(){
