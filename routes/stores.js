@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var Store     = require('../app/models/store');
 var _ = require('lodash');
-var format = require('date-format');
 
 /* GET home page. */
 router.use(function(req, res, next) {
