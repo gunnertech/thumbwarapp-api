@@ -3,7 +3,7 @@ var Schema       = mongoose.Schema;
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 var Product     = require('./product');
-var Product     = require('./useage');
+var Useage     = require('./useage');
 
 var UserSchema   = new Schema({
   username: { type: String, required: true, index: { unique: true } },
@@ -24,6 +24,11 @@ UserSchema.methods.useages = function (done) {
    // .populate('product')
    // .exec
 };
+
+UserSchema.statics.findByToken = function (token, cb) {
+  console.log("OKKKKKK")
+  return this.findOne({ token: token }, cb);
+}
 
 if (!UserSchema.options.toJSON) UserSchema.options.toJSON = {};
 UserSchema.options.toJSON.transform = function (doc, ret, options) {

@@ -126,8 +126,6 @@ router.post('/', function(req, res) {
   product.save(function(err) {
     if (err){ console.log(err); res.send(err); return; }
     
-    console.log(product)
-    
     res.format({
       html: function(){
         res.redirect('/products')

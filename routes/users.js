@@ -24,13 +24,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:user_id', function(req, res) {
-  // var query = {'username':req.params.username};
-  // User.findOneAndUpdate(query, {password: 'iPo0220!$'}, {upsert:true}, function(err, doc){
-  // });
-  
-  
-  
-    User.findById(req.params.user_id, function(err, user) {
+  User.findById(req.params.user_id, function(err, user) {
       if (err) res.send(err);
 
       res.format({
@@ -86,6 +80,7 @@ router.post('/', function(req, res) {
       },
 
       json: function(){
+        console.log(user)
         res.json(user);
       }
     });
@@ -110,8 +105,8 @@ router.post('/login', function(req, res) {
             user.token = jwt.sign(user, process.env.JWT_SECRET);
             user.save(function(err, user1) {
               var response = {}
-              _.assign(response, user1);
-              
+              _.assign(response, user._doc);
+              console.log(response)
               res.json(response);
             });
           } else {

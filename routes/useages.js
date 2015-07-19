@@ -1,8 +1,25 @@
 var express = require('express');
 var router = express.Router();
 var Useage     = require('../app/models/useage');
+var User       = require('../app/models/user');
 var _ = require('lodash');
 var jwt        = require("jsonwebtoken");
+
+router.use(function(req, res, next) {
+  if(req.query.token && req.body) {
+    console.log(req.query.token)
+    User.findByToken(req.query.token, function(err,user){
+      console.log("HIIII")
+      if(err) throw err;
+      (req.body.useage || req.body).user = user._id
+      console.log("GOT A USER")
+      next();
+    })
+  } else {
+    next();
+  }
+});
+
 
 router.get('/', function(req, res, next) {
   Useage.find()
@@ -28,14 +45,14 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res) {
   var useage = new Useage();
   
-  //TODO: GET USER FROM TOKEN
-  req.body.user = "55a470ba48b83b072ea8de7b"
-  //TODO: GET PRODUCT FROM REQUEST
-  req.body.product = "55a5339659fbc93ba86b26fc"
-  
   _.assign(useage, req.body.useage || req.body);
+  console.log("AYYYY GURL")
+  console.log(useage)
 
   useage.save(function(err) {
+    
+    console.log("OKKKKK")
+    console.log(err)
     
     if (err) { console.log(err); res.status(500).json(err); return; }
     
