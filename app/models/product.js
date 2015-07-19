@@ -2,7 +2,8 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var ProductSchema   = new Schema({
-  upc: String,
+  upc: { type: String, required: true, index: { unique: true } },
+  uuid: { type: String, required: true, index: { unique: true } },
   name: String,
   type: String,
   enabled: Boolean,
