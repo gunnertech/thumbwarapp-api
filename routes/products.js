@@ -41,7 +41,16 @@ router.use(function(req, res, next) {
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-  Product.find()
+  var queryParams = {};
+  var validKeys = ['uuid'];
+  
+  _.forEach(validKeys, function(key) {
+    if (typeof(req.query[key]) != "undefined") {
+      queryParams[key] = req.query[key]
+    }
+  });
+  
+  Product.find(queryParams)
   .populate('store')
   .populate('user')
   .sort({purchaseDate: -1})
@@ -54,6 +63,7 @@ router.get('/', function(req, res) {
       },
 
       json: function(){
+        console.log(products)
         res.json({products: products}); 
       }
     });
