@@ -27,7 +27,7 @@ router.use(function(req, res, next) {
 
 router.use(function(req, res, next) {
   if(req.body && !req.body.user) {
-    User.find({})
+    User.find({token: req.query.token})
     .limit(1)
     .exec(function(err,users){
       if(err) throw err;

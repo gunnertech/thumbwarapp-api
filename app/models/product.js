@@ -11,6 +11,10 @@ var ProductSchema   = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Store'
   },
+  group: {
+    type: Schema.Types.ObjectId,
+    ref: 'Group'
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'

@@ -12,6 +12,7 @@ var users = require('./routes/users');
 var products = require('./routes/products');
 var stores = require('./routes/stores');
 var useages = require('./routes/useages');
+var groups = require('./routes/groups');
 
 var app = express();
 
@@ -46,6 +47,7 @@ app.use('/api/v1/products', products);
 app.use('/products', products);
 app.use('/stores', stores);
 app.use('/useages', useages);
+app.use('/groups', groups);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
