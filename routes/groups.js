@@ -43,6 +43,8 @@ router.get('/', function(req, res) {
     }
   });
   
+  console.log(queryParams)
+  
   Group.find(queryParams)
   .sort({name: -1})
   .exec(function(err, groups) {
