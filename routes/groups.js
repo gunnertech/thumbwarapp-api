@@ -7,18 +7,15 @@ var _ = require('lodash');
 var currentUser = null;
 
 router.use(function(req, res, next) {
-  console.log(req.body);
+  // console.log(req.body);
   next();
 });
 
 router.use(function(req, res, next) {
   if(req.query && req.query.token) {
-    console.log("WE HAVE A TOKEN")
     User.find({token: req.query.token})
     .limit(1)
     .exec(function(err,users){
-      console.log("RESULT IS")
-      console.log(users)
       if(err){ console.log(err); throw err; } 
       if(req.body) {
           req.body.user = users[0];
@@ -45,25 +42,17 @@ router.get('/', function(req, res) {
       queryParams[key] = req.query[key]
     }
   });
-  
+  console.log("THE QUERY PARAMS ARE:")
   console.log(queryParams)
   
   Group.find(queryParams)
   .sort({name: -1})
   .exec(function(err, groups) {
-    console.log(groups)
     
     if (err) { console.log(err); res.status(500).json(err); return; }
     
-    res.format({
-      html: function(){
-        res.render('index', { groups: groups })
-      },
-
-      json: function(){
-        res.json({groups: groups}); 
-      }
-    });
+    res.json({groups: groups}); 
+    
   });
 });
 
