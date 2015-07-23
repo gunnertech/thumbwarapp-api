@@ -48,6 +48,8 @@ router.get('/', function(req, res) {
   Group.find(queryParams)
   .sort({name: -1})
   .exec(function(err, groups) {
+    console.log(groups)
+    
     if (err) { console.log(err); res.status(500).json(err); return; }
     
     res.format({
