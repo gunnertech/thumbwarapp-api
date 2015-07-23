@@ -119,7 +119,14 @@ router.get('/:product_id', function(req, res) {
 });
 
 router.put('/:product_id', function(req, res) {
-  Product.findOneAndUpdate({_id: req.params.product_id},(req.body.product || req.body), {upsert:true}, function(err, product) {
+  var body = req.body.product || req.body;
+  
+  if(body.group === "") {
+    console.log("I T WAS IT WAS!")
+    body.group = null;
+  }
+  
+  Product.findOneAndUpdate({_id: req.params.product_id},body, {upsert:true}, function(err, product) {
       if (err){ res.send(err); return; }
       
       res.format({
