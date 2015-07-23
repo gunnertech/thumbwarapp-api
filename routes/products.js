@@ -46,7 +46,7 @@ router.use(function(req, res, next) {
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
   var queryParams = {};
-  var validKeys = ['uuid'];
+  var validKeys = ['uuid','group'];
   
   if(currentUser) {
     queryParams.user = currentUser;
@@ -71,7 +71,6 @@ router.get('/', function(req, res) {
       },
 
       json: function(){
-        console.log(products)
         res.json({products: products}); 
       }
     });

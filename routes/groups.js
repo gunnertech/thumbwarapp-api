@@ -42,18 +42,13 @@ router.get('/', function(req, res) {
       queryParams[key] = req.query[key]
     }
   });
-  console.log("THE QUERY PARAMS ARE:")
-  console.log(queryParams)
   
   Group.find(queryParams)
   .sort({name: -1})
   .exec(function(err, groups) {
     
     if (err) { console.log(err); res.status(500).json(err); return; }
-    
-    console.log("WE GOT GROUPS")
-    console.log(groups)
-    
+        
     res.json({groups: groups}); 
     
   });
