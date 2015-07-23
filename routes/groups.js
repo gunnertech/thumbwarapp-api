@@ -51,7 +51,10 @@ router.get('/', function(req, res) {
     
     if (err) { console.log(err); res.status(500).json(err); return; }
     
-    res.json(groups); 
+    console.log("WE GOT GROUPS")
+    console.log(groups)
+    
+    res.json({groups: groups}); 
     
   });
 });
