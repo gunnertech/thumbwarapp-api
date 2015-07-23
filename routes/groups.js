@@ -4,22 +4,18 @@ var Product     = require('../app/models/group');
 var Group     = require('../app/models/group');
 var User     = require('../app/models/user');
 var _ = require('lodash');
-var currentUser;
+var currentUser = null;
 
 router.use(function(req, res, next) {
-  console.log("First")
   console.log(req.body);
   next();
 });
 
 router.use(function(req, res, next) {
-  console.log("second")
-  console.log(req.query.token)
-  // if(req.body && !req.body.user) {
+  if(req.query && req.query.token) {
     User.find({token: req.query.token})
     .limit(1)
     .exec(function(err,users){
-      console.log("HIII THERE")
       if(err){ console.log(err); throw err; } 
       if(req.body) {
           req.body.user = users[0];
@@ -27,18 +23,19 @@ router.use(function(req, res, next) {
       currentUser = users[0];
       next();
     })
-  // } else {
-  //   next();
-  // }
+  } else {
+    next();
+  }
 });
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
-  console.log("third")
-  var queryParams = {
-    user: currentUser
-  };
+  var queryParams = {};
   var validKeys = [];
+  
+  if(currentUser) {
+    queryParams.user = currentUser;
+  }
   
   _.forEach(validKeys, function(key) {
     if (typeof(req.query[key]) != "undefined") {
@@ -46,15 +43,10 @@ router.get('/', function(req, res) {
     }
   });
   
-  console.log(queryParams)
-  
   Group.find(queryParams)
   .sort({name: -1})
   .exec(function(err, groups) {
-    console.log("really? Noting?")
-    if (err) { console.log("ERRRRRO"); console.log(err); res.status(500).json(err); return; }
-    
-    console.log("OOOOKKKK")
+    if (err) { console.log(err); res.status(500).json(err); return; }
     
     res.format({
       html: function(){
@@ -62,8 +54,6 @@ router.get('/', function(req, res) {
       },
 
       json: function(){
-        console.log("GOT GROUPS?")
-        console.log(groups)
         res.json({groups: groups}); 
       }
     });

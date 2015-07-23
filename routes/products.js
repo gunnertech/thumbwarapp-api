@@ -5,6 +5,7 @@ var Store     = require('../app/models/store');
 var User     = require('../app/models/user');
 var Useage     = require('../app/models/useage');
 var _ = require('lodash');
+var currentUser = null;
 
 router.use(function(req, res, next) {
   console.log(req.body);
@@ -26,12 +27,15 @@ router.use(function(req, res, next) {
 });
 
 router.use(function(req, res, next) {
-  if(req.body && !req.body.user) {
+  if(req.query && req.query.token) {
     User.find({token: req.query.token})
     .limit(1)
     .exec(function(err,users){
-      if(err) throw err;
-      req.body.user = users[0];
+      if(err){ console.log(err); throw err; } 
+      if(req.body) {
+          req.body.user = users[0];
+      }
+      currentUser = users[0];
       next();
     })
   } else {
@@ -43,6 +47,10 @@ router.use(function(req, res, next) {
 router.get('/', function(req, res) {
   var queryParams = {};
   var validKeys = ['uuid'];
+  
+  if(currentUser) {
+    queryParams.user = currentUser;
+  }
   
   _.forEach(validKeys, function(key) {
     if (typeof(req.query[key]) != "undefined") {
