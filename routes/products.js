@@ -61,6 +61,7 @@ router.get('/', function(req, res) {
   Product.find(queryParams)
   .populate('store')
   .populate('user')
+  .populate('group')
   .sort({purchaseDate: -1})
   .exec(function(err, products) {
     if (err) { console.log(err); res.status(500).json(err); return; }
@@ -97,6 +98,7 @@ router.get('/new', function(req, res) {
 router.get('/:product_id', function(req, res) {
   Product.findById(req.params.product_id)
   .populate('store')
+  .populate('group')
   .exec(function(err, product) {
       if (err){ res.send(err); return; }
       
