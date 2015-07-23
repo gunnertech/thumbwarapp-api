@@ -13,9 +13,12 @@ router.use(function(req, res, next) {
 
 router.use(function(req, res, next) {
   if(req.query && req.query.token) {
+    console.log("WE HAVE A TOKEN")
     User.find({token: req.query.token})
     .limit(1)
     .exec(function(err,users){
+      console.log("RESULT IS")
+      console.log(users)
       if(err){ console.log(err); throw err; } 
       if(req.body) {
           req.body.user = users[0];
