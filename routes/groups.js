@@ -103,7 +103,9 @@ router.post('/', function(req, res) {
 });
 
 router.delete('/:group_id', function(req, res) {
-  Group.findByIdAndRemove(req.params.group_id, function(err) {
+  Group.find({_id: req.params.group_id, user: currentUser})
+  .remove(function(err) {
+    
     if (err){ console.log(err); res.status(500).send(err); return; }
 
     res.format({
