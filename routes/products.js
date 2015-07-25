@@ -8,12 +8,13 @@ var _ = require('lodash');
 var currentUser = null;
 
 router.use(function(req, res, next) {
-  console.log(req.body);
   var body = req.body.product || req.body;
   
   if(body.group === "") {
     body.group = null;
   }
+  
+  console.log(req.body);
   
   next();
 });
