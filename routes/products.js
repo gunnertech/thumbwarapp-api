@@ -9,6 +9,12 @@ var currentUser = null;
 
 router.use(function(req, res, next) {
   console.log(req.body);
+  var body = req.body.product || req.body;
+  
+  if(body.group === "") {
+    body.group = null;
+  }
+  
   next();
 });
 
@@ -119,13 +125,6 @@ router.get('/:product_id', function(req, res) {
 });
 
 router.put('/:product_id', function(req, res) {
-  var body = req.body.product || req.body;
-  
-  if(body.group === "") {
-    console.log("I T WAS IT WAS!")
-    body.group = null;
-  }
-  
   Product.findOneAndUpdate({_id: req.params.product_id},body, {upsert:true}, function(err, product) {
       if (err){ res.send(err); return; }
       
