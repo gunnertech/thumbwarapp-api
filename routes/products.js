@@ -43,6 +43,7 @@ router.use(function(req, res, next) {
           req.body.user = users[0];
       }
       currentUser = users[0];
+      console.log("GOT USER")
       next();
     })
   } else {
@@ -126,8 +127,10 @@ router.get('/:product_id', function(req, res) {
 });
 
 router.put('/:product_id', function(req, res) {
+  console.log("GOT TO PUT")
   Product.findOneAndUpdate({_id: req.params.product_id},body, {upsert:true}, function(err, product) {
-      if (err){ res.send(err); return; }
+      console.log("UPDATE")
+      if (err){ console.log(err); res.status(500).send(err); return; }
       
       res.format({
         html: function(){
