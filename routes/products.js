@@ -128,6 +128,7 @@ router.get('/:product_id', function(req, res) {
 
 router.put('/:product_id', function(req, res) {
   console.log("GOT TO PUT")
+  console.log(req.params.product_id)
   Product.findOneAndUpdate({_id: req.params.product_id},body, {upsert:true}, function(err, product) {
       console.log("UPDATE")
       if (err){ console.log(err); res.status(500).send(err); return; }
