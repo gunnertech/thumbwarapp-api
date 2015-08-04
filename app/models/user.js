@@ -26,7 +26,6 @@ UserSchema.methods.useages = function (done) {
 };
 
 UserSchema.statics.findByToken = function (token, cb) {
-  console.log("OKKKKKK")
   return this.findOne({ token: token }, cb);
 }
 
