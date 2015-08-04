@@ -54,6 +54,24 @@ router.get('/', function(req, res) {
   });
 });
 
+router.post('/', function(req, res) {
+  var favoriteColor = new FavoriteColor();
+  
+  _.assign(favoriteColor, req.body.favoriteColor || req.body);
+  
+
+  favoriteColor.save(function(err) {
+    if (err){ console.log(err); res.status(500).send(err); return; }
+    
+    res.format({
+      json: function(){
+        res.json(favoriteColor);
+      }
+    });
+  });
+});
+
+
 router.delete('/:favoriteColor_id', function(req, res) {
   FavoriteColor.find({_id: req.params.favoriteColor_id, user: currentUser})
   .remove(function(err) {
