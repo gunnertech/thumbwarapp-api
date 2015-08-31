@@ -6,7 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose   = require('mongoose');
 var swig = require('swig');
-var methodOverride = require('method-override')
+var methodOverride = require('method-override');
+var auth = require('basic-auth')
 
 /*** ROUTES ****/
 var routes = require('./routes/index');
@@ -43,6 +44,26 @@ app.use(methodOverride(function(req, res){
     return method
   }
 }))
+
+app.use(function(req, res, next) { 
+    var credentials = auth(req);
+    
+    res.format({
+      html: function(){
+        if (typeof credentials == 'undefined' || credentials['name'] != process.env.USERNAME || credentials['pass'] != process.env.PASSWORD) {
+          res.statusCode = 401;
+          res.setHeader('WWW-Authenticate', 'Basic realm="ipomor"');
+          res.end('Unauthorized');
+        } else {
+          next();
+        }
+      },
+
+      json: function(){
+        next();
+      }
+    });
+});
 
 app.use('/', routes);
 app.use('/users', users);

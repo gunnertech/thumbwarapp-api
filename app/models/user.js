@@ -7,6 +7,7 @@ var Useage     = require('./useage');
 
 var UserSchema   = new Schema({
   username: { type: String, required: true, index: { unique: true } },
+  email: { type: String, required: true },
   gender: { type: String, required: true },
   zipCode: { type: String, required: true },
   birthDate: { type: Date, required: true },
@@ -14,6 +15,11 @@ var UserSchema   = new Schema({
   password: { type: String, required: true },
   token: { type: String },
 });
+
+UserSchema.path('email').validate(function (value) {
+   var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+   return emailRegex.test(value); // Assuming email has a text attribute
+}, 'The e-mail field cannot be empty.')
 
 UserSchema.methods.products = function (done) {
   return this.model('Product').find({user: this}, done);
