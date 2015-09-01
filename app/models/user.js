@@ -17,7 +17,7 @@ var UserSchema   = new Schema({
 });
 
 UserSchema.path('email').validate(function (value) {
-  if !value { return true; }
+  if(!value) { return true; }
     var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     return emailRegex.test(value); // Assuming email has a text attribute
 }, 'The e-mail field cannot be empty.')
