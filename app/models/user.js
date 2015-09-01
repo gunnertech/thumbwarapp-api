@@ -7,9 +7,9 @@ var Useage     = require('./useage');
 
 var UserSchema   = new Schema({
   username: { type: String, required: true, index: { unique: true } },
-  email: { type: String, required: true },
-  gender: { type: String, required: true },
-  zipCode: { type: String, required: true },
+  email: { type: String },
+  gender: { type: String },
+  zipCode: { type: String },
   acceptedTosOn: { type: Date, required: true },
   password: { type: String, required: true },
   token: { type: String },
