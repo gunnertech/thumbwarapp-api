@@ -64,6 +64,22 @@ router.delete('/:user_id', function(req, res) {
 
 });
 
+router.put('/:user_id', function(req, res) {
+  User.findOneAndUpdate({_id: req.params.user_id}, req.body.user, function(err, user) {
+      if (err){ console.log(err); res.status(500).send(err); return; }
+      
+      res.format({
+        html: function(){
+          res.render('users/show', { user: user })
+        },
+
+        json: function(){
+          res.json("OK"); 
+        }
+      });
+    });
+});
+
 router.post('/', function(req, res) {
   var user = new User();
   
