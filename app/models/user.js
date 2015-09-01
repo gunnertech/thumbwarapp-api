@@ -10,10 +10,10 @@ var UserSchema   = new Schema({
   email: { type: String, required: true },
   gender: { type: String, required: true },
   zipCode: { type: String, required: true },
-  birthDate: { type: Date, required: true },
   acceptedTosOn: { type: Date, required: true },
   password: { type: String, required: true },
   token: { type: String },
+  birthDate: { type: Date },
 });
 
 UserSchema.path('email').validate(function (value) {
