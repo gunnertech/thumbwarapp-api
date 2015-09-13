@@ -7,19 +7,26 @@ var Useage     = require('./useage');
 
 var UserSchema   = new Schema({
   username: { type: String, required: true, index: { unique: true } },
-  email: { type: String, required: true },
+  email: { type: String, required: true, index: { unique: true }},
   gender: { type: String, required: true },
   zipCode: { type: String, required: true },
   acceptedTosOn: { type: Date, required: true },
   password: { type: String, required: true },
   token: { type: String },
   birthDate: { type: Date },
+  resetPasswordInitOn: { type: Date },
+  resetPasswordToken: { type: String },
+  resetPasswordFrom: { type: String },
 });
 
 UserSchema.path('email').validate(function (value) {
    var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
    return emailRegex.test(value); // Assuming email has a text attribute
 }, 'The e-mail field cannot be empty.')
+
+UserSchema.path('password').validate(function (value) {
+  return value.length > 8;
+}, 'The password field cannot be empty. It must also: be 8 characters long, have a lower and upper case letter and have a number.')
 
 UserSchema.methods.products = function (done) {
   return this.model('Product').find({user: this}, done);
@@ -30,6 +37,19 @@ UserSchema.methods.useages = function (done) {
    // .populate('product')
    // .exec
 };
+
+UserSchema.methods.compareResetTokenValidity = function (token) {
+  if (token === this.resetPasswordToken) {
+    var oneHour = 1000 * 60 * 60
+    var timeElapsed = (new Date - this.resetPasswordInitOn)
+
+    if (timeElapsed < oneHour) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 UserSchema.statics.findByToken = function (token, cb) {
   return this.findOne({ token: token }, cb);

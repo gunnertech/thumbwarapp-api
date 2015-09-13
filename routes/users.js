@@ -1,46 +1,119 @@
 var express = require('express');
 var router = express.Router();
-var User     = require('../app/models/user');
-var Product     = require('../app/models/product');
-var Useage     = require('../app/models/useage');
+var User = require('../app/models/user');
+var Product = require('../app/models/product');
+var Useage = require('../app/models/useage');
 var _ = require('lodash');
-var jwt        = require("jsonwebtoken");
+var jwt = require("jsonwebtoken");
+var sendgrid = require('sendgrid')(process.env.SENDGRID_API_KEY)
+var uuid = require('node-uuid')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   User.find(function(err, users) {
-    if (err){ res.send(err); return; }
+    if (err){ return res.send(err); }
 
-    res.format({
+    return res.format({
       html: function(){
-        res.render('users/index', { users: users })
+        return res.render('users/index', { users: users })
       },
 
       json: function(){
-        res.json(users);
+        return res.json(users);
       }
     });
   });
 });
 
+router.get('/:user_id/password_reset/:reset_token', function(req, res) {
+  User.findById(req.params.user_id, function(err, user) {
+      if (err) console.log(err);
+
+      if (user && user.compareResetTokenValidity(req.params.reset_token)) {
+        return res.render('users/forgot_password')
+      } else {
+        return res.status(404).send("Not Found")
+      }
+  });
+});
+
+router.post('/:user_id/password_reset/:reset_token', function(req, res) {
+  User.findById(req.params.user_id, function(err, user) {
+      if (err) return res.send(err);
+
+      if (user && user.compareResetTokenValidity(req.params.reset_token)) {
+        user.password = req.body.new_password;
+        user.resetPasswordInitOn = new Date(0)
+
+        user.save(function(err) {
+          if (err) { return res.status(400).send("That password does not conform to the password constraints") }
+
+          if (user.resetAppFrom === 'ipolish') {
+            return res.redirect('ipolish://login');
+          } else if (user.resetAppFrom === 'iarmor') {
+            return res.redirect('iarmor://login');
+          } else {
+            return res.status(200).send("Your password has successfully been reset - Please close this webpage and login to the app.");
+          }
+        });
+      }
+  });
+});
+
+router.post('/password_reset', function(req, res) {
+  User.findOne({ 'email': req.body.email }, function(err, user) {
+    if (err) return res.send(err);
+
+    var email = new sendgrid.Email({
+      to: req.body.email,
+      from: 'no-reply@ipomor.com',
+      subject: 'Forgot Password'
+    });
+
+    if (user) {
+      user.resetPasswordToken = uuid.v4()
+      user.resetPasswordInitOn = Date()
+      user.resetPasswordFrom = req.body.app.toLowerCase()
+      user.save(function(err) {
+        if (err) console.log(err)
+      });
+
+      email.html = 'Did you forget your password? <a href="' + req.headers.host + '/users/' + user.id + '/password_reset/' + user.resetPasswordToken +  '">Click this link to reset your password</a> - Please note this link will expire in 1 hour. If you did not request this email please disregard it.'
+    } else {
+      email.text = "We are sorry, but that email is not in our records. Perhaps you typed in the wrong email? If not, we would love to see you make an account of your own!"
+    }
+
+    sendgrid.send(email, function(err, json) {
+      if (err) {
+        console.log(err)
+        return res.status(500).end()
+      }
+
+      return res.status(200).end()
+    });
+
+    return res.status(200).end()
+  });
+});
+
 router.get('/:user_id', function(req, res) {
   User.findById(req.params.user_id, function(err, user) {
-      if (err) res.send(err);
+      if (err) return res.send(err);
 
-      res.format({
+      return res.format({
         html: function(){
           Product.find({user: user}, function(err,products) {
-            if (err){  res.send(err); return; }
+            if (err){  return res.send(err); }
             Useage.find({user: user}).populate('product').exec(function(err,useages) {
-              if (err){  res.send(err); return; }
+              if (err){  return res.send(err); }
               
-              res.render('users/show', { user: user, products: products, useages: useages});
+              return res.render('users/show', { user: user, products: products, useages: useages});
             })
           })
         },
 
         json: function(){
-          res.json(store);
+          return res.json(store);
         }
       });
     });
@@ -48,15 +121,15 @@ router.get('/:user_id', function(req, res) {
 
 router.delete('/:user_id', function(req, res) {
   User.findByIdAndRemove(req.params.user_id, function(err) {
-    if (err) res.send(err);
+    if (err){  return res.send(err); }
 
-    res.format({
+    return res.format({
       html: function(){
-        res.redirect('/users')
+        return res.redirect('/users')
       },
 
       json: function(){
-        res.json({});
+        return res.json({});
       }
     });
 
@@ -66,15 +139,15 @@ router.delete('/:user_id', function(req, res) {
 
 router.put('/:user_id', function(req, res) {
   User.findOneAndUpdate({_id: req.params.user_id}, req.body.user, function(err, user) {
-      if (err){ console.log(err); res.status(500).send(err); return; }
+      if (err){ console.log(err); return res.status(500).send(err); }
       
-      res.format({
+      return res.format({
         html: function(){
-          res.render('users/show', { user: user })
+          return res.render('users/show', { user: user })
         },
 
         json: function(){
-          res.json("OK"); 
+          return res.json("OK"); 
         }
       });
     });
@@ -88,16 +161,16 @@ router.post('/', function(req, res) {
 
   user.save(function(err) {
     
-    if (err) { console.log(err); res.status(500).json(err); return; }
+    if (err) { console.log(err); return res.status(500).json(err); }
     
-    res.format({
+    return res.format({
       html: function(){
-        res.redirect('/users')
+        return res.redirect('/users')
       },
 
       json: function(){
         console.log(user)
-        res.json(user);
+        return res.json(user);
       }
     });
   });
@@ -106,14 +179,14 @@ router.post('/', function(req, res) {
 router.post('/login', function(req, res) {
   User.findOne({ username: req.body.username }, function(err, user) {
     
-    if (err) { res.status(500).json(err); return; }
+    if (err) { return res.status(500).json(err); }
     
     user.comparePassword(req.body.password, function(err, isMatch) {
-      if (err) { res.status(500).json(err); return; }
+      if (err) { return res.status(500).json(err); }
       
-      res.format({
+      return res.format({
         html: function(){
-          res.redirect('/users')
+          return res.redirect('/users')
         },
 
         json: function(){
@@ -123,10 +196,10 @@ router.post('/login', function(req, res) {
               var response = {}
               _.assign(response, user._doc);
               console.log(response)
-              res.json(response);
+              return res.json(response);
             });
           } else {
-            res.json({message: "Invalid Username or Password"});
+            return res.json({message: "Invalid Username or Password"});
           }
         }
       });
