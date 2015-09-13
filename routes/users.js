@@ -11,14 +11,14 @@ var uuid = require('node-uuid')
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   User.find(function(err, users) {
-    if (err){ return res.send(err); }
+    if (err) { return res.send(err); }
 
     return res.format({
-      html: function(){
-        return res.render('users/index', { users: users })
+      html: function() {
+        return res.render('users/index', { users: users });
       },
 
-      json: function(){
+      json: function() {
         return res.json(users);
       }
     });
@@ -27,12 +27,12 @@ router.get('/', function(req, res, next) {
 
 router.get('/:user_id/password_reset/:reset_token', function(req, res) {
   User.findById(req.params.user_id, function(err, user) {
-      if (err) console.log(err);
+      if (err) { console.log(err); }
 
       if (user && user.compareResetTokenValidity(req.params.reset_token)) {
-        return res.render('users/forgot_password')
+        return res.redirect(user.resetPasswordFrom + "://password_reset/" + req.params.user_id + "/" + req.params.reset_token);
       } else {
-        return res.status(404).send("Not Found")
+        return res.status(404).send("Not Found");
       }
   });
 });
@@ -48,13 +48,7 @@ router.post('/:user_id/password_reset/:reset_token', function(req, res) {
         user.save(function(err) {
           if (err) { return res.status(400).send("That password does not conform to the password constraints") }
 
-          if (user.resetAppFrom === 'ipolish') {
-            return res.redirect('ipolish://login');
-          } else if (user.resetAppFrom === 'iarmor') {
-            return res.redirect('iarmor://login');
-          } else {
-            return res.status(200).send("Your password has successfully been reset - Please close this webpage and login to the app.");
-          }
+          return res.status(200).send("Your password has successfully been reset - Please close this webpage and login to the app.");
         });
       }
   });
