@@ -8,8 +8,8 @@ var Useage     = require('./useage');
 var UserSchema   = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   email: { type: String, required: true, index: { unique: true }},
-  gender: { type: String, required: true },
-  zipCode: { type: String, required: true },
+  gender: { type: String },
+  zipCode: { type: String },
   acceptedTosOn: { type: Date, required: true },
   password: { type: String, required: true },
   token: { type: String },
@@ -20,8 +20,9 @@ var UserSchema   = new Schema({
 });
 
 UserSchema.path('email').validate(function (value) {
-   var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-   return emailRegex.test(value); // Assuming email has a text attribute
+  if(!value) { return true; }
+    var emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailRegex.test(value); // Assuming email has a text attribute
 }, 'The e-mail field cannot be empty.')
 
 UserSchema.path('password').validate(function (value) {
@@ -56,6 +57,7 @@ UserSchema.statics.findByToken = function (token, cb) {
 }
 
 if (!UserSchema.options.toJSON) UserSchema.options.toJSON = {};
+
 UserSchema.options.toJSON.transform = function (doc, ret, options) {
   // remove the _id of every document before returning the result
   delete ret.token;
