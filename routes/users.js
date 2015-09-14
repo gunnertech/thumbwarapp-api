@@ -46,28 +46,39 @@ router.post('/:user_id/password_reset/:reset_token', function(req, res) {
         user.resetPasswordInitOn = new Date(0)
 
         user.save(function(err) {
-          if (err) { return res.status(400).send("That password does not conform to the password constraints") }
+          if (err) { return res.status(400).end() }
 
-          return res.status(200).send("Your password has successfully been reset - Please close this webpage and login to the app.");
+          return res.status(200).end();
         });
+      } else {
+        return res.status(404).end()
       }
   });
 });
 
 router.post('/password_reset', function(req, res) {
   User.findOne({ 'email': req.body.email }, function(err, user) {
-    if (err) return res.send(err);
+    if (err) { return res.send(err) }
+
+    var app = req.body.app.toLowerCase()
+    if (app === 'iarmor') {
+      from = 'no-reply@iArmor.com'
+    } else if (app === 'ipolish') {
+      from = 'no-reply@iPolish.xyz'
+    } else {
+      return res.status(400).send('Must specify which app')
+    }
 
     var email = new sendgrid.Email({
       to: req.body.email,
-      from: 'no-reply@ipomor.com',
+      from: from,
       subject: 'Forgot Password'
     });
 
     if (user) {
       user.resetPasswordToken = uuid.v4()
       user.resetPasswordInitOn = Date()
-      user.resetPasswordFrom = req.body.app.toLowerCase()
+      user.resetPasswordFrom = app
       user.save(function(err) {
         if (err) console.log(err)
       });
@@ -172,8 +183,8 @@ router.post('/', function(req, res) {
 
 router.post('/login', function(req, res) {
   User.findOne({ username: req.body.username }, function(err, user) {
-    
     if (err) { return res.status(500).json(err); }
+    if (!user) { return res.status(400).json({message: "Invalid Username or Password"}) }
     
     user.comparePassword(req.body.password, function(err, isMatch) {
       if (err) { return res.status(500).json(err); }
@@ -193,7 +204,7 @@ router.post('/login', function(req, res) {
               return res.json(response);
             });
           } else {
-            return res.json({message: "Invalid Username or Password"});
+            return res.status(400).json({message: "Invalid Username or Password"});
           }
         }
       });

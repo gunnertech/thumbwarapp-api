@@ -25,8 +25,8 @@ UserSchema.path('email').validate(function (value) {
 }, 'The e-mail field cannot be empty.')
 
 UserSchema.path('password').validate(function (value) {
-  return value.length > 8;
-}, 'The password field cannot be empty. It must also: be 8 characters long, have a lower and upper case letter and have a number.')
+  return value.length >= 8;
+}, 'The password field cannot be empty and must also: be a minimum 8 characters long.')
 
 UserSchema.methods.products = function (done) {
   return this.model('Product').find({user: this}, done);
