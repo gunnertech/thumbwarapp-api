@@ -10,7 +10,14 @@ var uuid = require('node-uuid')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  User.find(function(err, users) {
+  var params = {};
+  
+  if(req.params) {
+    params = req.params;
+    delete params.token;
+  }
+  
+  User.find(params,function(err, users) {
     if (err) { return res.send(err); }
 
     return res.format({
