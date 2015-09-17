@@ -17,6 +17,8 @@ router.get('/', function(req, res, next) {
     delete params.token;
   }
   
+  console.log("OKKKK WE GOT SOMETHING")
+  
   User.find(params,function(err, users) {
     if (err) { return res.send(err); }
 
