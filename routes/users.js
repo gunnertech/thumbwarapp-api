@@ -17,8 +17,6 @@ router.get('/', function(req, res, next) {
     delete params.token;
   }
   
-  console.log("OKKKK WE GOT SOMETHING")
-  
   User.find(params,function(err, users) {
     if (err) { return res.send(err); }
 
@@ -183,7 +181,6 @@ router.post('/', function(req, res) {
       },
 
       json: function(){
-        console.log(user)
         return res.json(user);
       }
     });
