@@ -150,7 +150,7 @@ router.delete('/:user_id', function(req, res) {
 });
 
 router.put('/:user_id', function(req, res) {
-  User.findOneAndUpdate({_id: req.params.user_id}, req.body.user, function(err, user) {
+  User.findOneAndUpdate({_id: req.params.user_id}, (req.body.user || req.body), function(err, user) {
       if (err){ console.log(err); return res.status(500).send(err); }
       
       return res.format({
