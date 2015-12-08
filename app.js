@@ -10,13 +10,8 @@ var methodOverride = require('method-override');
 var auth = require('basic-auth')
 
 /*** ROUTES ****/
-var routes = require('./routes/index');
+// var routes = require('./routes/index');
 var users = require('./routes/users');
-var products = require('./routes/products');
-var stores = require('./routes/stores');
-var useages = require('./routes/useages');
-var groups = require('./routes/groups');
-var favoriteColors = require('./routes/favoriteColors');
 
 var app = express();
 
@@ -45,34 +40,28 @@ app.use(methodOverride(function(req, res){
   }
 }))
 
-app.use(function(req, res, next) { 
-    var credentials = auth(req);
-    
-    res.format({
-      html: function(){
-        if (typeof credentials == 'undefined' || credentials['name'] != process.env.USERNAME || credentials['pass'] != process.env.PASSWORD) {
-          res.statusCode = 401;
-          res.setHeader('WWW-Authenticate', 'Basic realm="ipomor"');
-          res.end('Unauthorized');
-        } else {
-          next();
-        }
-      },
+// app.use(function(req, res, next) {
+//     var credentials = auth(req);
+//
+//     res.format({
+//       html: function(){
+//         if (typeof credentials == 'undefined' || credentials['name'] != process.env.USERNAME || credentials['pass'] != process.env.PASSWORD) {
+//           res.statusCode = 401;
+//           res.setHeader('WWW-Authenticate', 'Basic realm="thumbwarapp"');
+//           res.end('Unauthorized');
+//         } else {
+//           next();
+//         }
+//       },
+//
+//       json: function(){
+//         next();
+//       }
+//     });
+// });
 
-      json: function(){
-        next();
-      }
-    });
-});
 
-app.use('/', routes);
 app.use('/users', users);
-app.use('/api/v1/products', products);
-app.use('/products', products);
-app.use('/stores', stores);
-app.use('/useages', useages);
-app.use('/groups', groups);
-app.use('/favorite-colors', favoriteColors);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -105,7 +94,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/ipomor');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/thumbwarapp');
 
 
 module.exports = app;

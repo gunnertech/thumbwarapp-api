@@ -5,8 +5,10 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('ipomor:server');
+var debug = require('debug')('thumbwarapp:server');
 var http = require('http');
+var https = require('https');
+var fs = require('fs');
 
 /**
  * Get port from environment and store in Express.
@@ -18,8 +20,19 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
+ 
+var options = {
+   key: fs.readFileSync('/etc/apache2/ssl/localhost.key'),
+   cert: fs.readFileSync('/etc/apache2/ssl/localhost.crt'),
+   requestCert: false,
+   rejectUnauthorized: false
+};
 
-var server = http.createServer(app);
+options = {};
+
+var selectedHttp = http;
+
+var server = selectedHttp.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -86,5 +99,5 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 }

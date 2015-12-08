@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
-var Product = require('../app/models/product');
-var Useage = require('../app/models/useage');
 var _ = require('lodash');
 var jwt = require("jsonwebtoken");
 var sendgrid = require('sendgrid')(process.env.SENDGRID_API_KEY)
@@ -21,10 +19,6 @@ router.get('/', function(req, res, next) {
     if (err) { return res.send(err); }
 
     return res.format({
-      html: function() {
-        return res.render('users/index', { users: users });
-      },
-
       json: function() {
         return res.json(users);
       }
@@ -111,19 +105,7 @@ router.post('/password_reset', function(req, res) {
 router.get('/:user_id', function(req, res) {
   User.findById(req.params.user_id, function(err, user) {
       if (err) return res.send(err);
-
       return res.format({
-        html: function(){
-          Product.find({user: user}, function(err,products) {
-            if (err){  return res.send(err); }
-            Useage.find({user: user}).populate('product').exec(function(err,useages) {
-              if (err){  return res.send(err); }
-              
-              return res.render('users/show', { user: user, products: products, useages: useages});
-            })
-          })
-        },
-
         json: function(){
           return res.json(store);
         }
@@ -136,10 +118,6 @@ router.delete('/:user_id', function(req, res) {
     if (err){  return res.send(err); }
 
     return res.format({
-      html: function(){
-        return res.redirect('/users')
-      },
-
       json: function(){
         return res.json({});
       }
@@ -154,10 +132,6 @@ router.put('/:user_id', function(req, res) {
       if (err){ console.log(err); return res.status(500).send(err); }
       
       return res.format({
-        html: function(){
-          return res.render('users/show', { user: user })
-        },
-
         json: function(){
           return res.json("OK"); 
         }
@@ -176,10 +150,6 @@ router.post('/', function(req, res) {
     if (err) { console.log(err); return res.status(500).json(err); }
     
     return res.format({
-      html: function(){
-        return res.redirect('/users')
-      },
-
       json: function(){
         return res.json(user);
       }
@@ -196,10 +166,6 @@ router.post('/login', function(req, res) {
       if (err) { return res.status(500).json(err); }
       
       return res.format({
-        html: function(){
-          return res.redirect('/users')
-        },
-
         json: function(){
           if(isMatch) {
             user.token = jwt.sign(user, process.env.JWT_SECRET);
