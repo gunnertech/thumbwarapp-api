@@ -28,21 +28,31 @@ router.get('/', function(req, res, next) {
   
   
   User.find(params,function(err, users) {
+    console.log("The users before");
     console.log(users);
     if (err) { return res.send(err); }
 
     return res.format({
       json: function() {
         if(includeToken) {
-            users[0].token = jwt.sign(users[0], process.env.JWT_SECRET);
+          console.log("The users after");
+          console.log(users);
+          
+          var user = users[0];
+          
+          console.log("The single user");
+          console.log(user);
+          
+          
+            user.token = jwt.sign(user, process.env.JWT_SECRET);
             
             console.log("LOOOK");
-            console.log(users[0]);
+            console.log(user);
+            console.log(user._doc);
             console.log("We looked");
             
             var response = {}
-            _.assign(response, users._doc);
-            console.log(users._doc);
+            _.assign(response, [user._doc]);
             return res.json(response);
             
         } else {
