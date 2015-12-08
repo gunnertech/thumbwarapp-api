@@ -35,9 +35,11 @@ router.get('/', function(req, res, next) {
             
             console.log("LOOOK");
             console.log(users[0]);
+            console.log("We looked");
             
             var response = {}
             _.assign(response, users._doc);
+            console.log(users._doc);
             return res.json(response);
             
         } else {
