@@ -20,15 +20,17 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
- 
+
+/** 
 var options = {
    key: fs.readFileSync('/etc/apache2/ssl/localhost.key'),
    cert: fs.readFileSync('/etc/apache2/ssl/localhost.crt'),
    requestCert: false,
    rejectUnauthorized: false
 };
+*/
 
-options = {};
+var options = {};
 
 var selectedHttp = http;
 
