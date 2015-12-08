@@ -167,6 +167,24 @@ router.post('/', function(req, res) {
 });
 
 router.post('/login', function(req, res) {
+  User.findById(req.query._id, function(err, user) {
+    return res.format({
+      json: function(){
+        if(user.facebookId == req.query.facebookId) {
+          user.token = jwt.sign(user, process.env.JWT_SECRET);
+          user.save(function(err, user1) {
+            var response = {}
+            _.assign(response, user._doc);
+            return res.json(response);
+          });
+        } else {
+          return res.status(400).json({message: "Invalid Username or Password"});
+        }
+      }
+    });
+  })
+})
+    
   User.findOne({ username: req.body.username }, function(err, user) {
     if (err) { return res.status(500).json(err); }
     if (!user) { return res.status(400).json({message: "Invalid Username or Password"}) }
