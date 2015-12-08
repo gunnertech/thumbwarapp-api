@@ -34,7 +34,7 @@ var options = {};
 
 var selectedHttp = http;
 
-var server = selectedHttp.createServer(options, app);
+var server = selectedHttp.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
