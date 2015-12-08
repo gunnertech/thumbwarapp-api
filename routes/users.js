@@ -168,7 +168,7 @@ router.post('/', function(req, res) {
 
 router.post('/login', function(req, res) {
   console.log("LOGGIN IN")
-  console.log(req.params)
+  console.log(req)
   User.findById(req.params._id, function(err, user) {
     return res.format({
       json: function(){
