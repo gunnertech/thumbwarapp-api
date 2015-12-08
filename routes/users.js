@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
   if(req.params) {
     params = req.params;
     
-    includeToken = req.params.includeToken!!;
+    includeToken = !!(req.params.includeToken);
     
     delete params.includeToken;
     delete params.token;
