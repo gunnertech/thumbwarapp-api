@@ -23,9 +23,12 @@ router.get('/', function(req, res, next) {
     delete params.token;
   }
   
+  console.log("The params to use:")
+  console.log(params)
   
   
   User.find(params,function(err, users) {
+    console.log(users);
     if (err) { return res.send(err); }
 
     return res.format({
