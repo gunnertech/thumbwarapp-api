@@ -9,55 +9,20 @@ var uuid = require('node-uuid')
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   var params = {};
-  var includeToken = false;
-  
-  console.log("HERE D");
-  console.log(req.query);
   
   if(req.query) {
     params = req.query;
     
-    includeToken = !!(req.query.includeToken);
-    
-    delete params.includeToken;
     delete params.token;
   }
   
-  console.log("The params to use:")
-  console.log(params)
-  
   
   User.find(params,function(err, users) {
-    console.log("The users before");
-    console.log(users);
     if (err) { return res.send(err); }
 
     return res.format({
       json: function() {
-        if(includeToken) {
-          console.log("The users after");
-          console.log(users);
-          
-          var user = users[0];
-          
-          console.log("The single user");
-          console.log(user);
-          
-          
-            user.token = jwt.sign(user, process.env.JWT_SECRET);
-            
-            console.log("LOOOK");
-            console.log(user);
-            console.log(user._doc);
-            console.log("We looked");
-            
-            var response = {}
-            _.assign(response, [user._doc]);
-            return res.json(response);
-            
-        } else {
-            return res.json(users);
-        }
+        return res.json(users);
         
       }
     });
