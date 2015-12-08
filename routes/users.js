@@ -11,6 +11,9 @@ router.get('/', function(req, res, next) {
   var params = {};
   var includeToken = false;
   
+  console.log("HERE D");
+  console.log(req.params);
+  
   if(req.params) {
     params = req.params;
     
@@ -29,6 +32,9 @@ router.get('/', function(req, res, next) {
       json: function() {
         if(includeToken) {
             users[0].token = jwt.sign(users[0], process.env.JWT_SECRET);
+            
+            console.log("LOOOK");
+            console.log(users[0]);
             
             var response = {}
             _.assign(response, users._doc);
