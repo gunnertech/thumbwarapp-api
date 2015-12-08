@@ -7,7 +7,7 @@ var UserSchema   = new Schema({
   facebookId: { type: String, required: true, index: { unique: true } },
   email: { type: String, trim: true, required: true, index: { unique: true }},
   name: { type: String },
-  token: { type: String }
+  token: { type: String, required: true, index: { unique: true } }
 });
 
 UserSchema.path('email').validate(function (value) {
