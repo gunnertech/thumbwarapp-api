@@ -12,12 +12,12 @@ router.get('/', function(req, res, next) {
   var includeToken = false;
   
   console.log("HERE D");
-  console.log(req.params);
+  console.log(req.query);
   
-  if(req.params) {
-    params = req.params;
+  if(req.query) {
+    params = req.query;
     
-    includeToken = !!(req.params.includeToken);
+    includeToken = !!(req.query.includeToken);
     
     delete params.includeToken;
     delete params.token;
