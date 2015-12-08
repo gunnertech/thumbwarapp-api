@@ -9,18 +9,35 @@ var uuid = require('node-uuid')
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   var params = {};
+  var includeToken = false;
   
   if(req.params) {
     params = req.params;
+    
+    includeToken = req.params.includeToken!!;
+    
+    delete params.includeToken;
     delete params.token;
   }
+  
+  
   
   User.find(params,function(err, users) {
     if (err) { return res.send(err); }
 
     return res.format({
       json: function() {
-        return res.json(users);
+        if(includeToken) {
+            users[0].token = jwt.sign(users[0], process.env.JWT_SECRET);
+            
+            var response = {}
+            _.assign(response, users._doc);
+            return res.json(response);
+            
+        } else {
+            return res.json(users);
+        }
+        
       }
     });
   });
@@ -144,6 +161,8 @@ router.post('/', function(req, res) {
   
   
   _.assign(user, req.body.user || req.body);
+  
+  user.token = jwt.sign(user, process.env.JWT_SECRET);
 
   user.save(function(err) {
     
@@ -151,7 +170,9 @@ router.post('/', function(req, res) {
     
     return res.format({
       json: function(){
-        return res.json(user);
+        var response = {}
+        _.assign(response, user._doc);
+        return res.json(response);
       }
     });
   });
