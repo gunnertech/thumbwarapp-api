@@ -167,12 +167,10 @@ router.post('/', function(req, res) {
 });
 
 router.post('/login', function(req, res) {
-  console.log("LOGGIN IN")
-  console.log(req)
-  User.findById(req.params._id, function(err, user) {
+  User.findById(req.body._id, function(err, user) {
     return res.format({
       json: function(){
-        if(user.facebookId == req.params.facebookId) {
+        if(user.facebookId == req.body.facebookId) {
           user.token = jwt.sign(user, process.env.JWT_SECRET);
           user.save(function(err, user1) {
             var response = {}
