@@ -183,32 +183,6 @@ router.post('/login', function(req, res) {
       }
     });
   })
-})
-    
-  User.findOne({ username: req.body.username }, function(err, user) {
-    if (err) { return res.status(500).json(err); }
-    if (!user) { return res.status(400).json({message: "Invalid Username or Password"}) }
-    
-    user.comparePassword(req.body.password, function(err, isMatch) {
-      if (err) { return res.status(500).json(err); }
-      
-      return res.format({
-        json: function(){
-          if(isMatch) {
-            user.token = jwt.sign(user, process.env.JWT_SECRET);
-            user.save(function(err, user1) {
-              var response = {}
-              _.assign(response, user._doc);
-              console.log(response)
-              return res.json(response);
-            });
-          } else {
-            return res.status(400).json({message: "Invalid Username or Password"});
-          }
-        }
-      });
-    });
-  });
 });
 
 module.exports = router;
