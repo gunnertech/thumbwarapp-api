@@ -7,7 +7,29 @@ var UserSchema   = new Schema({
   facebookId: { type: String, required: true, index: { unique: true } },
   email: { type: String, trim: true, required: true, index: { unique: true }},
   name: { type: String },
+  photoUrl: { type: String },
   token: { type: String, required: true, index: { unique: true } }
+});
+
+var client = knox.createClient({
+    key: process.env.AWS_KEY
+  , secret: process.env.AWS_SECRET
+  , bucket: process.env.S3_BUCKET
+});
+
+UserSchema.pre('save',true,function(next,done){
+  next();
+  
+  http.get(this.photoUrl, function(res){
+    var headers = {
+        'Content-Length': res.headers['content-length']
+      , 'Content-Type': res.headers['content-type']
+    };
+    client.putStream(res, '/'+this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
+      console.log(res);
+      done();
+    });
+  });
 });
 
 UserSchema.path('email').validate(function (value) {

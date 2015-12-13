@@ -144,7 +144,6 @@ router.put('/:user_id', function(req, res) {
 
 router.post('/', function(req, res) {
   
-  console.log("WHY THIS???");
   var user = new User();
   
   
