@@ -24,6 +24,7 @@
     "sendgrid": "^1.9.2",
     "serve-favicon": "~2.2.1",
     "swig": ">0",
+    "follow-redirects": ">0.0.0",
     "knox": ">0.0.0"
   }
 }

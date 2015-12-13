@@ -2,7 +2,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 var bcrypt = require('bcrypt');
 var knox = require('knox');
-var https = require('https');
+var https = require('follow-redirects').https;
 var SALT_WORK_FACTOR = 10;
 
 var UserSchema   = new Schema({
@@ -28,10 +28,11 @@ UserSchema.pre('save',true,function(next,done){
     var headers = {
         'Content-Length': res.headers['content-length']
       , 'Content-Type': res.headers['content-type']
+      , 'x-amz-acl': 'public-read'
     };
+    put
     client.putStream(res, '/'+_this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
-      console.log("HERE IS THE ERROR");
-      console.log(err);
+      console.log(res);
       done();
     });
   });
