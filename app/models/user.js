@@ -2,7 +2,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 var bcrypt = require('bcrypt');
 var knox = require('knox');
-var http = require('http');
+var https = require('https');
 var SALT_WORK_FACTOR = 10;
 
 var UserSchema   = new Schema({
@@ -22,7 +22,7 @@ var client = knox.createClient({
 UserSchema.pre('save',true,function(next,done){
   next();
   
-  http.get(this.photoUrl, function(res){
+  https.get(this.photoUrl, function(res){
     var headers = {
         'Content-Length': res.headers['content-length']
       , 'Content-Type': res.headers['content-type']
