@@ -30,10 +30,23 @@ UserSchema.pre('save',true,function(next,done){
       , 'Content-Type': res.headers['content-type']
       , 'x-amz-acl': 'public-read'
     };
-    client.putStream(res, '/'+_this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
-      console.log(res);
-      done();
+    
+    var req = client.putStream(res, '/'+_this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
+      // console.log(res);
+      // done();
     });
+    
+    req.on('response', function(res){
+      console.log(res.statusCode);
+      done();
+      
+      
+       // if (res.statusCode == HTTPStatus.OK) {
+//          done();
+//        } else {
+//          throw 500;
+//        }
+     });
   });
 });
 
