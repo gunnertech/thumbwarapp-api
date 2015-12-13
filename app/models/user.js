@@ -30,7 +30,6 @@ UserSchema.pre('save',true,function(next,done){
       , 'Content-Type': res.headers['content-type']
       , 'x-amz-acl': 'public-read'
     };
-    put
     client.putStream(res, '/'+_this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
       console.log(res);
       done();
