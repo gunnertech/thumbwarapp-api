@@ -31,7 +31,7 @@ UserSchema.pre('save',true,function(next,done){
       , 'x-amz-acl': 'public-read'
     };
     
-    var req = client.putStream(res, '/'+_this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
+    var req = client.putStream(res, '/uploads/users/'+_this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
       // console.log(res);
       // done();
     });
