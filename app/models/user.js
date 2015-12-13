@@ -20,14 +20,17 @@ var client = knox.createClient({
 });
 
 UserSchema.pre('save',true,function(next,done){
+  var _this = this;
+  console.log(this.photoUrl)
   next();
   
   https.get(this.photoUrl, function(res){
+    console.log(res)
     var headers = {
         'Content-Length': res.headers['content-length']
       , 'Content-Type': res.headers['content-type']
     };
-    client.putStream(res, '/'+this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
+    client.putStream(res, '/'+_this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
       console.log(res);
       done();
     });
