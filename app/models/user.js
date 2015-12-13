@@ -25,13 +25,13 @@ UserSchema.pre('save',true,function(next,done){
   next();
   
   https.get(this.photoUrl, function(res){
-    console.log(res)
     var headers = {
         'Content-Length': res.headers['content-length']
       , 'Content-Type': res.headers['content-type']
     };
     client.putStream(res, '/'+_this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
-      console.log(res);
+      console.log("HERE IS THE ERROR");
+      console.log(err);
       done();
     });
   });
