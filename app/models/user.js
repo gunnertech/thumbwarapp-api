@@ -37,6 +37,7 @@ UserSchema.pre('save',function(next){
     });
     
     req.on('response', function(res){
+      console.log("THE USER IS IS: " + _this._id);
       var avatar = new Avatar({
         url: "https://"+process.env.S3_BUCKET+".s3.amazonaws.com/uploads/users/"+fileName+".jpg",
         user: _this._id
