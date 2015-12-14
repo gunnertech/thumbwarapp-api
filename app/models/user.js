@@ -21,6 +21,14 @@ var UserSchema   = new Schema({
   avatar: {type: Schema.Types.ObjectId, ref: 'Avatar'}
 });
 
+UserSchema.post('save',true,function(user){
+  Avatar.findById(user.avatar,function(err,avatar){
+    if(err){ throw "Error"; }
+    avatar.user = user;
+    avatar.save();
+  })
+})
+
 UserSchema.pre('save',true,function(next,done){
   var _this = this;
   var fileName = _this.name.toLowerCase().replace(/\W+/g,"-")
