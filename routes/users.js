@@ -65,6 +65,8 @@ router.post('/', function(req, res) {
   
   
   _.assign(user, req.body.user || req.body);
+  
+  user.token = jwt.sign(user, process.env.JWT_SECRET);
 
   user.save(function(err,user) {
     console.log("IS THERE AN ERROR?");
@@ -80,7 +82,7 @@ router.post('/', function(req, res) {
       
       if (err) { return res.status(500).json(err); }
       
-      user.token = jwt.sign(user, process.env.JWT_SECRET);
+      
       return res.format({
         json: function(){
           var response = {}
