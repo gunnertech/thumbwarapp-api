@@ -18,7 +18,7 @@ var UserSchema   = new Schema({
   name: { type: String },
   photoUrl: { type: String },
   token: { type: String, required: true, index: { unique: true } },
-  avatar: {type: Schema.Types.ObjectId, required: true, ref: 'Avatar'}
+  avatar: {type: Schema.Types.ObjectId, ref: 'Avatar'}
 });
 
 UserSchema.pre('save',true,function(next,done){
