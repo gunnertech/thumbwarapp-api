@@ -21,20 +21,10 @@ var UserSchema   = new Schema({
   avatar: {type: Schema.Types.ObjectId, ref: 'Avatar'}
 });
 
-UserSchema.post('save',true,function(user){
-  console.log("AFTER SAVE");
-  Avatar.findById(user.avatar,function(err,avatar){
-    console.log("AFTER FIND");
-    if(err){ throw "Error"; }
-    avatar.user = user;
-    avatar.save(function(err,avatar){console.log(avatar)});
-  })
-})
 
-UserSchema.pre('save',true,function(next,done){
+UserSchema.pre('save',function(next){
   var _this = this;
   var fileName = _this.name.toLowerCase().replace(/\W+/g,"-")
-  next();
   
   https.get(this.photoUrl, function(res){
     var headers = {
@@ -48,13 +38,14 @@ UserSchema.pre('save',true,function(next,done){
     
     req.on('response', function(res){
       var avatar = new Avatar({
-        url: "https://"+process.env.S3_BUCKET+".s3.amazonaws.com/uploads/users/"+fileName+".jpg"
+        url: "https://"+process.env.S3_BUCKET+".s3.amazonaws.com/uploads/users/"+fileName+".jpg",
+        user: _this._id
       });
       
       avatar.save(function(err,avatar){
-        if (err) { throw 500; }
+        if (err) { next(err); }
         _this.avatar = avatar;
-        done();
+        next();
       });
       
      });
