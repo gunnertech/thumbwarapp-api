@@ -27,7 +27,7 @@ UserSchema.post('save',true,function(user){
     console.log("AFTER FIND");
     if(err){ throw "Error"; }
     avatar.user = user;
-    avatar.save(,function(err,avatar){console.log(avatar)});
+    avatar.save(function(err,avatar){console.log(avatar)});
   })
 })
 
