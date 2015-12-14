@@ -97,4 +97,23 @@ router.post('/', function(req, res) {
   });
 });
 
+router.post('/login', function(req, res) {
+  User.findById(req.body._id, function(err, user) {
+    return res.format({
+      json: function(){
+        if(user.facebookId == req.body.facebookId) {
+          user.token = jwt.sign(user, process.env.JWT_SECRET);
+          user.save(function(err, user1) {
+            var response = {}
+            _.assign(response, user._doc);
+            return res.json(response);
+          });
+        } else {
+          return res.status(400).json({message: "Invalid Username or Password"});
+        }
+      }
+    });
+  })
+});
+
 module.exports = router;
