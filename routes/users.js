@@ -80,6 +80,7 @@ router.post('/', function(req, res) {
         json: function(){
           var response = {}
           _.assign(response, user._doc);
+          console.log(response);
           return res.json(response);
         }
       });
