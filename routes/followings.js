@@ -5,8 +5,12 @@ var User = require('../app/models/user');
 var _ = require('lodash');
 
 
-router.post('/follow_facebook_friends', function(req, res) {
-
+router.post('/batch', function(req, res) {
+  return res.format({
+    json: function(){
+      return res.json("");
+    }
+  })
 });
 
 

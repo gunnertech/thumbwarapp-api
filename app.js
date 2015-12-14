@@ -12,6 +12,7 @@ var auth = require('basic-auth')
 /*** ROUTES ****/
 // var routes = require('./routes/index');
 var users = require('./routes/users');
+var followings = require('./routes/followings');
 
 var app = express();
 
@@ -62,6 +63,7 @@ app.use(methodOverride(function(req, res){
 
 
 app.use('/users', users);
+app.use('/followings', followings);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
