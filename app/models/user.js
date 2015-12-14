@@ -17,7 +17,7 @@ var UserSchema   = new Schema({
   email: { type: String, trim: true, required: true, index: { unique: true }},
   name: { type: String },
   photoUrl: { type: String },
-  token: { type: String, required: true, index: { unique: true } }
+  token: { type: String, required: true, index: { unique: true } },
   avatar: {type: Schema.Types.ObjectId, required: true, ref: 'Avatar'}
 });
 
