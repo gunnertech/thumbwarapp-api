@@ -37,10 +37,17 @@ UserSchema.pre('save',true,function(next,done){
     });
     
     req.on('response', function(res){
-      _this.avatar = new Avatar({
+      var avatar = new Avatar({
         url: "https://"+process.env.S3_BUCKET+".s3.amazonaws.com/uploads/users/"+fileName+".jpg"
-      })
-      done();
+      });
+      
+      avatar.save(function(err,avatar){
+        if (err) { throw 500; }
+        console.log(avatar);
+        _this.avatar = avatar;
+        done();
+      });
+      
      });
   });
 });
