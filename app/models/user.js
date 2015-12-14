@@ -4,14 +4,7 @@ var bcrypt = require('bcrypt');
 var knox = require('knox');
 var https = require('follow-redirects').https;
 var SALT_WORK_FACTOR = 10;
-
-var UserSchema   = new Schema({
-  facebookId: { type: String, required: true, index: { unique: true } },
-  email: { type: String, trim: true, required: true, index: { unique: true }},
-  name: { type: String },
-  photoUrl: { type: String },
-  token: { type: String, required: true, index: { unique: true } }
-});
+var Avatar = require('./avatar');
 
 var client = knox.createClient({
     key: process.env.AWS_KEY
@@ -19,9 +12,18 @@ var client = knox.createClient({
   , bucket: process.env.S3_BUCKET
 });
 
+var UserSchema   = new Schema({
+  facebookId: { type: String, required: true, index: { unique: true } },
+  email: { type: String, trim: true, required: true, index: { unique: true }},
+  name: { type: String },
+  photoUrl: { type: String },
+  token: { type: String, required: true, index: { unique: true } }
+  avatar: {type: Schema.Types.ObjectId, required: true, ref: 'Avatar'}
+});
+
 UserSchema.pre('save',true,function(next,done){
   var _this = this;
-  console.log(this.photoUrl)
+  var fileName = _this.name.toLowerCase().replace(/\W+/g,"-")
   next();
   
   https.get(this.photoUrl, function(res){
@@ -31,21 +33,14 @@ UserSchema.pre('save',true,function(next,done){
       , 'x-amz-acl': 'public-read'
     };
     
-    var req = client.putStream(res, '/uploads/users/'+_this.name.toLowerCase().replace(/\W+/g,"-")+'.jpg', headers, function(err, res){
-      // console.log(res);
-      // done();
+    var req = client.putStream(res, '/uploads/users/'+fileName+'.jpg', headers, function(err, res){
     });
     
     req.on('response', function(res){
-      console.log(res.statusCode);
+      _this.avatar = new Avatar({
+        url: "https://"+process.env.S3_BUCKET+".s3.amazonaws.com/uploads/users/"+fileName+".jpg"
+      })
       done();
-      
-      
-       // if (res.statusCode == HTTPStatus.OK) {
-//          done();
-//        } else {
-//          throw 500;
-//        }
      });
   });
 });
@@ -56,19 +51,6 @@ UserSchema.path('email').validate(function (value) {
     return emailRegex.test(value); // Assuming email has a text attribute
 }, 'The e-mail field cannot be empty.')
 
-
-UserSchema.methods.compareResetTokenValidity = function (token) {
-  if (token === this.resetPasswordToken) {
-    var oneHour = 1000 * 60 * 60
-    var timeElapsed = (new Date - this.resetPasswordInitOn)
-
-    if (timeElapsed < oneHour) {
-      return true;
-    }
-  }
-
-  return false;
-}
 
 UserSchema.statics.findByToken = function (token, cb) {
   return this.findOne({ token: token }, cb);
