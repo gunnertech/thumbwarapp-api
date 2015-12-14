@@ -22,10 +22,12 @@ var UserSchema   = new Schema({
 });
 
 UserSchema.post('save',true,function(user){
+  console.log("AFTER SAVE");
   Avatar.findById(user.avatar,function(err,avatar){
+    console.log("AFTER FIND");
     if(err){ throw "Error"; }
     avatar.user = user;
-    avatar.save();
+    avatar.save(,function(err,avatar){console.log(avatar)});
   })
 })
 
@@ -51,7 +53,6 @@ UserSchema.pre('save',true,function(next,done){
       
       avatar.save(function(err,avatar){
         if (err) { throw 500; }
-        console.log(avatar);
         _this.avatar = avatar;
         done();
       });
