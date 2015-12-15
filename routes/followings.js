@@ -5,17 +5,17 @@ var User = require('../app/models/user');
 var _ = require('lodash');
 
 router.post('/batch', function(req, res) {
-  console.log(req.body.facebookIds)
+  console.log(req.body.facebookIds.join(","))
   
-  User.findOne({
-    facebookId: "dd"
+  User.find({
+    facebookId: { $in: req.body.facebookIds.join(",") }
   }).exec()
   .then(function(users){
     console.log('WElll.......');
     console.log(users);
     
-    // console.log("HERE IS THE " + users.length + "!!!");
-    // console.log(users);
+    console.log("HERE IS THE " + users.length + "!!!");
+    console.log(users);
     
     if(!users.length) {
       res.json("");
