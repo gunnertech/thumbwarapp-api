@@ -11,6 +11,8 @@ router.post('/batch', function(req, res) {
     facebookId: { $in: req.body.facebookIds }
   }).exec()
   .then(function(users){
+    console.log('WElll.......');
+    console.log(users);
     
     console.log("HERE IS THE " + users.length + "!!!");
     console.log(users);
