@@ -5,10 +5,10 @@ var User = require('../app/models/user');
 var _ = require('lodash');
 
 router.post('/batch', function(req, res) {
-  console.log(req.body.facebookIds.join(","))
+  console.log(req.body.facebookIds.split(","))
   
   User.find({
-    facebookId: { $in: req.body.facebookIds.join(",") }
+    facebookId: { $in: req.body.facebookIds.split(",") }
   }).exec()
   .then(function(users){
     console.log('WElll.......');
