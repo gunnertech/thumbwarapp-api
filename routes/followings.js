@@ -50,11 +50,14 @@ router.post('/batch', function(req, res) {
   })
   .then(function(followingData){
     console.log("^^^^^followingData again")
-    return Following.create(followingData)
+    Following.create(followingData)
     .then(function(){
       console.log("^^^^^fin")
       res.json("");
     })
+  }).catch(function(err){
+    console.log("THERE IS AN ERROR")
+    console.log(err)
   });
     
     
