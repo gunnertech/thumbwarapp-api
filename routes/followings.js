@@ -46,6 +46,7 @@ router.post('/batch', function(req, res) {
     }
   })
   .catch(function(err){
+    console.log(err)
     res.status(500).json(err);
   });
     
