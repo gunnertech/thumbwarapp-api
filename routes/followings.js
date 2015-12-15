@@ -16,22 +16,27 @@ router.post('/batch', function(req, res) {
       _id: { $nin: _.map(followings,function(following){ return following.followee; }) }
     }).exec()
     .then(function(users){
+      console.log("^^^^^users")
       return _.map(users,function(user){ return {follower: req.currentUser._id, followee: user} });
     })
   })
   .then(function(followingData){
+    console.log("^^^^^followingData")
     return Following.create(followingData).exec()
     .then(function(){
+      console.log("^^^^^null")
       return null;
     })
   })
   .then(function(){
+    console.log("^^^^^null again")
     return Following.find({followee: req.currentUser}).exec()
     .then(function(followings){
       return followings;
     })
   })
   .then(function(followings){
+    console.log("^^^^^followings again")
     return User.find({
       facebookId: { $in: req.body.facebookIds.split(",") },
       _id: {
@@ -39,12 +44,15 @@ router.post('/batch', function(req, res) {
       }
     }).exec()
     .then(function(users){
+      console.log("^^^^^users again")
       return _.map(users,function(user){ return {followee: req.currentUser._id, followeer: user} });
     })
   })
   .then(function(followingData){
+    console.log("^^^^^followingData again")
     return Following.create(followingData).exec()
     .then(function(){
+      console.log("^^^^^fin")
       res.json("");
     })
   }) 
