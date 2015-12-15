@@ -10,11 +10,10 @@ router.post('/batch', function(req, res) {
 
   Following.find({follower: req.currentUser}).exec()
   .then(function(followings){
+    console.log("^^^^^followings")
     return User.find({
       facebookId: { $in: req.body.facebookIds.split(",") },
-      _id: {
-        $ne: _.map(followings,function(following){ return following.followee; })
-      }
+      _id: { $nin: _.map(followings,function(following){ return following.followee; }) }
     }).exec()
     .then(function(users){
       return _.map(users,function(user){ return {follower: req.currentUser._id, followee: user} });
@@ -36,7 +35,7 @@ router.post('/batch', function(req, res) {
     return User.find({
       facebookId: { $in: req.body.facebookIds.split(",") },
       _id: {
-        $ne: _.map(followings,function(following){ return following.follower; })
+        $nin: _.map(followings,function(following){ return following.follower; })
       }
     }).exec()
     .then(function(users){
