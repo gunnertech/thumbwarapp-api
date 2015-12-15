@@ -21,6 +21,7 @@ router.post('/batch', function(req, res) {
       console.log("OK HERE IT IS")
       res.json("");
     } else {
+      console.log("WHAT????")
       // res.json("weird");
       // _.each(users,function(user){
       //   Following.count({
@@ -48,11 +49,11 @@ router.post('/batch', function(req, res) {
       // });
     }
   })
-  // .catch(function(err){
-  //   console.log("THERE IS AN ERROR")
-  //   console.log(err)
-  //   res.status(500).json(err);
-  // });
+  .catch(function(err){
+    console.log("THERE IS AN ERROR")
+    console.log(err)
+    res.status(500).json(err);
+  });
     
     
   
