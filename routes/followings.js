@@ -22,7 +22,7 @@ router.post('/batch', function(req, res) {
   })
   .then(function(followingData){
     console.log("^^^^^followingData")
-    return Following.create(followingData).exec()
+    return Following.create(followingData)
     .then(function(){
       console.log("^^^^^null")
       return null;
@@ -50,7 +50,7 @@ router.post('/batch', function(req, res) {
   })
   .then(function(followingData){
     console.log("^^^^^followingData again")
-    return Following.create(followingData).exec()
+    return Following.create(followingData)
     .then(function(){
       console.log("^^^^^fin")
       res.json("");
