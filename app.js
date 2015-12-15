@@ -9,6 +9,9 @@ var swig = require('swig');
 var methodOverride = require('method-override');
 var auth = require('basic-auth')
 
+mongoose.Promise = require('bluebird');
+
+
 /*** ROUTES ****/
 // var routes = require('./routes/index');
 var users = require('./routes/users');

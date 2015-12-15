@@ -4,7 +4,6 @@ var Following = require('../app/models/following');
 var User = require('../app/models/user');
 var _ = require('lodash');
 
-
 router.post('/batch', function(req, res) {
   console.log(req.body.facebookIds)
   
@@ -12,28 +11,40 @@ router.post('/batch', function(req, res) {
     facebookId: { $in: req.body.facebookIds }
   })
   .then(function(users){
-    _.each(users,function(user){
-      Following.find({
-        followee: req.currentUser, 
-        follower: user
-      })
-      .then(function(followings){
-        if(followings.length < 1) {
-          // user.follow(req.currentUser);
-        }
-      
+    
+    console.log("HERE IS THE " + users.length);
+    
+    if(users.length) {
+      res.json("");
+    } else {
+      _.each(users,function(user){
         Following.find({
-          followee: user, 
-          follower: req.currentUser
+          followee: req.currentUser, 
+          follower: user
         })
         .then(function(followings){
           if(followings.length < 1) {
-            // req.currentUser.follow(user);
+            // user.follow(req.currentUser);
           }
+      
+          Following.find({
+            followee: user, 
+            follower: req.currentUser
+          })
+          .then(function(followings){
+            if(followings.length < 1) {
+              // req.currentUser.follow(user);
+            }
+          
+            res.json("");
+          
+          });
         });
       });
-    });
+    }
   });
+    
+    
   
   //   Following.find({
   //     $and: [
@@ -41,14 +52,7 @@ router.post('/batch', function(req, res) {
   //       { $or: [ followee: user, follower: req.currentUser ] },
   //     ]
   //   })
-  // );
-  
-  
-  return res.format({
-    json: function(){
-      return res.json("");
-    }
-  })
+  // );  
 });
 
 
