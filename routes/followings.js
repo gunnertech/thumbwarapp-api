@@ -7,6 +7,43 @@ var _ = require('lodash');
 
 router.post('/batch', function(req, res) {
   console.log(req.body.facebookIds)
+  
+  User.find({
+    facebookId: { $in: req.body.facebookIds }
+  })
+  .then(function(users){
+    _.each(users,function(user){
+      Following.find({
+        followee: req.currentUser, 
+        follower: user
+      })
+      .then(function(followings){
+        if(followings.length < 1) {
+          // user.follow(req.currentUser);
+        }
+      
+        Following.find({
+          followee: user, 
+          follower: req.currentUser
+        })
+        .then(function(followings){
+          if(followings.length < 1) {
+            // req.currentUser.follow(user);
+          }
+        });
+      });
+    });
+  });
+  
+  //   Following.find({
+  //     $and: [
+  //       { $or: [ followee: req.currentUser, follower: user ] },
+  //       { $or: [ followee: user, follower: req.currentUser ] },
+  //     ]
+  //   })
+  // );
+  
+  
   return res.format({
     json: function(){
       return res.json("");

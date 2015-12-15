@@ -14,6 +14,9 @@ var auth = require('basic-auth')
 var users = require('./routes/users');
 var followings = require('./routes/followings');
 
+/*** MODELS ****/
+var User = require('./app/models/user');
+
 var app = express();
 
 
@@ -60,6 +63,22 @@ app.use(methodOverride(function(req, res){
 //       }
 //     });
 // });
+
+app.use(function(req, res, next) {
+  if(req.query && req.query.authToken) {
+    User.findByToken(req.query.authToken(req.query.authToken,function(err,user){
+      console.log("HERE IS THE USER")
+      console.log(user)
+      if(err){ next(err); }
+      else {
+        req.currentUser = user; 
+        next(); 
+      }
+    }));
+  } else {
+    next();
+  }
+});
 
 
 app.use('/users', users);
