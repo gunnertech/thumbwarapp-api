@@ -68,13 +68,8 @@ app.use(methodOverride(function(req, res){
 // });
 
 app.use(function(req, res, next) {
-  console.log("HMMMMM");
-  console.log(req.query.authToken)
   if(req.query && req.query.authToken) {
     User.findByToken(req.query.authToken,function(err,user){
-      
-      console.log("HERE IS THE USER");
-      console.log(user);
       
       if(err){ next(err); }
       else {
