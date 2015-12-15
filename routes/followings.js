@@ -18,6 +18,7 @@ router.post('/batch', function(req, res) {
     console.log(users);
     
     if(!users.length) {
+      console.log("OK HERE IT IS")
       res.json("");
     } else {
       res.json("weird");
@@ -48,6 +49,7 @@ router.post('/batch', function(req, res) {
     }
   })
   .catch(function(err){
+    console.log("THERE IS AN ERROR")
     console.log(err)
     res.status(500).json(err);
   });
