@@ -9,38 +9,39 @@ router.post('/batch', function(req, res) {
   
   User.find({
     facebookId: { $in: req.body.facebookIds }
-  })
+  }).exec()
   .then(function(users){
     
     console.log("HERE IS THE " + users.length);
     
-    if(users.length) {
+    if(!users.length) {
       res.json("");
     } else {
-      _.each(users,function(user){
-        Following.find({
-          followee: req.currentUser, 
-          follower: user
-        })
-        .then(function(followings){
-          if(followings.length < 1) {
-            // user.follow(req.currentUser);
-          }
-      
-          Following.find({
-            followee: user, 
-            follower: req.currentUser
-          })
-          .then(function(followings){
-            if(followings.length < 1) {
-              // req.currentUser.follow(user);
-            }
-          
-            res.json("");
-          
-          });
-        });
-      });
+      res.json("weird");
+      // _.each(users,function(user){
+      //   Following.count({
+      //     followee: req.currentUser,
+      //     follower: user
+      //   }).exec()
+      //   .then(function(count){
+      //     if(count < 1) {
+      //       // user.follow(req.currentUser);
+      //     }
+      //
+      //     Following.find({
+      //       followee: user,
+      //       follower: req.currentUser
+      //     })
+      //     .then(function(followings){
+      //       if(followings.length < 1) {
+      //         // req.currentUser.follow(user);
+      //       }
+      //
+      //       res.json("");
+      //
+      //     });
+      //   });
+      // });
     }
   });
     
