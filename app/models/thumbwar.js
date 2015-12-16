@@ -1,6 +1,8 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
+mongoose.Promise = require('bluebird');
+
 
 var ThumbwarSchema   = new Schema({
   isPrivate: { type: Boolean, required: true, default: false },

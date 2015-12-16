@@ -4,8 +4,6 @@ var User = require('../app/models/user');
 var Thumbwar = require('../app/models/thumbwar');
 var _ = require('lodash');
 
-require('mongoose').Promise = require('bluebird');
-
 
 
 router.use(function (req, res, next) {
