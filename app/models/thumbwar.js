@@ -7,6 +7,7 @@ var ThumbwarSchema   = new Schema({
   isAnonymous: { type: Boolean, required: true, default: false },
   body: { type: String, required: true },
   subjectText: { type: String, required: true },
+  assertion: { type: String, required: true, index: true },
   outcome: { type: String, required: true, index: true },
   subject: {type: Schema.Types.ObjectId, ref: 'User'},
   creator: {type: Schema.Types.ObjectId, ref: 'User'}
