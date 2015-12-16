@@ -4,6 +4,32 @@ var User = require('../app/models/user');
 var Thumbwar = require('../app/models/thumbwar');
 var _ = require('lodash');
 
+router.use(function (req, res, next) {
+  if(req.params && req.params.userId == "me") {
+    req.params.userId = req.currentUser._id;
+  }
+  
+  if(req.body && req.params && req.params.userId) {
+    req.body.creator = req.params.userId
+  }
+  next();
+});
+
+app.use(function(req, res, next) {
+  if(req.query && req.query.authToken) {
+    User.findByToken(req.query.authToken,function(err,user){
+      
+      if(err){ next(err); }
+      else {
+        req.currentUser = user; 
+        next(); 
+      }
+    });
+  } else {
+    next();
+  }
+});
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {  
   Thumbwar.find(req.query)
