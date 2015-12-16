@@ -15,4 +15,4 @@ var ThumbwarSchema   = new Schema({
 
 
 
-module.exports = mongoose.model('Following', FollowingSchema);
+module.exports = mongoose.model('Thumbwar', ThumbwarSchema);
