@@ -70,19 +70,11 @@ app.use(methodOverride(function(req, res){
 
 app.use(function(req, res, next) {
   if(req.query && req.query.authToken) {
-    console.log("LETS FIND BY TOKEN")
     User.findByToken(req.query.authToken,function(err,user){
       
       if(err){ next(err); }
       else {
-        console.log("LETS SET THE USER")
-        req.currentUser = user;
-        console.log(req.param('userId'));
-        if(req.params && req.params.userId == "me") {
-          console.log("ALL DONE" + req.currentUser._id)
-          req.params.userId = req.currentUser._id;
-        }
-        
+        req.currentUser = user;        
         next(); 
       }
     });
