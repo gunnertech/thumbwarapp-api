@@ -37,7 +37,8 @@ router.post('/', function(req, res) {
   
   Thumbwar.create(req.body)
   .then(function(thumbwar){
-    res.json(thumbwar)
+    console.log("OK");
+    return res.json(thumbwar)
   })
   .catch(function(err){
     // just need one of these
