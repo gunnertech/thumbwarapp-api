@@ -77,7 +77,7 @@ app.use(function(req, res, next) {
       else {
         console.log("LETS SET THE USER")
         req.currentUser = user;
-        console.log(req.params);
+        console.log(req.param('userId'));
         if(req.params && req.params.userId == "me") {
           console.log("ALL DONE" + req.currentUser._id)
           req.params.userId = req.currentUser._id;
