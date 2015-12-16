@@ -40,10 +40,10 @@ router.post('/', function(req, res) {
     console.log("OK");
     return res.json(thumbwar)
   })
-  .catch(function(err){
-    // just need one of these
-    console.log('error:', err);
-  });
+  // .catch(function(err){
+  //   // just need one of these
+  //   console.log('error:', err);
+  // });
 });
 
 module.exports = router;
