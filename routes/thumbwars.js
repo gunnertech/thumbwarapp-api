@@ -4,6 +4,8 @@ var User = require('../app/models/user');
 var Thumbwar = require('../app/models/thumbwar');
 var _ = require('lodash');
 
+require('mongoose').Promise = require('bluebird');
+
 
 
 router.use(function (req, res, next) {
@@ -32,18 +34,13 @@ router.get('/', function(req, res, next) {
 
 
 router.post('/', function(req, res) {
-  
-  console.log(req.body);
-  
   Thumbwar.create(req.body)
   .then(function(thumbwar){
-    console.log("OK");
-    return res.json(thumbwar)
+    res.json(thumbwar)
   })
-  // .catch(function(err){
-  //   // just need one of these
-  //   console.log('error:', err);
-  // });
+  .catch(function(err){
+    res.status(500).json(err)
+  });
 });
 
 module.exports = router;
