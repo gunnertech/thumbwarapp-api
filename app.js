@@ -101,6 +101,15 @@ app.use('/users', users);
 app.use('/followings', followings);
 app.use('/:userId/thumbwars', thumbwars);
 
+app.param("userId", function(req, res, next, userId) {
+  console.log("HEREEEEEE")
+  if(userId == 'me') {
+    console.log("it does");
+    req.params.userId = req.currentUser._id;
+  }
+  next();
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
