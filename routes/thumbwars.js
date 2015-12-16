@@ -15,21 +15,6 @@ router.use(function (req, res, next) {
   next();
 });
 
-app.use(function(req, res, next) {
-  if(req.query && req.query.authToken) {
-    User.findByToken(req.query.authToken,function(err,user){
-      
-      if(err){ next(err); }
-      else {
-        req.currentUser = user; 
-        next(); 
-      }
-    });
-  } else {
-    next();
-  }
-});
-
 /* GET users listing. */
 router.get('/', function(req, res, next) {  
   Thumbwar.find(req.query)
