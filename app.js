@@ -74,7 +74,12 @@ app.use(function(req, res, next) {
       
       if(err){ next(err); }
       else {
-        req.currentUser = user; 
+        req.currentUser = user;
+        console.log(req.params);
+        if(req.params && req.params.userId == "me") {
+          req.params.userId = req.currentUser._id;
+        }
+        
         next(); 
       }
     });
@@ -82,6 +87,7 @@ app.use(function(req, res, next) {
     next();
   }
 });
+
 
 app.use(function(req, res, next) {
   if(req.body) {
