@@ -16,6 +16,7 @@ mongoose.Promise = require('bluebird');
 // var routes = require('./routes/index');
 var users = require('./routes/users');
 var followings = require('./routes/followings');
+var thumbwars = require('./routes/thumbwars');
 
 /*** MODELS ****/
 var User = require('./app/models/user');
@@ -85,6 +86,7 @@ app.use(function(req, res, next) {
 
 app.use('/users', users);
 app.use('/followings', followings);
+app.use('/:userId/thumbwars', thumbwars);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

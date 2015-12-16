@@ -55,10 +55,7 @@ router.post('/batch', function(req, res) {
       console.log("^^^^^fin")
       res.json("");
     })
-  }).catch(function(err){
-    console.log("THERE IS AN ERROR")
-    console.log(err)
-  });
+  })
     
     
   

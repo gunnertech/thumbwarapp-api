@@ -4,7 +4,7 @@ var User = require('./user');
 
 
 var FollowingSchema   = new Schema({
-  status: { type: Boolean, required: true, index: { unique: true } },
+  isActive: { type: Boolean, required: true },
   followee: {type: Schema.Types.ObjectId, ref: 'User'},
   follower: {type: Schema.Types.ObjectId, ref: 'User'}
 });
