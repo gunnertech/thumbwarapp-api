@@ -83,6 +83,18 @@ app.use(function(req, res, next) {
   }
 });
 
+app.use(function(req, res, next) {
+  if(req.body) {
+    for(var i in req.body) {
+      if(req.body[i] === "") {
+        delete req.body[i];
+      }
+    }
+  }
+  
+  next();
+});
+
 
 app.use('/users', users);
 app.use('/followings', followings);
@@ -111,13 +123,13 @@ if (true || app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
+// app.use(function(err, req, res, next) {
+//   res.status(err.status || 500);
+//   res.render('error', {
+//     message: err.message,
+//     error: {}
+//   });
+// });
 
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/thumbwarapp');
 
