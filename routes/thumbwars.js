@@ -7,14 +7,8 @@ var _ = require('lodash');
 
 
 router.use(function (req, res, next) {
-  console.log("look hre")
-  console.log(req.params);
-  if(req.params && req.params.userId == "me") {
-    req.params.userId = req.currentUser._id;
-  }
-  
-  if(req.body && req.params && req.params.userId) {
-    req.body.creator = req.params.userId
+  if(req.me && req.body) {
+    req.body.creator = req.currentUser._id;
   }
   next();
 });
