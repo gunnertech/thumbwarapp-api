@@ -5,6 +5,8 @@ var Thumbwar = require('../app/models/thumbwar');
 var _ = require('lodash');
 
 router.use(function (req, res, next) {
+  console.log("look hre")
+  console.log(req.params);
   if(req.params && req.params.userId == "me") {
     req.params.userId = req.currentUser._id;
   }
