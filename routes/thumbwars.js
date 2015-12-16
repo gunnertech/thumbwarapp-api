@@ -36,7 +36,8 @@ router.post('/', function(req, res) {
   .then(function(thumbwar){
     res.json(thumbwar)
   })
-  .catch(function(err){
+  .then(undefined, function (err) {
+    console.log("I WAS CALLED?")
     res.status(500).json(err)
   });
 });
