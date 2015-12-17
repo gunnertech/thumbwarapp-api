@@ -32,12 +32,12 @@ router.get('/', function(req, res, next) {
 
 
 router.post('/', function(req, res) {
+  console.log(req.body);
   Thumbwar.create(req.body)
   .then(function(thumbwar){
     res.json(thumbwar)
   })
   .then(undefined, function (err) {
-    console.log("I WAS CALLED?")
     res.status(500).json(err)
   });
 });
