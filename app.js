@@ -110,6 +110,7 @@ function parseMe(req, res, next) {
 
 app.use('/users', users);
 app.use('/followings', followings);
+app.use('/thumbwars', thumbwars);
 app.use('/:userId/thumbwars', [parseMe,thumbwars]);
 
 
