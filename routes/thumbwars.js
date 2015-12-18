@@ -14,6 +14,7 @@ router.use(function (req, res, next) {
 });
 
 router.get('/', function(req, res, next) {  
+  console.log(req.query)
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')

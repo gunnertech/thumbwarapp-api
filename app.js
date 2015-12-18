@@ -74,7 +74,8 @@ app.use(function(req, res, next) {
       
       if(err){ next(err); }
       else {
-        req.currentUser = user;        
+        req.currentUser = user;
+        delete req.authToken  
         next(); 
       }
     });
