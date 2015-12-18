@@ -19,7 +19,7 @@ var UserSchema   = new Schema({
   photoUrl: { type: String },
   token: { type: String, required: true, index: { unique: true } },
   avatar: {type: Schema.Types.ObjectId, ref: 'Avatar'}
-},{timestamps: true});
+},{timestamps: { createdAt: 'createdAt' }});
 
 
 UserSchema.pre('save',function(next){

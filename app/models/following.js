@@ -7,7 +7,7 @@ var FollowingSchema   = new Schema({
   isActive: { type: Boolean, required: true },
   followee: {type: Schema.Types.ObjectId, ref: 'User'},
   follower: {type: Schema.Types.ObjectId, ref: 'User'}
-}),{timestamps: true};
+}),{timestamps: { createdAt: 'createdAt' }};
 
 
 module.exports = mongoose.model('Following', FollowingSchema);
