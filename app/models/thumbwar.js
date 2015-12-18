@@ -11,7 +11,7 @@ var ThumbwarSchema   = new Schema({
   outcome: { type: String, index: true },
   subject: {type: Schema.Types.ObjectId, ref: 'User'},
   creator: {type: Schema.Types.ObjectId, ref: 'User'}
-},{timestamps: { createdAt: 'createdAt' }});
+},{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
 
 
