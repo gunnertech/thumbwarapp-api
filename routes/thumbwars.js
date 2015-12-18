@@ -13,20 +13,17 @@ router.use(function (req, res, next) {
   next();
 });
 
-/* GET users listing. */
 router.get('/', function(req, res, next) {  
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
-  .exec(function(err, thumbwars) {
-    if (err) { return res.send(err); }
-
-    return res.format({
-      json: function() {
-        return res.json(thumbwars);
-        
-      }
-    });
+  .exec()
+  .then(function(thumbwars){
+    console.log(thumbwars)
+    res.json(thumbwars)
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
   });
 });
 
