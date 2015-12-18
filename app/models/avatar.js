@@ -7,7 +7,7 @@ var ObjectId = Schema.Types.ObjectId;
 var AvatarSchema   = new Schema({
   url: { type: String, required: true },
   user: {type: Schema.Types.ObjectId, ref: 'User'}
-});
+},{timestamps: true});
 
 
 module.exports = mongoose.model('Avatar', AvatarSchema);
