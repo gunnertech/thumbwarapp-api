@@ -4,7 +4,9 @@ var User = require('../app/models/user');
 var Thumbwar = require('../app/models/thumbwar');
 var _ = require('lodash');
 
-
+function convertDateToUTC(date) { 
+    return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()); 
+}
 
 router.use(function (req, res, next) {
   if(req.me && req.body) {
@@ -21,7 +23,7 @@ router.get('/', function(req, res, next) {
     delete req.query.pagination
     
     req.query.createdAt = {
-      $lt: pagination.olderThan
+      $lt: convertDateToUTC(pagination.olderThan)
     }
   }
   
