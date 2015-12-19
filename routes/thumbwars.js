@@ -16,8 +16,6 @@ router.use(function (req, res, next) {
 });
 
 router.get('/', function(req, res, next) {  
-  console.log(req.query)
-  
   if(req.query.pagination) {
     var pagination = req.query.pagination;
     delete req.query.pagination
@@ -27,15 +25,25 @@ router.get('/', function(req, res, next) {
     }
   }
   
-  console.log(req.query)
-  
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
   .exec()
   .then(function(thumbwars){
-    console.log(thumbwars)
     res.json(thumbwars)
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
+});
+
+router.get('/:thumbwarId', function(req, res, next) {  
+  Thumbwar.findById(req.params.thumbwarId)
+  .populate('creator')
+  .populate('subject')
+  .exec()
+  .then(function(thumbwar){
+    res.json(thumbwar)
   })
   .then(undefined, function (err) {
     res.status(500).json(err)
