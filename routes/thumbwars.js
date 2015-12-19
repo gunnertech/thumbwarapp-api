@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
     delete req.query.pagination
     
     req.query.createdAt = {
-      $lt: Date(pagination.olderThan)
+      $lt: pagination.olderThan
     }
   }
   
