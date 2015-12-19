@@ -15,6 +15,16 @@ router.use(function (req, res, next) {
 
 router.get('/', function(req, res, next) {  
   console.log(req.query)
+  
+  if(req.query.pagination) {
+    var pagination = req.query.pagination;
+    delete req.query.pagination
+    
+    req.query.createdAt = {
+      $lt: Date(pagination.olderThan)
+    }
+  }
+  
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
