@@ -6,7 +6,7 @@ var jwt = require("jsonwebtoken");
 var sendgrid = require('sendgrid')(process.env.SENDGRID_API_KEY)
 var uuid = require('node-uuid')
 
-router.use(function (req, res, next) {
+var parseMe = function (req, res, next) {
   console.log("got it");
   console.log(req.params);
   if(req.params && req.params.userId == 'me') {
@@ -16,7 +16,7 @@ router.use(function (req, res, next) {
   }
   next();
   
-});
+};
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -45,7 +45,7 @@ router.get('/', function(req, res, next) {
 
 
 
-router.get('/:userId', function(req, res) {
+router.get('/:userId', [parseMe,function(req, res) {
   User.findById(req.params.userId)
   .populate('avatar')
   .exec()
@@ -56,7 +56,7 @@ router.get('/:userId', function(req, res) {
   .then(undefined, function (err) {
     res.status(500).json(err)
   });
-});
+}]);
 
 
 router.put('/:user_id', function(req, res) {
