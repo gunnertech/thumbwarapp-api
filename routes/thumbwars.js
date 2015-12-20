@@ -4,26 +4,9 @@ var User = require('../app/models/user');
 var Thumbwar = require('../app/models/thumbwar');
 var _ = require('lodash');
 
-function parseMe(req, res, next) {
-  console.log("got it");
-  if(req.params && req.params.userId == 'me') {
-    console.log("it does" + req.currentUser._id);
-    req.me = true;
-    req.params.userId = req.currentUser._id;
-  }
-  next();
-}
-
 // function convertDateToUTC(date) {
 //     return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 // }
-
-router.use(function (req, res, next) {
-  if(req.me && req.body) {
-    req.body.creator = req.currentUser._id;
-  }
-  next();
-});
 
 router.user(parseMe);
 
