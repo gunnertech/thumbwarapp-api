@@ -8,6 +8,7 @@ var uuid = require('node-uuid')
 
 router.use(function (req, res, next) {
   console.log("got it");
+  console.log(req.params);
   if(req.params && req.params.userId == 'me') {
     console.log("it does" + req.currentUser._id);
     req.me = true;
