@@ -33,17 +33,16 @@ router.get('/', function(req, res, next) {
 
 
 
-router.get('/:user_id', function(req, res) {
-  User.findById(req.params.user_id)
+router.get('/:userId', function(req, res) {
+  User.findById(req.params.userId)
   .populate('avatar')
-  .exec(function(err, user) {
-      if (err) return res.send(err);
-      return res.format({
-        json: function(){
-          return res.json(store);
-        }
-      });
-    });
+  .exec()
+  .then(function(user){
+    res.json(user)
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
 });
 
 
