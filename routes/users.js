@@ -38,6 +38,7 @@ router.get('/:userId', function(req, res) {
   .populate('avatar')
   .exec()
   .then(function(user){
+    console.log(user)
     res.json(user)
   })
   .then(undefined, function (err) {
