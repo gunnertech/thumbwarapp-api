@@ -8,8 +8,6 @@ var _ = require('lodash');
 //     return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 // }
 
-router.user(parseMe);
-
 router.get('/', function(req, res, next) {  
   if(req.query.pagination) {
     var pagination = req.query.pagination;
