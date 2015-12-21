@@ -45,6 +45,10 @@ router.get('/:thumbwarId', function(req, res, next) {
 
 
 router.post('/', function(req, res) {
+  if(req.me) {
+    req.body.creator = req.currentUser;
+  }
+  
   Thumbwar.create(req.body)
   .then(function(thumbwar){
     res.json(thumbwar)
