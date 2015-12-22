@@ -1,5 +1,6 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
+var _ = require('lodash');
 
 
 var ThumbwarSchema   = new Schema({
@@ -15,11 +16,36 @@ var ThumbwarSchema   = new Schema({
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
+body: {type: String, required: true},
+activitableType: {type: String, required: true},
+activitableId: Schema.Types.ObjectId,
+data: Schema.Types.Mixed,
+target: {type: Schema.Types.ObjectId, ref: 'User'},
+object: {type: Schema.Types.ObjectId, ref: 'User'}
+
+
 
 ThumbwarSchema.post('save', function(doc) {
-  setTimeout(function(){
-    console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^ddd")
-  },4000)
+  var Activity = require('./activity');
+  var Following = require('./following');
+  console.log("^^^^^^^^^^^^^");
+  console.log("Start");
+  
+  Following.find({followee: doc.creator}).exec()
+  .then(function(followings){
+    console.log("^^^^^^^^^^^^^");
+    console.log(followings.length);
+    _.each(followings,function(following){
+      Activity.create({
+        body: "declared a Thumbwar!",
+        activitableId: doc._id,
+        activitableType: "Thumbwar",
+        target: following.followee,
+        object: doc.creator
+      });
+    });
+  });
+    
 })
 
 

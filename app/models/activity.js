@@ -7,7 +7,8 @@ var ActivitySchema   = new Schema({
   activitableType: {type: String, required: true},
   activitableId: Schema.Types.ObjectId,
   data: Schema.Types.Mixed,
-  user: {type: Schema.Types.ObjectId, ref: 'User'}
+  target: {type: Schema.Types.ObjectId, ref: 'User'},
+  object: {type: Schema.Types.ObjectId, ref: 'User'}
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
 

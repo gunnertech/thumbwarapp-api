@@ -18,6 +18,7 @@ var UserSchema   = new Schema({
   name: { type: String },
   photoUrl: { type: String },
   token: { type: String, required: true, index: { unique: true } },
+  followings: [{ type: Schema.Types.ObjectId, ref: 'Followings' }],
   avatar: {type: Schema.Types.ObjectId, ref: 'Avatar'}
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
