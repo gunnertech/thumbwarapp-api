@@ -16,13 +16,6 @@ var ThumbwarSchema   = new Schema({
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
-body: {type: String, required: true},
-activitableType: {type: String, required: true},
-activitableId: Schema.Types.ObjectId,
-data: Schema.Types.Mixed,
-target: {type: Schema.Types.ObjectId, ref: 'User'},
-object: {type: Schema.Types.ObjectId, ref: 'User'}
-
 
 
 ThumbwarSchema.post('save', function(doc) {
