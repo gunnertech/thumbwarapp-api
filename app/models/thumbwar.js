@@ -16,6 +16,16 @@ var ThumbwarSchema   = new Schema({
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
+ThumbwarSchema.set('toJSON', { getters: true, virtuals: true });
+
+ThumbwarSchema.virtual('commentsCount').get(function () {
+  return this.comments.length;
+});
+
+ThumbwarSchema.virtual('sidingsCount').get(function () {
+  return this.sidings.length;
+});
+
 
 
 ThumbwarSchema.post('save', function(doc) {
