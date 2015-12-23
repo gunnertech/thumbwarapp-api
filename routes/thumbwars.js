@@ -21,6 +21,7 @@ router.get('/', function(req, res, next) {
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
+  .populate('sidings')
   .sort({createdAt: 'desc'})
   .exec()
   .then(function(thumbwars){
