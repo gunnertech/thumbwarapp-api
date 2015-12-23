@@ -1,16 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
+var Following = require('../app/models/following');
 var _ = require('lodash');
 var jwt = require("jsonwebtoken");
 var sendgrid = require('sendgrid')(process.env.SENDGRID_API_KEY)
 var uuid = require('node-uuid')
 
 var parseMe = function (req, res, next) {
-  console.log("got it");
-  console.log(req.params);
   if(req.params && req.params.userId == 'me') {
-    console.log("it does" + req.currentUser._id);
     req.me = true;
     req.params.userId = req.currentUser._id;
   }
@@ -25,21 +23,26 @@ router.get('/', function(req, res, next) {
   if(req.query) {
     params = req.query;
     
+    if(params.matchType) {
+      delete params.matchType;
+      
+      params.name = new RegExp(params.name, "i");
+    }
+    
     delete params.token;
   }
+  
+  console.log(params)
   
   
   User.find(params)
   .populate('avatar')
-  .exec(function(err, users) {
-    if (err) { return res.send(err); }
-
-    return res.format({
-      json: function() {
-        return res.json(users);
-        
-      }
-    });
+  .exec()
+  .then(function(users) {
+    res.json(users);
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
   });
 });
 
@@ -50,7 +53,6 @@ router.get('/:userId', [parseMe,function(req, res) {
   .populate('avatar')
   .exec()
   .then(function(user){
-    console.log(user)
     res.json(user)
   })
   .then(undefined, function (err) {

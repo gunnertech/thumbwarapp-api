@@ -11,5 +11,17 @@ var ActivitySchema   = new Schema({
   object: {type: Schema.Types.ObjectId, ref: 'User'}
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
+ActivitySchema.post('save', function(doc) {
+  var Device = require('./device');
+  
+  Device.find({user: doc.target }).exec()
+  .then(function(devices){
+    _.each(devices,function(device){
+      //send push notification
+    });
+  });
+    
+});
+
 
 module.exports = mongoose.model('Activity', ActivitySchema);

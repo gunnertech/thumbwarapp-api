@@ -3,7 +3,47 @@ var router = express.Router();
 var Following = require('../app/models/following');
 var User = require('../app/models/user');
 var _ = require('lodash');
-var async = require('async');
+
+router.post('/', function(req, res) {
+  Following.findOne(req.body)
+  .then(function(following) {
+    
+    // Following.update({_id: (following||{})._id}, req.body, {upsert: true, setDefaultsOnInsert: true}, cb);
+    
+    if(following) {
+      following.isActive = true;
+      return following.save().then(function(following){ return following; })
+    } else {
+      return Following.create(req.body).then(function(following){ return following; })
+    }
+  })
+  .then(function(following){
+    res.json(following)
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
+});
+
+router.delete('/:followingId', function(req, res) {
+  Following.findOneAndUpdate({_id: req.params.following},{isActive: false})
+  .then(function(following){
+    res.json(following)
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
+});
+
+router.get('/', function(req, res) {
+  Following.find(req.query).exec()
+  .then(function(followings){
+    res.json(followings)
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
+});
 
 router.post('/batch', function(req, res) {
   console.log(req.body.facebookIds.split(","))
@@ -57,15 +97,6 @@ router.post('/batch', function(req, res) {
     })
   })
     
-    
-  
-  //   Following.find({
-  //     $and: [
-  //       { $or: [ followee: req.currentUser, follower: user ] },
-  //       { $or: [ followee: user, follower: req.currentUser ] },
-  //     ]
-  //   })
-  // );  
 });
 
 

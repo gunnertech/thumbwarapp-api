@@ -21,13 +21,9 @@ var ThumbwarSchema   = new Schema({
 ThumbwarSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
-  console.log("^^^^^^^^^^^^^");
-  console.log("Start");
   
   Following.find({followee: doc.creator}).exec()
   .then(function(followings){
-    console.log("^^^^^^^^^^^^^");
-    console.log(followings.length);
     _.each(followings,function(following){
       Activity.create({
         body: "declared a Thumbwar!",
@@ -39,7 +35,7 @@ ThumbwarSchema.post('save', function(doc) {
     });
   });
     
-})
+});
 
 
 module.exports = mongoose.model('Thumbwar', ThumbwarSchema);

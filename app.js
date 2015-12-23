@@ -17,6 +17,10 @@ mongoose.Promise = require('bluebird');
 var users = require('./routes/users');
 var followings = require('./routes/followings');
 var thumbwars = require('./routes/thumbwars');
+var activities = require('./routes/activities');
+var comments = require('./routes/comments');
+var sidings = require('./routes/sidings');
+var devices = require('./routes/devices');
 
 /*** MODELS ****/
 var User = require('./app/models/user');
@@ -107,11 +111,24 @@ function parseMe(req, res, next) {
   next();
 }
 
+function parseThumbwar(req, res, next) {
+  if(req.params && req.params.thumbwarId) {
+    req.query.thumbwarId = req.params.thumbwarId;
+  }
+  next();
+}
+
 
 app.use('/users', users);
 app.use('/followings', followings);
+app.use('/:userId/followings', followings);
 app.use('/thumbwars', thumbwars);
 app.use('/:userId/thumbwars', [parseMe,thumbwars]);
+app.use('/:userId/devices', [parseMe,devices]);
+app.use('/:userId/activities', [parseMe,activities]);
+app.use('/:thumbwarId/sidings', [parseThumbwar,sidings]);
+app.use('/:thumbwarId/comments', [parseThumbwar,comments]);
+
 
 
 
