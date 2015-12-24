@@ -22,6 +22,7 @@ router.get('/', function(req, res, next) {
   .sort({createdAt: 'desc'})
   .exec()
   .then(function(activities){
+    console.log(activities)
     res.json(activities)
   })
   .then(undefined, function (err) {
