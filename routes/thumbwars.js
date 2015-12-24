@@ -36,6 +36,22 @@ router.get('/:thumbwarId', function(req, res, next) {
   Thumbwar.findById(req.params.thumbwarId)
   .populate('creator')
   .populate('subject')
+  .populate('sidings')
+  .exec()
+  .then(function(thumbwar){
+    res.json(thumbwar)
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
+});
+
+router.put('/:thumbwarId', function(req, res, next) {
+  console.log(req.body)
+  Thumbwar.findOneAndUpdate({_id: req.params.thumbwarId }, req.body)
+  .populate('creator')
+  .populate('subject')
+  .populate('sidings')
   .exec()
   .then(function(thumbwar){
     res.json(thumbwar)
