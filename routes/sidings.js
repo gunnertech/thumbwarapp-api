@@ -22,7 +22,7 @@ router.post('/', function(req, res) {
     return thumbwar.save()
   })
   .then(function(thumbwar){
-    thumbwar
+    res.json(sidings)
   })
   .then(undefined, function (err) {
     console.log(err.stack)
