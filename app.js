@@ -122,13 +122,16 @@ function parseThumbwar(req, res, next) {
 
 app.use('/users', users);
 app.use('/followings', followings);
+
 app.use('/:userId/followings', followings);
-app.use('/thumbwars', thumbwars);
 app.use('/:userId/thumbwars', [parseMe,thumbwars]);
 app.use('/:userId/devices', [parseMe,devices]);
 app.use('/:userId/activities', [parseMe,activities]);
-app.use('/:thumbwarId/sidings', [parseThumbwar,sidings]);
-app.use('/:thumbwarId/comments', [parseThumbwar,comments]);
+
+app.use('/thumbwars', thumbwars);
+app.use('/thumbwars/:thumbwarId/sidings', [parseThumbwar,sidings]);
+app.use('/thumbwars/:thumbwarId/comments', [parseThumbwar,comments]);
+
 
 
 
