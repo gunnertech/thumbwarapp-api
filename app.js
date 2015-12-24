@@ -102,9 +102,7 @@ app.use(function(req, res, next) {
 });
 
 function parseMe(req, res, next) {
-  console.log("got it");
   if(req.params && req.params.userId == 'me') {
-    console.log("it does" + req.currentUser._id);
     req.me = true;
     req.params.userId = req.currentUser._id;
   }
