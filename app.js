@@ -127,9 +127,9 @@ app.use('/:userId/followings', followings);
 app.use('/:userId/thumbwars', [parseMe,thumbwars]);
 app.use('/:userId/devices', [parseMe,devices]);
 app.use('/:userId/activities', [parseMe,activities]);
+app.use('/:userId/sidings', [parseMe,sidings]);
 
 app.use('/thumbwars', thumbwars);
-app.use('/thumbwars/:thumbwarId/sidings', [parseThumbwar,sidings]);
 app.use('/thumbwars/:thumbwarId/comments', [parseThumbwar,comments]);
 
 
