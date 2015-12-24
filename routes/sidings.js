@@ -8,8 +8,6 @@ router.post('/', function(req, res) {
     req.body.creator = req.currentUser;
   }
   Siding.create(req.body)
-  .populate('user')
-  .populate('thumbwar')
   .then(function(siding){
     console.log("DONE")
     res.json(siding)

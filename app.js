@@ -147,7 +147,6 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (true || app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
-    console.trace(err)
     console.log(err.stack)
     res.status(err.status || 500);
     res.render('error', {
