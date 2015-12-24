@@ -13,6 +13,7 @@ router.post('/', function(req, res) {
     res.json(siding)
   })
   .then(undefined, function (err) {
+    console.log(err)
     res.status(500).json(err)
   });
 });
