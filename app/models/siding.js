@@ -3,7 +3,7 @@ var Schema       = mongoose.Schema;
 
 
 var SidingSchema   = new Schema({
-  chosenOutcome: { type: String, required: true, enum: ['will', 'wont'] },
+  chosenOutcome: { type: String, required: true },
   didWin: { type: Boolean },
   user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
   thumbwar: {type: Schema.Types.ObjectId, ref: 'Thumbwar', required: true}
