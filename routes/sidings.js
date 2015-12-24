@@ -8,13 +8,15 @@ router.post('/', function(req, res) {
   if(req.me) {
     req.body.user = req.currentUser;
   }
+  console.log(req.body.thumbwarId)
   Thumbwar.findById(req.body.thumbwarId).exec()
   .then(function(thumbwar){
-      return Siding.create(req.body)
-      .then(function(siding){
-        thumbwar.sidings.append(siding)
-        return thumbwar.save().then(function(thumbwar) {
-          return siding;
+    console.log(thumbwar)
+    return Siding.create(req.body)
+    .then(function(siding){
+      thumbwar.sidings.append(siding)
+      return thumbwar.save().then(function(thumbwar) {
+        return siding;
       })
     })
   })
