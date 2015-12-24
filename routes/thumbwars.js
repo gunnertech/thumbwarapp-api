@@ -25,6 +25,7 @@ router.get('/', function(req, res, next) {
   .sort({createdAt: 'desc'})
   .exec()
   .then(function(thumbwars){
+    console.log(thumbwars)
     res.json(thumbwars)
   })
   .then(undefined, function (err) {
@@ -47,7 +48,6 @@ router.get('/:thumbwarId', function(req, res, next) {
 });
 
 router.put('/:thumbwarId', function(req, res, next) {
-  console.log(req.body)
   Thumbwar.findOneAndUpdate({_id: req.params.thumbwarId }, req.body)
   .populate('creator')
   .populate('subject')
