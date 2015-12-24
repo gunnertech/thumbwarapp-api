@@ -76,7 +76,7 @@ router.post('/batch', function(req, res) {
   .then(function(users){
     console.log("^^^^^users again")
     return Following.create(
-      _.map(users,function(user){ return {followee: req.currentUser._id, followeer: user} })
+      _.map(users,function(user){ return {followee: req.currentUser._id, followeer: user._id} })
     )
   })
   .then(function(followings){
@@ -84,6 +84,7 @@ router.post('/batch', function(req, res) {
     res.json("");
   })
   .then(undefined, function (err) {
+    console.log(err.trace)
     res.status(500).json(err)
   });
 
