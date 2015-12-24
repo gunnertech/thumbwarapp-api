@@ -50,57 +50,43 @@ router.post('/batch', function(req, res) {
 
   Following.find({follower: req.currentUser}).exec()
   .then(function(followings){
-    console.log("^^^^^followings")
-    console.log(followings)
     
     return User.find({
       facebookId: { $in: req.body.facebookIds.split(",") },
       _id: { $nin: _.map(followings,function(following){ return following.followee; }) }
-    }).exec()
-    .then(function(users){
-      console.log("^^^^^users")
-      console.log(users)
+    })
+  })
+  .then(function(users){
+    console.log("^^^^^users")
+    console.log(users)
       
-      return _.map(users,function(user){ return {follower: req.currentUser._id, followee: user} });
-    })
-  })
-  .then(function(followingData){
-    console.log("^^^^^followingData")
-    console.log(followingData)
-    return Following.create(followingData)
-    .then(function(){
-      console.log("^^^^^null")
-      return null;
-    })
-  })
-  .then(function(){
-    console.log("^^^^^null again")
-    return Following.find({followee: req.currentUser}).exec()
-    .then(function(followings){
-      return followings;
-    })
+    return Following.create(
+      _.map(users,function(user){ return {follower: req.currentUser._id, followee: user._id} })
+    );
   })
   .then(function(followings){
-    console.log("^^^^^followings again")
+    return Following.find({followee: req.currentUser})
+  })
+  .then(function(followings){
     return User.find({
       facebookId: { $in: req.body.facebookIds.split(",") },
-      _id: {
-        $nin: _.map(followings,function(following){ return following.follower; })
-      }
-    }).exec()
-    .then(function(users){
-      console.log("^^^^^users again")
-      return _.map(users,function(user){ return {followee: req.currentUser._id, followeer: user} });
+      _id: { $nin: _.map(followings,function(following){ return following.follower; }) }
     })
   })
-  .then(function(followingData){
-    console.log("^^^^^followingData again")
-    Following.create(followingData)
-    .then(function(){
-      console.log("^^^^^fin")
-      res.json("");
-    })
+  .then(function(users){
+    console.log("^^^^^users again")
+    return Following.create(
+      _.map(users,function(user){ return {followee: req.currentUser._id, followeer: user} })
+    )
   })
+  .then(function(followings){
+    console.log("^^^^^fin")
+    res.json("");
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
+
     
 });
 

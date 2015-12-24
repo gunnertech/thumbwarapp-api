@@ -3,7 +3,7 @@ var Schema       = mongoose.Schema;
 
 
 var FollowingSchema   = new Schema({
-  isActive: { type: Boolean, required: true },
+  isActive: { type: Boolean, required: true, default: true },
   followee: {type: Schema.Types.ObjectId, ref: 'User'},
   follower: {type: Schema.Types.ObjectId, ref: 'User'}
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
