@@ -4,7 +4,7 @@ var Siding = require('../app/models/siding');
 var _ = require('lodash');
 
 router.post('/', function(req, res) {
-  req.body.user = req.params.userId;
+  req.body.user = req.currentUser;
   console.log(req.body)
   Siding.create(req.body)  
   .then(function(siding){
