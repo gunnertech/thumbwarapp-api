@@ -9,7 +9,6 @@ router.post('/', function(req, res) {
   }
   Siding.create(req.body)
   .then(function(siding){
-    console.log("DONE")
     res.json(siding)
   })
   .then(undefined, function (err) {
