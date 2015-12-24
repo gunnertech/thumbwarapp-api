@@ -5,7 +5,7 @@ var _ = require('lodash');
 
 router.post('/', function(req, res) {
   if(req.me) {
-    req.body.creator = req.currentUser;
+    req.body.user = req.currentUser;
   }
   Siding.create(req.body)
   .then(function(siding){
