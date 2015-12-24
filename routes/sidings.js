@@ -8,23 +8,27 @@ router.post('/', function(req, res) {
   if(req.me) {
     req.body.user = req.currentUser;
   }
-  Siding.create(req.body)
-  .then(function(siding){
-    console.log(siding)
-    return Thumbwar.findById(siding.thumbwar).exec()
-    .then(function(thumbwar){
-      thumbwar.append(siding)
-      return thumbwar.save().then(function(thumbwar) {
-        return siding;
+  Thumbwar.findById(req.body.thumbwarId).exec()
+  .then(function(thumbwar){
+      return Siding.create(req.body)
+      .then(function(siding){
+        thumbwar.sidings.append(siding)
+        return thumbwar.save().then(function(thumbwar) {
+          return siding;
       })
     })
+  })
+  .then(function(siding){
+    console.log(siding.thumbwar)
+    return Thumbwar.findById(siding.thumbwar).exec()
+    
   })
   .then(function(siding){
     console.log(siding)
     res.json(siding)
   })
   .then(undefined, function (err) {
-    console.log(err)
+    console.log(err.stack)
     res.status(500).json(err)
   });
 });
