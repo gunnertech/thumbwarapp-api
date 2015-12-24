@@ -114,6 +114,7 @@ function parseMe(req, res, next) {
 function parseThumbwar(req, res, next) {
   if(req.params && req.params.thumbwarId) {
     req.query.thumbwarId = req.params.thumbwarId;
+    req.body.thumbwar = req.params.thumbwarId;
   }
   next();
 }
