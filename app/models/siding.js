@@ -9,8 +9,8 @@ var SidingSchema   = new Schema({
   thumbwar: {type: Schema.Types.ObjectId, ref: 'Thumbwar', required: true}
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
-SidingSchema.set('toJSON', { getters: true, virtuals: true });
-
+// SidingSchema.set('toJSON', { getters: true, virtuals: true });
+//
 // SidingSchema.virtual('thumbwarId').get(function () {
 //   return thumbwar.creator ? thumbwar._id : thumbwar;
 // });
