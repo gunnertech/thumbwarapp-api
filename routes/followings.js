@@ -55,18 +55,9 @@ router.post('/batch', function(req, res) {
     })
   })
   .then(function(users){
-    console.log("USER IS " + req.currentUser._id)
-    console.log(_.map(users,function(user){ return {follower: req.currentUser._id, followee: user._id} }))
     return Following.create(
       _.map(users,function(user){ return {follower: req.currentUser._id, followee: user._id} })
     );
-    // if(req.currentUser._id && user._id) {
-    //   return Following.create(
-    //     _.map(users,function(user){ return {follower: req.currentUser._id, followee: user._id} })
-    //   );
-    // } else {
-    //   return Following.find({ _id:"fake" });
-    // }
   })
   .then(function(followings){
     return Following.find({followee: req.currentUser})
@@ -78,10 +69,8 @@ router.post('/batch', function(req, res) {
     })
   })
   .then(function(users){
-    console.log("AGAIN USER IS " + req.currentUser._id)
-    console.log(_.map(users,function(user){ return {followee: req.currentUser._id, followeer: user._id} }))
     return Following.create(
-      _.map(users,function(user){ return {followee: req.currentUser._id, followeer: user._id} })
+      _.map(users,function(user){ return {followee: req.currentUser._id, follower: user._id} })
     )
   })
   .then(function(followings){
