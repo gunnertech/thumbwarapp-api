@@ -77,6 +77,7 @@ router.post('/batch', function(req, res) {
     res.json("");
   })
   .then(undefined, function (err) {
+    console.log(err)
     console.log(err.trace)
     res.status(500).json(err)
   });
