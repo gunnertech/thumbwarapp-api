@@ -14,9 +14,6 @@ router.post('/', function(req, res) {
     console.log("DONE")
     res.json(siding)
   })
-  .then(undefined, function (err) {
-    res.status(500).json(err)
-  });
 });
 
 
