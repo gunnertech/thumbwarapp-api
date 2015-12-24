@@ -11,13 +11,13 @@ var SidingSchema   = new Schema({
 
 SidingSchema.set('toJSON', { getters: true, virtuals: true });
 
-SidingSchema.virtual('thumbwarId').get(function () {
-  return thumbwar.creator ? thumbwar._id : thumbwar;
-});
-
-SidingSchema.virtual('userId').get(function () {
-  return user.name ? user._id : user;
-});
+// SidingSchema.virtual('thumbwarId').get(function () {
+//   return thumbwar.creator ? thumbwar._id : thumbwar;
+// });
+//
+// SidingSchema.virtual('userId').get(function () {
+//   return user.name ? user._id : user;
+// });
 
 
 module.exports = mongoose.model('Siding', SidingSchema);
