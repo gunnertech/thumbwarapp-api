@@ -6,6 +6,7 @@ var _ = require('lodash');
 router.post('/', function(req, res) {
   req.body.user = req.currentUser._id;
   console.log(req.body)
+  console.log(Siding)
   Siding.create(req.body)
   .populate('user')
   .populate('thumbwar')
@@ -13,7 +14,9 @@ router.post('/', function(req, res) {
     console.log("DONE")
     res.json(siding)
   })
-  
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
 });
 
 
@@ -22,7 +25,7 @@ router.get('/', function(req, res) {
   .then(function(sidings){
     res.json(sidings)
   })
-  .then(null, function (err) {
+  .then(undefined, function (err) {
     console.log(err)
     res.status(500).json(err)
   });
