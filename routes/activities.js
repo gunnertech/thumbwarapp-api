@@ -14,6 +14,8 @@ router.get('/', function(req, res, next) {
     }
   }
   
+  console.log(req.query)
+  
   Activity.find(req.query)
   .populate('target')
   .populate('object')
