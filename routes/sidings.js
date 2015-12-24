@@ -22,7 +22,7 @@ router.post('/', function(req, res) {
   .then(function(siding){
     console.log(siding)
     res.json(siding)
-  });
+  }).
   .then(undefined, function (err) {
     console.log(err)
     res.status(500).json(err)
