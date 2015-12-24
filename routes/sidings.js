@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Siding = require('../app/models/siding');
+var Thumbwar = require('../app/models/thumbwar');
 var _ = require('lodash');
 
 router.post('/', function(req, res) {
@@ -9,8 +10,18 @@ router.post('/', function(req, res) {
   }
   Siding.create(req.body)
   .then(function(siding){
-    res.json(siding)
+    return Thumbwar.findById(siding.thumbwar).exec()
+    .then(function(thumbwar){
+      thumbwar.append(siding)
+      return thumbwar.save().then(function(thumbwar) {
+        return siding;
+      })
+    })
   })
+  .then(function(siding){
+    console.log(siding)
+    res.json(siding)
+  });
   .then(undefined, function (err) {
     console.log(err)
     res.status(500).json(err)
