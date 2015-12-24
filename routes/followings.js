@@ -56,6 +56,7 @@ router.post('/batch', function(req, res) {
   })
   .then(function(users){
     console.log("USER IS " + req.currentUser._id)
+    console.log(_.map(users,function(user){ return {follower: req.currentUser._id, followee: user._id} }))
     return Following.create(
       _.map(users,function(user){ return {follower: req.currentUser._id, followee: user._id} })
     );
