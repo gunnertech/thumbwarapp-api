@@ -4,9 +4,9 @@ var Siding = require('../app/models/siding');
 var _ = require('lodash');
 
 router.post('/', function(req, res) {
-  req.body.user = req.currentUser._id;
-  console.log(req.body)
-  console.log(Siding)
+  if(req.me) {
+    req.body.creator = req.currentUser;
+  }
   Siding.create(req.body)
   .populate('user')
   .populate('thumbwar')
@@ -14,6 +14,9 @@ router.post('/', function(req, res) {
     console.log("DONE")
     res.json(siding)
   })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
 });
 
 
