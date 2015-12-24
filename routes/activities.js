@@ -23,6 +23,7 @@ router.get('/', function(req, res, next) {
   .exec()
   .then(function(activities){
     console.log(activities)
+    console.log(activities.length)
     res.json(activities)
   })
   .then(undefined, function (err) {
