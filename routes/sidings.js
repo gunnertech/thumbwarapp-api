@@ -13,9 +13,7 @@ router.post('/', function(req, res) {
     console.log("DONE")
     res.json(siding)
   })
-  .then(undefined, function (err) {
-    res.status(500).json(err)
-  });
+  
 });
 
 
@@ -24,7 +22,7 @@ router.get('/', function(req, res) {
   .then(function(sidings){
     res.json(sidings)
   })
-  .then(undefined, function (err) {
+  .then(null, function (err) {
     console.log(err)
     res.status(500).json(err)
   });
