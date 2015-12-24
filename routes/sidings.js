@@ -10,6 +10,7 @@ router.post('/', function(req, res) {
   }
   Siding.create(req.body)
   .then(function(siding){
+    console.log(siding)
     return Thumbwar.findById(siding.thumbwar).exec()
     .then(function(thumbwar){
       thumbwar.append(siding)
