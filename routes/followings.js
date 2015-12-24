@@ -51,17 +51,22 @@ router.post('/batch', function(req, res) {
   Following.find({follower: req.currentUser}).exec()
   .then(function(followings){
     console.log("^^^^^followings")
+    console.log(followings)
+    
     return User.find({
       facebookId: { $in: req.body.facebookIds.split(",") },
       _id: { $nin: _.map(followings,function(following){ return following.followee; }) }
     }).exec()
     .then(function(users){
       console.log("^^^^^users")
+      console.log(users)
+      
       return _.map(users,function(user){ return {follower: req.currentUser._id, followee: user} });
     })
   })
   .then(function(followingData){
     console.log("^^^^^followingData")
+    console.log(followingData)
     return Following.create(followingData)
     .then(function(){
       console.log("^^^^^null")
