@@ -55,13 +55,17 @@ router.post('/batch', function(req, res) {
     })
   })
   .then(function(users){
-    if(req.currentUser._id && user._id) {
-      return Following.create(
-        _.map(users,function(user){ return {follower: req.currentUser._id, followee: user._id} })
-      );
-    } else {
-      return Following.find({ _id:"fake" });
-    }
+    console.log("USER IS " + req.currentUser._id)
+    return Following.create(
+      _.map(users,function(user){ return {follower: req.currentUser._id, followee: user._id} })
+    );
+    // if(req.currentUser._id && user._id) {
+    //   return Following.create(
+    //     _.map(users,function(user){ return {follower: req.currentUser._id, followee: user._id} })
+    //   );
+    // } else {
+    //   return Following.find({ _id:"fake" });
+    // }
   })
   .then(function(followings){
     return Following.find({followee: req.currentUser})
@@ -73,13 +77,10 @@ router.post('/batch', function(req, res) {
     })
   })
   .then(function(users){
-    if(req.currentUser._id && user._id) {
-      return Following.create(
-        _.map(users,function(user){ return {followee: req.currentUser._id, followeer: user._id} })
-      );
-    } else {
-      return Following.find({ _id:"fake" });
-    }
+    console.log("USER IS " + req.currentUser._id)
+    return Following.create(
+      _.map(users,function(user){ return {followee: req.currentUser._id, followeer: user._id} })
+    )
   })
   .then(function(followings){
     res.json("");
