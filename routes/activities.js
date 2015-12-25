@@ -34,6 +34,7 @@ router.put('/:activityId', function(req, res, next) {
   .populate('object')
   .exec()
   .then(function(activity){
+    console.log(activity)
     res.json(activity)
   })
   .then(undefined, function (err) {
