@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
 
 router.put('/:activityId', function(req, res, next) {
   console.log(req.body)
-  Activity.findOneAndUpdate({_id: req.params.activityId }, req.body)
+  Activity.findOneAndUpdate({_id: req.params.activityId }, req.body, {'new': true})
   .populate('target')
   .populate('object')
   .exec()
