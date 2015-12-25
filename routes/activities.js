@@ -14,8 +14,6 @@ router.get('/', function(req, res, next) {
     }
   }
   
-  console.log(req.query)
-  
   Activity.find(req.query)
   .populate('target')
   .populate('object')
@@ -25,6 +23,19 @@ router.get('/', function(req, res, next) {
     console.log(activities)
     console.log(activities.length)
     res.json(activities)
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
+});
+
+router.put('/:activityId', function(req, res, next) {
+  Thumbwar.findOneAndUpdate({_id: req.params.activityId }, req.body)
+  .populate('target')
+  .populate('object')
+  .exec()
+  .then(function(activity){
+    res.json(activity)
   })
   .then(undefined, function (err) {
     res.status(500).json(err)
