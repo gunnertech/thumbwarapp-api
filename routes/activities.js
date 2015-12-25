@@ -20,8 +20,6 @@ router.get('/', function(req, res, next) {
   .sort({createdAt: 'desc'})
   .exec()
   .then(function(activities){
-    console.log(activities)
-    console.log(activities.length)
     res.json(activities)
   })
   .then(undefined, function (err) {
@@ -30,7 +28,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.put('/:activityId', function(req, res, next) {
-  Thumbwar.findOneAndUpdate({_id: req.params.activityId }, req.body)
+  Activity.findOneAndUpdate({_id: req.params.activityId }, req.body)
   .populate('target')
   .populate('object')
   .exec()
