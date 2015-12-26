@@ -28,6 +28,24 @@ ThumbwarSchema.virtual('sidingsCount').get(function () {
   return this.sidings.length;
 });
 
+ThumbwarSchema.post('findOneAndUpdate', function(doc) {
+  var Activity = require('./activity');
+  var Following = require('./following');
+  
+  Following.find({followee: doc.creator}).exec()
+  .then(function(followings){
+    _.each(followings,function(following){
+      Activity.create({
+        body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
+        activitableId: doc._id,
+        activitableType: "Thumbwar",
+        target: following.followee,
+        object: doc.creator
+      });
+    });
+  });
+})
+
 
 
 ThumbwarSchema.post('save', function(doc) {
