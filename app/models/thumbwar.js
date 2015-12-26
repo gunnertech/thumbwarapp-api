@@ -32,6 +32,8 @@ ThumbwarSchema.post('findOneAndUpdate', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
   
+  console.log("~~~~~~~~~~~" + doc.outcome)
+  
   Following.find({followee: doc.creator}).exec()
   .then(function(followings){
     _.each(followings,function(following){
