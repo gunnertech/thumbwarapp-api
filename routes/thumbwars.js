@@ -48,7 +48,7 @@ router.get('/:thumbwarId', function(req, res, next) {
 });
 
 router.put('/:thumbwarId', function(req, res, next) {
-  Thumbwar.findOneAndUpdate({_id: req.params.thumbwarId }, req.body)
+  Thumbwar.findOneAndUpdate({_id: req.params.thumbwarId }, req.body, {'new':true})
   .populate('creator')
   .populate('subject')
   .populate('sidings')
