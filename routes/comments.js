@@ -6,6 +6,7 @@ var _ = require('lodash');
 router.post('/', function(req, res) {
   Comment.create(req.body)
   .then(function(comment){
+    comment.user = req.currentUser;
     res.json(comment)
   })
   .then(undefined, function (err) {
