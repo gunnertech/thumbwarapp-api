@@ -23,35 +23,35 @@ var UserSchema   = new Schema({
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
 
-UserSchema.pre('save',function(next){
-  var _this = this;
-  var fileName = _this.name.toLowerCase().replace(/\W+/g,"-")
-  
-  https.get(this.photoUrl, function(res){
-    var headers = {
-        'Content-Length': res.headers['content-length']
-      , 'Content-Type': res.headers['content-type']
-      , 'x-amz-acl': 'public-read'
-    };
-    
-    var req = client.putStream(res, '/uploads/users/'+fileName+'.jpg', headers, function(err, res){
-    });
-    
-    req.on('response', function(res){
-      var avatar = new Avatar({
-        url: "https://"+process.env.S3_BUCKET+".s3.amazonaws.com/uploads/users/"+fileName+".jpg",
-        user: _this._id
-      });
-      
-      avatar.save(function(err,avatar){
-        if (err) { next(err); }
-        _this.avatar = avatar;
-        next();
-      });
-      
-     });
-  });
-});
+// UserSchema.pre('save',function(next){
+//   var _this = this;
+//   var fileName = _this.name.toLowerCase().replace(/\W+/g,"-")
+//
+//   https.get(this.photoUrl, function(res){
+//     var headers = {
+//         'Content-Length': res.headers['content-length']
+//       , 'Content-Type': res.headers['content-type']
+//       , 'x-amz-acl': 'public-read'
+//     };
+//
+//     var req = client.putStream(res, '/uploads/users/'+fileName+'.jpg', headers, function(err, res){
+//     });
+//
+//     req.on('response', function(res){
+//       var avatar = new Avatar({
+//         url: "https://"+process.env.S3_BUCKET+".s3.amazonaws.com/uploads/users/"+fileName+".jpg",
+//         user: _this._id
+//       });
+//
+//       avatar.save(function(err,avatar){
+//         if (err) { next(err); }
+//         _this.avatar = avatar;
+//         next();
+//       });
+//
+//      });
+//   });
+// });
 
 UserSchema.path('email').validate(function (value) {
   if(!value) { return true; }
