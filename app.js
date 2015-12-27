@@ -117,7 +117,7 @@ function parseThumbwar(req, res, next) {
   next();
 }
 
-
+app.use('comments', comments);
 app.use('/users', users);
 app.use('/followings', followings);
 
@@ -129,6 +129,7 @@ app.use('/:userId/sidings', [parseMe,sidings]);
 
 app.use('/thumbwars', thumbwars);
 app.use('/thumbwars/:thumbwarId/comments', [parseThumbwar,comments]);
+
 
 
 
