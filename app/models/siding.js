@@ -23,7 +23,7 @@ SidingSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Thumbwar = require('./thumbwar');
   
-  Thumbwar.findById(doc.thumbwar).exec().populate('creator')
+  Thumbwar.findById(doc.thumbwar).populate('creator').exec()
   .then(function(thumbwar){
     Activity.create({
       body: (doc.choseOutcome == thumbwar.assertion ? "sided with you!" : "sided against you!"),
