@@ -3,7 +3,7 @@ var Schema       = mongoose.Schema;
 
 
 var SidingSchema   = new Schema({
-  chosenOutcome: { type: String, required: true, enum: ['will', 'wont'] },
+  chosenOutcome: { type: String, required: true, enum: ['will', 'won\'t'] },
   didWin: { type: Boolean },
   user: {type: Schema.Types.ObjectId, ref: 'User', required: true},
   thumbwar: {type: Schema.Types.ObjectId, ref: 'Thumbwar', required: true}
@@ -17,6 +17,22 @@ SidingSchema.virtual('thumbwarId').get(function () {
 
 SidingSchema.virtual('userId').get(function () {
   return this.user.name ? this.user._id : this.user;
+});
+
+SidingSchema.post('save', function(doc) {
+  var Activity = require('./activity');
+  var Thumbwar = require('./thumbwar');
+  
+  Thumbwar.findById(doc.thumbwar).exec().populate('creator')
+  .then(function(thumbwar){
+    Activity.create({
+      body: (doc.choseOutcome == thumbwar.assertion ? "sided with you!" : "sided against you!"),
+      activitableId: thumbwar._id,
+      activitableType: "Thumbwar",
+      target: thumbwar.creator,
+      object: doc.user
+    });
+  });    
 });
 
 

@@ -10,7 +10,7 @@ var ThumbwarSchema   = new Schema({
   subjectText: { type: String, required: true },
   outcomeMediaUrl: { type: String },
   outcomeMediaType: { type: String },
-  assertion: { type: String, required: true, index: true },
+  assertion: { type: String, required: true, index: true, enum: ['will','won\'t'] },
   outcome: { type: String, index: true, enum: ['won','lost'] },
   subject: {type: Schema.Types.ObjectId, ref: 'User'},
   creator: {type: Schema.Types.ObjectId, ref: 'User'},
@@ -31,8 +31,6 @@ ThumbwarSchema.virtual('sidingsCount').get(function () {
 ThumbwarSchema.post('findOneAndUpdate', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
-  
-  console.log("~~~~~~~~~~~" + doc.outcome)
   
   Following.find({followee: doc.creator}).exec()
   .then(function(followings){
