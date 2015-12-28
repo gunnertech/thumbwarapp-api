@@ -65,6 +65,7 @@ router.post('/', function(req, res) {
   if(req.me) {
     req.body.creator = req.currentUser;
   }
+  console.log(req.body.creator + " == " + req.body.subject)
   Thumbwar.create(req.body)
   .then(function(thumbwar){
     res.json(thumbwar)
