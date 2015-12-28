@@ -15,7 +15,6 @@ CommentSchema.post('save', function(doc) {
   
   Thumbwar.findById(doc.thumbwar).populate('creator').exec()
   .then(function(thumbwar){
-    console.log("~~~~~~~~~" + thumbwar)
     thumbwar.comments.push(doc);
     thumbwar.save();
     
@@ -33,22 +32,17 @@ CommentSchema.post('save', function(doc) {
         }
       });
     });
-    
-    console.log('Trying to save!')
-    
-    Activity.create({
-      body: "replied to your ThumbWar!",
-      activitableId: thumbwar._id,
-      activitableType: "Thumbwar",
-      target: thumbwar.creator,
-      object: doc.user
-    }).then(function(activity){
-      console.log("~~~~~~~~~~~~ACTIVITY");
-    })
-    .then(undefined, function (err) {
-      console.log(err)
-    });
-    
+
+    if((doc.user._id || doc.user) != thumbwar.creator._id) {
+      Activity.create({
+        body: "replied to your ThumbWar!",
+        activitableId: thumbwar._id,
+        activitableType: "Thumbwar",
+        target: thumbwar.creator,
+        object: doc.user
+      });
+       
+    }    
     
   });
     
