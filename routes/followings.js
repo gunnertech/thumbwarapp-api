@@ -36,6 +36,7 @@ router.delete('/:followingId', function(req, res) {
 });
 
 router.put('/:followingId', function(req, res) {
+  console.log(req.body)
   Following.findOneAndUpdate({_id: req.params.followingId},req.body,{'new':true})
   .then(function(following){
     res.json(following)
