@@ -33,7 +33,7 @@ CommentSchema.post('save', function(doc) {
       });
     });
     
-    console.log((doc.user._id || doc.user))
+    console.log(doc.user._id)
     console.log(thumbwar.creator._id)
 
     if((doc.user._id || doc.user) != thumbwar.creator._id) {
