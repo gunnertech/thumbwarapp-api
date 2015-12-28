@@ -24,7 +24,11 @@ router.get('/', function(req, res) {
     }
   }
   
-  Comment.find(req.query).exec()
+  Comment.find(req.query)
+  .populate('user')
+  .populate('thumbwar')
+  .exec()
+  
   .then(function(comments){
     res.json(comments)
   })
