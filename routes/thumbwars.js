@@ -25,7 +25,6 @@ router.get('/', function(req, res, next) {
   .sort({createdAt: 'desc'})
   .exec()
   .then(function(thumbwars){
-    console.log(thumbwars)
     res.json(thumbwars)
   })
   .then(undefined, function (err) {
@@ -66,7 +65,6 @@ router.post('/', function(req, res) {
   if(req.me) {
     req.body.creator = req.currentUser;
   }
-  console.log(req.body)
   Thumbwar.create(req.body)
   .then(function(thumbwar){
     res.json(thumbwar)
