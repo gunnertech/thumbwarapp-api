@@ -15,8 +15,9 @@ CommentSchema.post('save', function(doc) {
   
   Thumbwar.findById(doc.thumbwar).populate('creator').exec()
   .then(function(thumbwar){
+    console.log("~~~~~~~~~" + thumbwar)
     thumbwar.comments.push(doc);
-    thumbwar.save()
+    thumbwar.save();
     
     _.each(thumbwar.comments,function(comment){ 
       User.findById(comment.user).exec()
