@@ -34,6 +34,8 @@ CommentSchema.post('save', function(doc) {
       });
     });
     
+    console.log('Trying to save!')
+    
     Activity.create({
       body: "replied to your ThumbWar!",
       activitableId: thumbwar._id,
@@ -43,6 +45,9 @@ CommentSchema.post('save', function(doc) {
     }).then(function(activity){
       console.log("~~~~~~~~~~~~ACTIVITY");
     })
+    .then(undefined, function (err) {
+      console.log(err)
+    });
     
     
   });
