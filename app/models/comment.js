@@ -33,14 +33,15 @@ CommentSchema.post('save', function(doc) {
       });
     });
     
-    
     Activity.create({
       body: "replied to your ThumbWar!",
       activitableId: thumbwar._id,
       activitableType: "Thumbwar",
       target: thumbwar.creator,
       object: doc.user
-    });
+    }).then(function(activity){
+      console.log("~~~~~~~~~~~~ACTIVITY");
+    })
     
     
   });
