@@ -28,6 +28,11 @@ ThumbwarSchema.virtual('sidingsCount').get(function () {
   return this.sidings.length;
 });
 
+ThumbwarSchema.pre('save', function (next) {
+    this.wasNew = this.isNew;
+    next();
+});
+
 ThumbwarSchema.post('findOneAndUpdate', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
@@ -49,6 +54,9 @@ ThumbwarSchema.post('findOneAndUpdate', function(doc) {
 
 
 ThumbwarSchema.post('save', function(doc) {
+  if (!this.wasNew) { return true; }
+  
+  
   var Activity = require('./activity');
   var Following = require('./following');
   
