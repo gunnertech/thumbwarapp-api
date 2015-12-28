@@ -43,22 +43,6 @@ CommentSchema.post('save', function(doc) {
     });
     
     
-  })
-  
-  
-  
-  
-  Following.find({followee: doc.creator}).exec()
-  .then(function(followings){
-    _.each(followings,function(following){
-      Activity.create({
-        body: "declared a Thumbwar!",
-        activitableId: doc._id,
-        activitableType: "Thumbwar",
-        target: following.followee,
-        object: doc.creator
-      });
-    });
   });
     
 });
