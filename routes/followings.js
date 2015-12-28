@@ -26,7 +26,17 @@ router.post('/', function(req, res) {
 });
 
 router.delete('/:followingId', function(req, res) {
-  Following.findOneAndUpdate({_id: req.params.following},{isActive: false})
+  Following.findOneAndUpdate({_id: req.params.following},{isActive: false},{'new':true})
+  .then(function(following){
+    res.json(following)
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
+});
+
+router.put('/:followingId', function(req, res) {
+  Following.findOneAndUpdate({_id: req.params.following},{isActive: false},{'new':true})
   .then(function(following){
     res.json(following)
   })
