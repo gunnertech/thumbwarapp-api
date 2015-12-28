@@ -1,6 +1,6 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
-
+var _ = require('lodash');
 
 var CommentSchema   = new Schema({
   body: {type: String, required: true},
