@@ -60,6 +60,16 @@ ThumbwarSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
   
+  if(doc.subject && doc.subject != doc.creator) {
+    Activity.create({
+      body: "challenged you to a Thumbwar!",
+      activitableId: doc._id,
+      activitableType: "Thumbwar",
+      target: doc.subject,
+      object: doc.creator
+    });
+  }
+  
   Following.find({followee: doc.creator}).exec()
   .then(function(followings){
     _.each(followings,function(following){
