@@ -6,6 +6,7 @@ var _ = require('lodash');
 
 router.post('/', function(req, res) {
   if(req.me) {
+    console.log("###########" + req.currentUser);
     req.body.user = req.currentUser;
   }
   var thumbwar;

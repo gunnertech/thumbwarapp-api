@@ -105,6 +105,7 @@ function parseMe(req, res, next) {
   if(req.params && req.params.userId == 'me') {
     req.me = true;
     req.params.userId = req.currentUser._id;
+    console.log("########### GOT ME");
   }
   next();
 }
