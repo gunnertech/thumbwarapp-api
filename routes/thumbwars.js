@@ -36,7 +36,7 @@ var parseGetQuery = function (req, res, next) {
   
 };
 
-router.get('/', function(req, res, next) {  
+router.get('/', [parseGetQuery,function(req, res, next) {  
   
   console.log(req.query)
   
@@ -66,7 +66,7 @@ router.get('/:thumbwarId', function(req, res, next) {
   .then(undefined, function (err) {
     res.status(500).json(err)
   });
-});
+}]);
 
 router.put('/:thumbwarId', function(req, res, next) {
   Thumbwar.findOneAndUpdate({_id: req.params.thumbwarId }, req.body, {'new':true})
