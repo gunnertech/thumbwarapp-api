@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
 var Thumbwar = require('../app/models/thumbwar');
-var Siding = require('../app/models/thumbwar');
+var Siding = require('../app/models/siding');
 var _ = require('lodash');
 var mongoose     = require('mongoose');
 
