@@ -24,6 +24,12 @@ router.get('/', function(req, res, next) {
     }
   } 
   
+  if(req.query.sided) {    
+    req.query.sidings = {
+      $in: [req.query.subject]
+    }
+  } 
+  
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
