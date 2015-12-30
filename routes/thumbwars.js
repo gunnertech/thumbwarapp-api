@@ -2,13 +2,14 @@ var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
 var Thumbwar = require('../app/models/thumbwar');
+var Siding = require('../app/models/thumbwar');
 var _ = require('lodash');
 
 // function convertDateToUTC(date) {
 //     return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 // }
 
-router.get('/', function(req, res, next) {  
+var parseGetQuery = function (req, res, next) {
   if(req.query.pagination) {
     var pagination = req.query.pagination;
     delete req.query.pagination
@@ -22,13 +23,21 @@ router.get('/', function(req, res, next) {
     req.query.creator = {
       $ne: req.query.subject
     }
-  } 
-  
-  if(req.query.sided) {    
+    next();
+  } else if(req.query.sided) {    
     req.query.sidings = {
-      $in: [req.query.subject]
+      user: req.query.subject
     }
-  } 
+    next();
+  } else {
+     next();
+  }
+  
+  
+};
+
+router.get('/', function(req, res, next) {  
+   
   
   Thumbwar.find(req.query)
   .populate('creator')
