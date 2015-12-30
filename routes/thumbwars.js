@@ -18,6 +18,12 @@ router.get('/', function(req, res, next) {
     }
   }
   
+  if(req.query.subject) {    
+    req.query.creator = {
+      $ne: eq.query.subject
+    }
+  } 
+  
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
