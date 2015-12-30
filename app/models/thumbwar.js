@@ -15,6 +15,7 @@ var ThumbwarSchema   = new Schema({
   subject: {type: Schema.Types.ObjectId, ref: 'User'},
   creator: {type: Schema.Types.ObjectId, ref: 'User'},
   sidings: [{type: Schema.Types.ObjectId, ref: 'Siding'}],
+  siders: [{type: Schema.Types.ObjectId, ref: 'User'}],
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 

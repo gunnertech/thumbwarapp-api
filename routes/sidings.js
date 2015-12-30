@@ -6,7 +6,6 @@ var _ = require('lodash');
 
 router.post('/', function(req, res) {
   if(req.me) {
-    console.log("###########" + req.currentUser);
     req.body.user = req.currentUser;
   }
   var thumbwar;
@@ -20,6 +19,7 @@ router.post('/', function(req, res) {
   .then(function(s){
     siding = s
     thumbwar.sidings.push(siding);
+    thumbwar.siders.push(siding.user);
     return thumbwar.save()
   })
   .then(function(thumbwar){

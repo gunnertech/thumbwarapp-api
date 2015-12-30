@@ -26,17 +26,11 @@ var parseGetQuery = function (req, res, next) {
     }
     next();
   } else if(req.query.sided) {
-    console.log(new mongoose.Types.ObjectId(req.query.sided))
-    Siding.find({user: new mongoose.Types.ObjectId(req.query.sided)}).exec()
-    .then(function(sidings){
-      console.log(sidings)
-      req.query.sidings = {
-        $in: sidings
-      };
-      delete req.query.sided;
-      next();
-    });
-    
+    req.query.siders = {
+      $in: req.query.sided
+    };
+    delete req.query.sided;
+    next();    
   } else {
      next();
   }
@@ -45,8 +39,6 @@ var parseGetQuery = function (req, res, next) {
 };
 
 router.get('/', [parseGetQuery,function(req, res) {  
-  
-  console.log(req.query)
   
   Thumbwar.find(req.query)
   .populate('creator')
@@ -98,7 +90,6 @@ router.post('/', function(req, res) {
   if(req.me) {
     req.body.creator = req.currentUser;
   }
-  console.log(req.body.creator + " == " + req.body.subject)
   Thumbwar.create(req.body)
   .then(function(thumbwar){
     res.json(thumbwar)
