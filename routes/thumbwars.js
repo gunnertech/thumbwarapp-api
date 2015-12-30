@@ -26,6 +26,7 @@ var parseGetQuery = function (req, res, next) {
     }
     next();
   } else if(req.query.sided) {
+    console.log(req.query.sided)
     Siding.find({user: req.query.sided}).exec()
     .then(function(sidings){
       req.query.sidings = {
