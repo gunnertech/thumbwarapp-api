@@ -26,9 +26,10 @@ var parseGetQuery = function (req, res, next) {
     }
     next();
   } else if(req.query.sided) {
-    console.log(req.query.sided)
-    Siding.find({user: req.query.sided}).exec()
+    console.log(new mongoose.Types.ObjectId(req.query.sided))
+    Siding.find({user: new mongoose.Types.ObjectId(req.query.sided)}).exec()
     .then(function(sidings){
+      console.log(sidings)
       req.query.sidings = {
         $in: sidings
       };
