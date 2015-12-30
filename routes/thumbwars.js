@@ -4,6 +4,7 @@ var User = require('../app/models/user');
 var Thumbwar = require('../app/models/thumbwar');
 var Siding = require('../app/models/thumbwar');
 var _ = require('lodash');
+var mongoose     = require('mongoose');
 
 // function convertDateToUTC(date) {
 //     return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
@@ -25,8 +26,9 @@ var parseGetQuery = function (req, res, next) {
     }
     next();
   } else if(req.query.sided) {    
+    delete req.query.sided;
     req.query.sidings = {
-      user: req.query.sided
+      user: new mongoose.Types.ObjectId(req.query.sided)
     }
     next();
   } else {
