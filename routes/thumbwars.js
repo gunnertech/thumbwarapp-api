@@ -25,10 +25,16 @@ var parseGetQuery = function (req, res, next) {
       $ne: req.query.subject
     }
     next();
-  } else if(req.query.sided) {    
-    req.query['sidings.user'] = new mongoose.Types.ObjectId(req.query.sided);
-    delete req.query.sided;
-    next();
+  } else if(req.query.sided) {
+    Siding.find({user: req.query.sided}).exec()
+    .then(function(sidings){
+      req.query.sidings = {
+        $in: sidings
+      };
+      delete req.query.sided;
+      next();
+    });
+    
   } else {
      next();
   }
