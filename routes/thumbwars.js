@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
   
   if(req.query.subject) {    
     req.query.creator = {
-      $ne: eq.query.subject
+      $ne: req.query.subject
     }
   } 
   
