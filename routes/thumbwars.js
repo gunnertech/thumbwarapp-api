@@ -26,7 +26,7 @@ var parseGetQuery = function (req, res, next) {
     next();
   } else if(req.query.sided) {    
     req.query.sidings = {
-      user: req.query.subject
+      user: req.query.sided
     }
     next();
   } else {
@@ -50,6 +50,7 @@ router.get('/', [parseGetQuery,function(req, res) {
     res.json(thumbwars)
   })
   .then(undefined, function (err) {
+    console.log(err);
     res.status(500).json(err)
   });
 }]);
@@ -64,6 +65,7 @@ router.get('/:thumbwarId', function(req, res) {
     res.json(thumbwar)
   })
   .then(undefined, function (err) {
+    console.log(err);
     res.status(500).json(err)
   });
 });
@@ -78,6 +80,7 @@ router.put('/:thumbwarId', function(req, res) {
     res.json(thumbwar)
   })
   .then(undefined, function (err) {
+    console.log(err);
     res.status(500).json(err)
   });
 });
