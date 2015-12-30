@@ -53,6 +53,7 @@ router.get('/', [parseGetQuery,function(req, res) {
   .sort({createdAt: 'desc'})
   .exec()
   .then(function(thumbwars){
+    console.log(thumbwars)
     res.json(thumbwars)
   })
   .then(undefined, function (err) {
