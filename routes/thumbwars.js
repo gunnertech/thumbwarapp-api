@@ -36,7 +36,7 @@ var parseGetQuery = function (req, res, next) {
   
 };
 
-router.get('/', [parseGetQuery,function(req, res, next) {  
+router.get('/', [parseGetQuery,function(req, res) {  
   
   console.log(req.query)
   
@@ -54,7 +54,7 @@ router.get('/', [parseGetQuery,function(req, res, next) {
   });
 }]);
 
-router.get('/:thumbwarId', function(req, res, next) {  
+router.get('/:thumbwarId', function(req, res) {  
   Thumbwar.findById(req.params.thumbwarId)
   .populate('creator')
   .populate('subject')
@@ -68,7 +68,7 @@ router.get('/:thumbwarId', function(req, res, next) {
   });
 });
 
-router.put('/:thumbwarId', function(req, res, next) {
+router.put('/:thumbwarId', function(req, res) {
   Thumbwar.findOneAndUpdate({_id: req.params.thumbwarId }, req.body, {'new':true})
   .populate('creator')
   .populate('subject')
