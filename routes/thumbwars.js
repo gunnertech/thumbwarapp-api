@@ -27,7 +27,7 @@ var parseGetQuery = function (req, res, next) {
     next();
   } else if(req.query.sided) {
     req.query.siders = {
-      $in: req.query.sided
+      $in: [req.query.sided]
     };
     delete req.query.sided;
     next();    
