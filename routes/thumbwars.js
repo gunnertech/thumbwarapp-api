@@ -44,6 +44,8 @@ var parseGetQuery = function (req, res, next) {
 
 router.get('/', [parseGetQuery,function(req, res) {  
   
+  console.log(req.query)
+  
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
