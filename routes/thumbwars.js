@@ -30,16 +30,14 @@ var parseGetQuery = function (req, res, next) {
     req.query.creator = {
       $ne: req.query.subject
     }
-    next();
   } else if(req.query.sided) {
     req.query.siders = {
       $in: [req.query.sided]
     };
     delete req.query.sided;
-    next();    
-  } else {
-     next();
   }
+  
+  next();
   
   
 };
