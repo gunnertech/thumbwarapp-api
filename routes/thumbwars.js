@@ -26,10 +26,8 @@ var parseGetQuery = function (req, res, next) {
     }
     next();
   } else if(req.query.sided) {    
+    req.query['sidings.user'] = new mongoose.Types.ObjectId(req.query.sided);
     delete req.query.sided;
-    req.query.sidings = {
-      user: new mongoose.Types.ObjectId(req.query.sided)
-    }
     next();
   } else {
      next();
