@@ -70,7 +70,7 @@ router.get('/:thumbwarId', function(req, res) {
   .populate('sidings.user')
   .exec()
   .then(function(thumbwar){
-    return Siding.populate(thumbwar,{path: 'sidings.user'})
+    return Thumbwar.populate(thumbwar,{path: 'sidings.user', model: "User"})
   })
   .then(function(thumbwar){
     console.log(thumbwar)
