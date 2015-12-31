@@ -42,6 +42,7 @@ ThumbwarSchema.post('findOneAndUpdate', function(doc) {
   .then(function(followings){
     _.each(followings,function(following){
       Activity.create({
+        isAnonymous: doc.isAnonymous,
         body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
         activitableId: doc._id,
         activitableType: "Thumbwar",
@@ -63,6 +64,7 @@ ThumbwarSchema.post('save', function(doc) {
   
   if(doc.subject && !doc.subject.equals(doc.creator) {
     Activity.create({
+      isAnonymous: doc.isAnonymous,
       body: "challenged you to a Thumbwar!",
       activitableId: doc._id,
       activitableType: "Thumbwar",
@@ -75,6 +77,7 @@ ThumbwarSchema.post('save', function(doc) {
   .then(function(followings){
     _.each(followings,function(following){
       Activity.create({
+        isAnonymous: doc.isAnonymous,
         body: "declared a Thumbwar!",
         activitableId: doc._id,
         activitableType: "Thumbwar",
