@@ -79,7 +79,7 @@ router.get('/:thumbwarId', function(req, res) {
     return User.populate(thumbwar,{
       path: 'sidings.user'
     });
-  });
+  })
   .then(function(thumbwar){
     console.log(thumbwar)
     res.json(thumbwar)
