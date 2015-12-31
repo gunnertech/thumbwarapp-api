@@ -67,11 +67,17 @@ router.get('/:thumbwarId', function(req, res) {
   .populate('creator')
   .populate('subject')
   .populate('sidings')
-  .populate('sidings.user')
-  .exec()
-  .then(function(thumbwar){
-    return Thumbwar.populate(thumbwar,{path: 'sidings.user', model: "User"})
+  .populate({
+    path: 'sidings',			
+  	populate: { 
+      path: 'user',
+      model: 'User' 
+    }
   })
+  .exec()
+  // .then(function(thumbwar){
+  //   return Thumbwar.populate(thumbwar,{path: 'sidings.user', model: "User"})
+  // })
   .then(function(thumbwar){
     console.log(thumbwar)
     res.json(thumbwar)
