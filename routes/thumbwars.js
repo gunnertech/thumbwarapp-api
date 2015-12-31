@@ -85,6 +85,9 @@ router.put('/:thumbwarId', function(req, res) {
   .populate('sidings')
   .exec()
   .then(function(thumbwar){
+    return Siding.populate(thumbwar,{path: 'sidings.user'})
+  })
+  .then(function(thumbwar){
     res.json(thumbwar)
   })
   .then(undefined, function (err) {
