@@ -54,7 +54,6 @@ router.get('/', [parseGetQuery,function(req, res) {
   .limit(10)
   .exec()
   .then(function(thumbwars){
-    console.log(thumbwars)
     res.json(thumbwars)
   })
   .then(undefined, function (err) {
@@ -68,8 +67,10 @@ router.get('/:thumbwarId', function(req, res) {
   .populate('creator')
   .populate('subject')
   .populate('sidings')
+  .populate('sidings.user')
   .exec()
   .then(function(thumbwar){
+    console.log(thumbwar)
     res.json(thumbwar)
   })
   .then(undefined, function (err) {
@@ -89,7 +90,6 @@ router.put('/:thumbwarId', function(req, res) {
   //   return Siding.populate(thumbwar,{path: 'sidings.user'})
   // })
   .then(function(thumbwar){
-    console.log(thumbwar)
     res.json(thumbwar)
   })
   .then(undefined, function (err) {
