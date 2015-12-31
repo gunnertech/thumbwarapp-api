@@ -51,6 +51,7 @@ router.get('/', [parseGetQuery,function(req, res) {
   .populate('subject')
   .populate('sidings')
   .sort({createdAt: 'desc'})
+  .limit(10)
   .exec()
   .then(function(thumbwars){
     console.log(thumbwars)
