@@ -66,15 +66,20 @@ router.get('/:thumbwarId', function(req, res) {
   Thumbwar.findById(req.params.thumbwarId)
   .populate('creator')
   .populate('subject')
-  // .populate('sidings')
-  .populate({
-    path: 'sidings',			
-  	populate: { 
-      path: 'user',
-      model: User
-    }
-  })
+  .populate('sidings')
+  // .populate({
+  //   path: 'sidings',
+  //   populate: {
+  //     path: 'user',
+  //     model: User
+  //   }
+  // })
   .exec()
+  .then(function(thumbwar){
+    return User.populate(thumbwar,{
+      path: 'sidings.user'
+    });
+  });
   .then(function(thumbwar){
     console.log(thumbwar)
     res.json(thumbwar)
