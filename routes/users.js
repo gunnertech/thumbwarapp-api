@@ -83,17 +83,12 @@ router.post('/', function(req, res) {
   user.token = jwt.sign(user, process.env.JWT_SECRET);
 
   user.save(function(err,user) {
-    console.log("IS THERE AN ERROR?");
-    console.log(err);
     
     if (err) { return res.status(500).json(err); }
     
     User.findById(user._id)
     .populate('avatar')
     .exec(function(err, user) {
-      console.log("IS THERE AN ERROR NOW?");
-      console.log(err);
-      
       if (err) { return res.status(500).json(err); }
       
       
