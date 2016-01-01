@@ -24,9 +24,12 @@ ActivitySchema.post('save', function(doc) {
     console.log("~~~~~~~"+devices)
     _.each(devices,function(device){
       console.log("~~~~~~~~~" + device);
+      var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
+      console.log(pfx)
       var apnConnection = new apn.Connection({
-        pfx: process.env.APNS_P12_CONTENTS,
-        production: (process.env.NODE_ENV == "production")
+        pfx: pfx,
+        production: (process.env.NODE_ENV == "production"),
+        passphrase: process.env.APNS_PASSPHRASE
       });
         
       var note = new apn.Notification();
