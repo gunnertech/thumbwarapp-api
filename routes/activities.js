@@ -28,6 +28,17 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.get('/count', function(req, res, next) {  
+  Activity.count(req.query)
+  .exec()
+  .then(function(count){
+    res.json({count: count})
+  })
+  .then(undefined, function (err) {
+    res.status(500).json(err)
+  });
+});
+
 router.put('/:activityId', function(req, res, next) {
   Activity.findOneAndUpdate({_id: req.params.activityId }, req.body, {'new': true})
   .populate('target')
