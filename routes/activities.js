@@ -29,6 +29,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/count', function(req, res, next) {  
+  console.log("~~~~~~~~~~~");
   Activity.count(req.query)
   .exec()
   .then(function(count){
