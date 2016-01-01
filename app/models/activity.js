@@ -23,8 +23,10 @@ ActivitySchema.post('save', function(doc) {
   .then(function(devices){
     console.log("~~~~~~~"+devices)
     _.each(devices,function(device){
-      console.log("~~~~~~~~~" + device);
+      console.log("~~~~~~~~~ hi there");
+      console.log("~~~~~~~~~ ok");
       console.log("~~~~~~~" + process.env.APNS_P12_CONTENTS);
+      console.log("~~~~~~~~~ go there");
       
       var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
 
