@@ -1,6 +1,6 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
-
+var apn = require('apn');
 
 var ActivitySchema   = new Schema({
   wasViewed: {type: Boolean, required: true, default: false},
@@ -20,7 +20,22 @@ ActivitySchema.post('save', function(doc) {
   Device.find({user: doc.target }).exec()
   .then(function(devices){
     _.each(devices,function(device){
-      //send push notification
+      var apnConnection = new apn.Connection({
+        pfx: process.env.APNS_P12_CONTENTS,
+        production: (process.env.NODE_ENV == "production"),
+        passphrase: process.env.APNS_PASSPHRASE
+        
+        var note = new apn.Notification();
+
+        note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+        note.badge = 3;
+        note.sound = "ping.aiff";
+        note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
+        note.payload = {'messageFrom': 'Caroline'};
+
+        apnConnection.pushNotification(note, myDevice);
+        
+      });
     });
   });
     

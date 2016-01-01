@@ -4,6 +4,7 @@ var Schema       = mongoose.Schema;
 
 var DeviceSchema   = new Schema({
   token: {type: String, required: true},
+  environment: {type: String, required: true, default: "production"},
   platform: {type: String, required: true, default: "ios"},
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
