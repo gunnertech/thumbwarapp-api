@@ -29,12 +29,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/count', function(req, res, next) {  
-  console.log("~~~~~~~~~~~" + req.query);
   Activity.count(req.query)
   .exec()
   .then(function(count){
-    console.log("~~~~~~~~~~~" + count);
-    res.json({count: count})
+    res.status(200).json({count: count});
   })
   .then(undefined, function (err) {
     res.status(500).json(err)
