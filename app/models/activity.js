@@ -26,8 +26,7 @@ ActivitySchema.post('save', function(doc) {
       console.log("~~~~~~~~~" + device);
       var apnConnection = new apn.Connection({
         pfx: process.env.APNS_P12_CONTENTS,
-        production: (process.env.NODE_ENV == "production"),
-        passphrase: process.env.APNS_PASSPHRASE
+        production: (process.env.NODE_ENV == "production")
       });
         
       var note = new apn.Notification();
