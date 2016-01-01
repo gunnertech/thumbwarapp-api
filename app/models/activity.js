@@ -37,7 +37,7 @@ ActivitySchema.post('save', function(doc) {
       note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
       note.badge = 3;
       note.sound = "ping.aiff";
-      note.alert = "\u1F3C6 " + (doc.isAnonymous ? "Someone" : doc.object.name) + " Challenged You to a Thumbwar!";
+      note.alert = "\uD83D\uDCE7 \u1F3C6 " + (doc.isAnonymous ? "Someone" : doc.object.name) + " Challenged You to a Thumbwar!";
       note.payload = {'messageFrom': 'Caroline'};
 
       apnConnection.pushNotification(note, (new apn.Device(device.token)));
