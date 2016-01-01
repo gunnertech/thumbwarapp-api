@@ -4,8 +4,8 @@ var Schema       = mongoose.Schema;
 
 var FollowingSchema   = new Schema({
   isActive: { type: Boolean, required: true, default: true },
-  followee: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-  follower: {type: Schema.Types.ObjectId, ref: 'User', required: true}
+  followee: {type: Schema.Types.ObjectId, ref: 'User', required: true}, //the user initiating the follow
+  follower: {type: Schema.Types.ObjectId, ref: 'User', required: true} //the user who is being followed
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
 FollowingSchema.post('save', function(doc) {

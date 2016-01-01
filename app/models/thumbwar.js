@@ -73,7 +73,7 @@ ThumbwarSchema.post('save', function(doc) {
     });
   }
   
-  Following.find({followee: doc.creator}).exec()
+  Following.find({follower: doc.creator}).exec()
   .then(function(followings){
     _.each(followings,function(following){
       Activity.create({

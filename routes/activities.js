@@ -9,8 +9,14 @@ router.get('/', function(req, res, next) {
     var pagination = req.query.pagination;
     delete req.query.pagination
     
-    req.query.createdAt = {
-      $lt: new Date(pagination.olderThan)
+    if(pagination.olderThan) {
+      req.query.createdAt = {
+        $lt: new Date(pagination.olderThan)
+      }
+    } else if(pagination.newerThan) {
+      req.query.createdAt = {
+        $gt: new Date(pagination.newerThan)
+      }
     }
   }
   
