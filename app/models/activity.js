@@ -18,8 +18,6 @@ var ActivitySchema   = new Schema({
 ActivitySchema.post('save', function(doc) {
   var Device = require('./device');
   
-  console.log("~~~~~~~"+doc.target)
-  
   Device.find({user: doc.target }).exec()
   .then(function(devices){
     _.each(devices,function(device){
@@ -37,8 +35,8 @@ ActivitySchema.post('save', function(doc) {
       note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
       note.badge = 3;
       note.sound = "ping.aiff";
-      note.alert = "\uD83C\uDFC6 " + (doc.isAnonymous ? "Someone" : doc.object.name) + " Challenged You to a Thumbwar!";
-      note.payload = {'messageFrom': 'Caroline'};
+      note.alert = "\uD83C\uDFC6 " + (doc.isAnonymous ? "Someone" : doc.object.name) + " " + doc.body;
+      note.payload = doc.toObject();
 
       apnConnection.pushNotification(note, (new apn.Device(device.token)));
         
