@@ -24,18 +24,18 @@ ActivitySchema.post('save', function(doc) {
         pfx: process.env.APNS_P12_CONTENTS,
         production: (process.env.NODE_ENV == "production"),
         passphrase: process.env.APNS_PASSPHRASE
-        
-        var note = new apn.Notification();
-
-        note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
-        note.badge = 3;
-        note.sound = "ping.aiff";
-        note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
-        note.payload = {'messageFrom': 'Caroline'};
-
-        apnConnection.pushNotification(note, myDevice);
-        
       });
+        
+      var note = new apn.Notification();
+
+      note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+      note.badge = 3;
+      note.sound = "ping.aiff";
+      note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
+      note.payload = {'messageFrom': 'Caroline'};
+
+      apnConnection.pushNotification(note, myDevice);
+        
     });
   });
     
