@@ -6,12 +6,15 @@ var _ = require('lodash');
 router.post('/', function(req, res) {
   Device.findOne(req.body).exec()
   .then(function(device){
-      device = device || new Device(req.body)
-      return Device.update({_id: device._id}, req.body, {upsert: true, setDefaultsOnInsert: true}, {'new': true})
+    if device {
+      return device
+    } else {
+      return Device.create(req.body)
+    }
   })
-  .then(function(devices){
-    console.log(devices)
-    res.json(devices)
+  .then(function(device){
+    console.log(device)
+    res.json(device)
   })
   .then(undefined, function (err) {
     res.status(500).json(err)
