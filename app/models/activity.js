@@ -22,12 +22,7 @@ ActivitySchema.post('save', function(doc) {
   
   Device.find({user: doc.target }).exec()
   .then(function(devices){
-    console.log("~~~~~~~"+devices)
     _.each(devices,function(device){
-      console.log("~~~~~~~~~ hi there");
-      console.log("~~~~~~~~~ ok");
-      console.log("~~~~~~~" + process.env.APNS_P12_CONTENTS);
-      console.log("~~~~~~~~~ go there");
       
       var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
 
@@ -42,7 +37,7 @@ ActivitySchema.post('save', function(doc) {
       note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
       note.badge = 3;
       note.sound = "ping.aiff";
-      note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
+      note.alert = "\u1F3C6 " + (doc.isAnonymous ? "Someone" : doc.object.name) + " Challenged You to a Thumbwar!";
       note.payload = {'messageFrom': 'Caroline'};
 
       apnConnection.pushNotification(note, (new apn.Device(device.token)));
