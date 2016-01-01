@@ -6,10 +6,10 @@ var _ = require('lodash');
 router.post('/', function(req, res) {
   Device.findOne(req.body).exec()
   .then(function(device){
-    if device {
-      return device
+    if(device) {
+      return device;
     } else {
-      return Device.create(req.body)
+      return Device.create(req.body);
     }
   })
   .then(function(device){
