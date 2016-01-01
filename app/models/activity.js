@@ -24,7 +24,12 @@ ActivitySchema.post('save', function(doc) {
     console.log("~~~~~~~"+devices)
     _.each(devices,function(device){
       console.log("~~~~~~~~~" + device);
-      console.log("~~~~~~~~ BUFFER " + (typeof Buffer))
+      try {
+          console.log("~~~~~~~~ BUFFER " + (typeof(Buffer)))
+      } catch(e) {
+        console.log(e);
+      }
+      
       var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
       console.log(pfx)
       var apnConnection = new apn.Connection({
