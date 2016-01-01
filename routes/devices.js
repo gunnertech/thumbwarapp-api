@@ -6,7 +6,8 @@ var _ = require('lodash');
 router.post('/', function(req, res) {
   Device.findOne(req.body).exec()
   .then(function(device){
-      return Device.update({_id: (device||{})._id}, req.body, {upsert: true, setDefaultsOnInsert: true}, {'new': true})
+      device = device || new Device(req.body)
+      return Device.update({_id: device._id}, req.body, {upsert: true, setDefaultsOnInsert: true}, {'new': true})
   })
   .then(function(devices){
     console.log(devices)
