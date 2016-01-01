@@ -17,8 +17,11 @@ var ActivitySchema   = new Schema({
 ActivitySchema.post('save', function(doc) {
   var Device = require('./device');
   
+  console.log("~~~~~~~"+doc.target)
+  
   Device.find({user: doc.target }).exec()
   .then(function(devices){
+    console.log("~~~~~~~"+devices)
     _.each(devices,function(device){
       console.log("~~~~~~~~~" + device);
       var apnConnection = new apn.Connection({
