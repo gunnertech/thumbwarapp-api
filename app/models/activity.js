@@ -1,6 +1,7 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 var apn = require('apn');
+var _ = require('lodash');
 
 var ActivitySchema   = new Schema({
   wasViewed: {type: Boolean, required: true, default: false},
