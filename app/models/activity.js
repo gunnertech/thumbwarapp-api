@@ -20,6 +20,7 @@ ActivitySchema.post('save', function(doc) {
   Device.find({user: doc.target }).exec()
   .then(function(devices){
     _.each(devices,function(device){
+      console.log("~~~~~~~~~" + device);
       var apnConnection = new apn.Connection({
         pfx: process.env.APNS_P12_CONTENTS,
         production: (process.env.NODE_ENV == "production"),
@@ -34,7 +35,7 @@ ActivitySchema.post('save', function(doc) {
       note.alert = "\uD83D\uDCE7 \u2709 You have a new message";
       note.payload = {'messageFrom': 'Caroline'};
 
-      apnConnection.pushNotification(note, myDevice);
+      apnConnection.pushNotification(note, (new apn.Device(device.token)));
         
     });
   });
