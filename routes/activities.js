@@ -18,6 +18,7 @@ router.get('/', function(req, res, next) {
   .populate('target')
   .populate('object')
   .sort({createdAt: 'desc'})
+  .limit(10)
   .exec()
   .then(function(activities){
     res.json(activities)
