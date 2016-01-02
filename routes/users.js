@@ -32,8 +32,6 @@ router.get('/', function(req, res, next) {
     delete params.token;
   }
   
-  console.log(params)
-  
   
   User.find(params)
   .populate('avatar')

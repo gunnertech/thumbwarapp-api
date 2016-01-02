@@ -31,11 +31,16 @@ ActivitySchema.post('save', function(doc) {
       });
         
       var note = new apn.Notification();
+      var icon = "\uD83C\uDFC6";
+      
+      if(doc.activitableType == "User") {
+        icon = "\uD83D\uDC49"
+      }
 
       note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
       note.badge = 3;
       note.sound = "ping.aiff";
-      note.alert = "\uD83C\uDFC6 " + (doc.isAnonymous ? "Someone" : doc.object.name) + " " + doc.body;
+      note.alert = icon + " " + (doc.isAnonymous ? "Someone" : doc.object.name) + " " + doc.body;
       note.payload = doc.toObject();
 
       apnConnection.pushNotification(note, (new apn.Device(device.token)));
