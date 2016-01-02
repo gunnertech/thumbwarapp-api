@@ -47,6 +47,8 @@ router.put('/:followingId', function(req, res) {
 });
 
 router.get('/', function(req, res) {
+  console.log(req.query);
+  
   Following.find(req.query)
   .populate('follower')
   .populate('followee')
