@@ -62,7 +62,7 @@ ThumbwarSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
   
-  if(doc.subject._id && !doc.subject.equals(doc.creator._id)) {
+  if(doc.subject._id && !doc.subject.equals(doc.creator)) {
     Activity.create({
       isAnonymous: doc.isAnonymous,
       body: "challenged you to a Thumbwar!",
