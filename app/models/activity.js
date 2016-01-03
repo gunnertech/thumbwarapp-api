@@ -27,6 +27,7 @@ ActivitySchema.post('save', function(doc) {
       
       console.log("~~~~ object : " + doc.object)
       console.log("~~~~ body : " + doc.body)
+      console.log("~~~~ body : " + device)
       
       var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
 
@@ -48,6 +49,8 @@ ActivitySchema.post('save', function(doc) {
       note.sound = "ping.aiff";
       note.alert = icon + " " + (doc.isAnonymous ? "Someone" : doc.object.name) + " " + doc.body;
       note.payload = doc.toObject();
+      
+      console.log("~~~~~~ NOTE: " + note)
 
       apnConnection.pushNotification(note, (new apn.Device(device.token)));
         
