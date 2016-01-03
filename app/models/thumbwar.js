@@ -62,6 +62,8 @@ ThumbwarSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
   
+  console.log("~~~~~~~~~" + doc.subject)
+  
   if(doc.subject._id && !doc.subject._id.equals(doc.creator._id)) {
     Activity.create({
       isAnonymous: doc.isAnonymous,
