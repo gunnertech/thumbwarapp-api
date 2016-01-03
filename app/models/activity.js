@@ -18,6 +18,8 @@ var ActivitySchema   = new Schema({
 ActivitySchema.post('save', function(doc) {
   var Device = require('./device');
   
+  console.log("~~~~~~ user: " + doc.target)
+  
   mongoose.model('Activity', ActivitySchema).count({target: doc.target, wasViewed: false}).exec()
   .then(function(count){
     Device.find({user: doc.target }).exec()
