@@ -18,45 +18,37 @@ var ActivitySchema   = new Schema({
 ActivitySchema.post('save', function(doc) {
   var Device = require('./device');
   
-  console.log("~~~~ LETS TRY IT: ")
-  
-  Device.find({user: doc.target }).exec()
-  .then(function(devices){
-    console.log("~~~~ OK ")
-    _.each(devices,function(device){
+  mongoose.model('Activity', ActivitySchema).count({target: doc.target, wasViewed: false}).exec()
+  .then(function(count){
+    Device.find({user: doc.target }).exec()
+    .then(function(devices){
+      _.each(devices,function(device){
+        var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
+        var apnConnection = new apn.Connection({
+          pfx: pfx,
+          production: (process.env.NODE_ENV == "production"),
+          passphrase: process.env.APNS_PASSPHRASE
+        });
+        
+        var note = new apn.Notification();
+        var icon = "\uD83C\uDFC6";
       
-      console.log("~~~~ object : " + doc.object)
-      console.log("~~~~ body : " + doc.body)
-      console.log("~~~~ body : " + device)
-      
-      var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
+        if(doc.activitableType == "User") {
+          icon = "\uD83D\uDC49"
+        }
 
-      var apnConnection = new apn.Connection({
-        pfx: pfx,
-        production: (process.env.NODE_ENV == "production"),
-        passphrase: process.env.APNS_PASSPHRASE
+        note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
+        note.badge = count;
+        note.sound = "ping.aiff";
+        note.alert = icon + " " + (doc.isAnonymous ? "Someone" : doc.object.name) + " " + doc.body;
+        note.payload = doc.toObject();
+
+        apnConnection.pushNotification(note, (new apn.Device(device.token)));
+        
       });
-        
-      var note = new apn.Notification();
-      var icon = "\uD83C\uDFC6";
-      
-      if(doc.activitableType == "User") {
-        icon = "\uD83D\uDC49"
-      }
-
-      note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
-      note.badge = 3;
-      note.sound = "ping.aiff";
-      note.alert = icon + " " + (doc.isAnonymous ? "Someone" : doc.object.name) + " " + doc.body;
-      note.payload = doc.toObject();
-      
-      console.log("~~~~~~ NOTE: " + note)
-
-      apnConnection.pushNotification(note, (new apn.Device(device.token)));
-        
     });
-  });
     
+  });    
 });
 
 

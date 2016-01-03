@@ -62,15 +62,7 @@ ThumbwarSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
   
-  console.log("~~~~~~~~~SUBJECT " + doc.subject)
-  console.log("~~~~~~~~~SUBJECT ID " + doc.subject._id)
-  console.log("~~~~~~~~~CREATOR " + doc.creator)
-  console.log("~~~~~~~~~CREATOR ID " + doc.creator._id)
-  console.log("~~~~~~~~TEST IT equals: " + doc.subject.equals(doc.creator._id))
-  console.log("~~~~~~~~TEST IT toString: " + (doc.subject.toString() == doc.creator._id.toString()))
-  
   if(doc.subject && !doc.subject.equals(doc.creator._id)) {
-    console.log('~~~~~~~~~~~~~ It worked?')
     Activity.create({
       isAnonymous: doc.isAnonymous,
       body: "challenged you to a Thumbwar!",
