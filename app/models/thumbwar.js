@@ -62,7 +62,10 @@ ThumbwarSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
   
-  console.log("~~~~~~~~~" + doc.subject)
+  console.log("~~~~~~~~~SUBJECT " + doc.subject)
+  console.log("~~~~~~~~~SUBJECT ID " + doc.subject._id)
+  console.log("~~~~~~~~~CREATOR " + doc.creator)
+  console.log("~~~~~~~~~CREATOR ID " + doc.creator._id)
   
   if(doc.subject._id && !doc.subject._id.equals(doc.creator._id)) {
     Activity.create({
