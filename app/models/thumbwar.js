@@ -66,6 +66,8 @@ ThumbwarSchema.post('save', function(doc) {
   console.log("~~~~~~~~~SUBJECT ID " + doc.subject._id)
   console.log("~~~~~~~~~CREATOR " + doc.creator)
   console.log("~~~~~~~~~CREATOR ID " + doc.creator._id)
+  console.log("~~~~~~~~TEST IT equals: " + doc.subject.equals(doc.creator._id))
+  console.log("~~~~~~~~TEST IT toString: " + doc.subject.toString() == doc.creator._id.toString())
   
   if(doc.subject && !doc.subject.equals(doc.creator._id)) {
     Activity.create({
