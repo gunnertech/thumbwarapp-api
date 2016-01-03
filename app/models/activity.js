@@ -18,15 +18,15 @@ var ActivitySchema   = new Schema({
 ActivitySchema.post('save', function(doc) {
   var Device = require('./device');
   
-  consolel.log("~~~~ LETS TRY IT: ")
+  console.log("~~~~ LETS TRY IT: ")
   
   Device.find({user: doc.target }).exec()
   .then(function(devices){
-    consolel.log("~~~~ OK ")
+    console.log("~~~~ OK ")
     _.each(devices,function(device){
       
-      consolel.log("~~~~ object : " + doc.object)
-      consolel.log("~~~~ body : " + doc.body)
+      console.log("~~~~ object : " + doc.object)
+      console.log("~~~~ body : " + doc.body)
       
       var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
 
