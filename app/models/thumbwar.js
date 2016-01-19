@@ -38,7 +38,7 @@ ThumbwarSchema.pre('save', function (next) {
     var User = require('./user');
     var _this = this;
     
-    User.findById(doc.creator).exec()
+    User.findById(this.creator).exec()
     .then(function(user){
       _this.creator = user;
       next();
