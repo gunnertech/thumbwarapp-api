@@ -111,6 +111,8 @@ ThumbwarSchema.post('save', function(doc) {
       console.log(user)
       var subjectText = doc.isAnonymous ? "Someone" : user ? (this.creator.equals(user) ? "I" : user.name) : doc.subjectText;
       
+      console.log("NO??????")
+      
       Following.find({follower: doc.creator}).exec()
       .then(function(followings){
         console.log(followings.length)
