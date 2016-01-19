@@ -103,30 +103,20 @@ ThumbwarSchema.post('save', function(doc) {
   }
   
   if(!doc.isPrivate) {
-    
-    console.log("HERE WE GO")
+
     
     User.findOne({_id: doc.subject}).exec()
     .then(function(user){
-      console.log(user)
       var subjectText = doc.subjectText;
       
-      // if(doc.isAnonymous) {
-      //   subjectText = "Someone";
-      // } else if(_this.creator.else(user)) {
-      //   subjectText = "I";
-      // } else if(user) {
-      //   subjectText = user.name;
-      // }
+      if(doc.isAnonymous) {
+        subjectText = "Someone";
+      }
       
-      
-      console.log("NO??????")
       
       Following.find({follower: doc.creator}).exec()
       .then(function(followings){
-        console.log(followings.length)
         _.each(followings,function(following){
-          console.log("let's create an activitableId")
           Activity.create({
             isAnonymous: doc.isAnonymous,
             body: (_this.creator.name + ": " + subjectText + " " + doc.assertion + " " + doc.body),

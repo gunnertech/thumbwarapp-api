@@ -23,7 +23,7 @@ CommentSchema.post('save', function(doc) {
       .then(function(user){
         if(comment.user != thumbwar.creator) {
           Activity.create({
-            body: "also replied to "+user.name+"'s ThumbWar!",
+            body: doc.user.name + " also replied to "+thumbwar.creator.name+"'s ThumbWar!",
             activitableId: thumbwar._id,
             activitableType: "Thumbwar",
             target: user,
@@ -32,13 +32,10 @@ CommentSchema.post('save', function(doc) {
         }
       });
     });
-    
-    console.log(doc.user._id)
-    console.log(thumbwar.creator._id)
 
     if(!doc.user._id.equals(thumbwar.creator._id)) {
       Activity.create({
-        body: "replied to your ThumbWar!",
+        body: doc.user.name + " replied to your ThumbWar!",
         activitableId: thumbwar._id,
         activitableType: "Thumbwar",
         target: thumbwar.creator,

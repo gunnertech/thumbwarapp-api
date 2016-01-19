@@ -23,7 +23,7 @@ SidingSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Thumbwar = require('./thumbwar');
   
-  Thumbwar.findById(doc.thumbwar).populate('creator').exec()
+  Thumbwar.findById(doc.thumbwar).populate('creator').populate('subject').exec()
   .then(function(thumbwar){
     Activity.create({
       body: (doc.choseOutcome == thumbwar.assertion ? "sided with you!" : "sided against you!"),
@@ -32,6 +32,16 @@ SidingSchema.post('save', function(doc) {
       target: thumbwar.creator,
       object: doc.user
     });
+    
+    if(thumbwar.subject && !thumbwar.subject.equals(thumbwar.creator)) {
+      Activity.create({
+        body: (doc.choseOutcome != thumbwar.assertion ? "sided with you!" : "sided against you!"),
+        activitableId: thumbwar._id,
+        activitableType: "Thumbwar",
+        target: thumbwar.subject,
+        object: doc.user
+      });
+    }
   });    
 });
 
