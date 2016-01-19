@@ -113,8 +113,9 @@ ThumbwarSchema.post('save', function(doc) {
       
       Following.find({follower: doc.creator}).exec()
       .then(function(followings){
-        console.log(followings)
+        console.log(followings.length)
         _.each(followings,function(following){
+          console.log("let's create an activitableId")
           Activity.create({
             isAnonymous: doc.isAnonymous,
             body: (_this.creator.name + ": " + subjectText + " " + doc.assertion + " " + doc.body),
