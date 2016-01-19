@@ -90,7 +90,7 @@ ThumbwarSchema.post('save', function(doc) {
   
   if(!doc.isPrivate) {
     
-    User.findOne(_id: doc.subject).ext()
+    User.findOne({_id: doc.subject}).exec()
     .then(function(user){
       var subjectText = doc.isAnonymous ? "Someone" : user ? user.name : doc.subjectText;
       
