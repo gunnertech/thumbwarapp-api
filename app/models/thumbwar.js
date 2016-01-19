@@ -111,13 +111,13 @@ ThumbwarSchema.post('save', function(doc) {
       console.log(user)
       var subjectText = doc.subjectText;
       
-      if(doc.isAnonymous) {
-        subjectText = "Someone";
-      } else if(_this.creator.else(user)) {
-        subjectText = "I";
-      } else if(user) {
-        subjectText = user.name;
-      }
+      // if(doc.isAnonymous) {
+      //   subjectText = "Someone";
+      // } else if(_this.creator.else(user)) {
+      //   subjectText = "I";
+      // } else if(user) {
+      //   subjectText = user.name;
+      // }
       
       
       console.log("NO??????")
