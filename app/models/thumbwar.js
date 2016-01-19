@@ -86,7 +86,7 @@ ThumbwarSchema.post('findOneAndUpdate', function(doc) {
 ThumbwarSchema.post('save', function(doc) {
   if (!this.wasNew) { return true; }
   
-  
+  var _this = this;
   var Activity = require('./activity');
   var Following = require('./following');
   var User = require('./user');
@@ -94,7 +94,7 @@ ThumbwarSchema.post('save', function(doc) {
   if(doc.subject && !doc.subject.equals(doc.creator._id)) {
     Activity.create({
       isAnonymous: doc.isAnonymous,
-      body: (this.creator.name + " " + ": You " + doc.assertion + " " + doc.body),
+      body: (_this.creator.name + ": You " + doc.assertion + " " + doc.body),
       activitableId: doc._id,
       activitableType: "Thumbwar",
       target: doc.subject,
@@ -104,17 +104,20 @@ ThumbwarSchema.post('save', function(doc) {
   
   if(!doc.isPrivate) {
     
+    console.log("HERE WE GO")
+    
     User.findOne({_id: doc.subject}).exec()
     .then(function(user){
+      console.log(user)
       var subjectText = doc.isAnonymous ? "Someone" : user ? (this.creator.equals(user) ? "I" : user.name) : doc.subjectText;
-      
       
       Following.find({follower: doc.creator}).exec()
       .then(function(followings){
+        console.log(followings)
         _.each(followings,function(following){
           Activity.create({
             isAnonymous: doc.isAnonymous,
-            body: (this.creator.name + " " + ": " + subjectText + " " + doc.assertion + " " + doc.body),
+            body: (_this.creator.name + ": " + subjectText + " " + doc.assertion + " " + doc.body),
             activitableId: doc._id,
             activitableType: "Thumbwar",
             target: following.followee,
