@@ -76,6 +76,7 @@ ThumbwarSchema.post('save', function(doc) {
   
   var Activity = require('./activity');
   var Following = require('./following');
+  var User = require('./user');
   
   if(doc.subject && !doc.subject.equals(doc.creator._id)) {
     Activity.create({
