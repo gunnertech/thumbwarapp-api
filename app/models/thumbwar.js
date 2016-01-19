@@ -89,20 +89,25 @@ ThumbwarSchema.post('save', function(doc) {
   }
   
   if(!doc.isPrivate) {
-  
-    Following.find({follower: doc.creator}).exec()
-    .then(function(followings){
-      _.each(followings,function(following){
-        Activity.create({
-          isAnonymous: doc.isAnonymous,
-          body: ((doc.subject ? doc.subject.name : doc.subjectText) + " " + doc.assertion + " " + doc.body),
-          activitableId: doc._id,
-          activitableType: "Thumbwar",
-          target: following.followee,
-          object: doc.creator
+    
+    User.findOne(_id: doc.subject).ext()
+    .then(function(user){
+      var subjectText = doc.isAnonymous ? "Someone" : user ? user.name : doc.subjectText;
+      
+      Following.find({follower: doc.creator}).exec()
+      .then(function(followings){
+        _.each(followings,function(following){
+          Activity.create({
+            isAnonymous: doc.isAnonymous,
+            body: (subjectText + " " + doc.assertion + " " + doc.body),
+            activitableId: doc._id,
+            activitableType: "Thumbwar",
+            target: following.followee,
+            object: doc.creator
+          });
         });
       });
-    });
+    })
     
   }
     

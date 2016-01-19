@@ -42,7 +42,7 @@ ActivitySchema.post('save', function(doc) {
         note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
         note.badge = count;
         note.sound = "ping.aiff";
-        note.alert = icon + " " + (doc.isAnonymous ? "Someone" : doc.object.name) + " " + doc.body;
+        note.alert = icon + " " + doc.body;
         note.payload = doc.toObject();
 
         apnConnection.pushNotification(note, (new apn.Device(device.token)));
