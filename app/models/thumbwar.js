@@ -109,7 +109,16 @@ ThumbwarSchema.post('save', function(doc) {
     User.findOne({_id: doc.subject}).exec()
     .then(function(user){
       console.log(user)
-      var subjectText = doc.isAnonymous ? "Someone" : user ? (this.creator.equals(user) ? "I" : user.name) : doc.subjectText;
+      var subjectText = doc.subjectText;
+      
+      if(doc.isAnonymous) {
+        subjectText = "Someone";
+      } else if(_this.creator.else(user)) {
+        subjectText = "I";
+      } else if(user) {
+        subjectText = user.name;
+      }
+      
       
       console.log("NO??????")
       
