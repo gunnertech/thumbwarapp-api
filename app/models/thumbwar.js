@@ -38,19 +38,34 @@ ThumbwarSchema.post('findOneAndUpdate', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
   
-  Following.find({followee: doc.creator}).exec()
-  .then(function(followings){
-    _.each(followings,function(following){
-      Activity.create({
-        isAnonymous: doc.isAnonymous,
-        body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
-        activitableId: doc._id,
-        activitableType: "Thumbwar",
-        target: following.followee,
-        object: doc.creator
+  if(!doc.isPrivate) {
+    Following.find({followee: doc.creator}).exec()
+    .then(function(followings){
+      _.each(followings,function(following){
+        Activity.create({
+          isAnonymous: doc.isAnonymous,
+          body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
+          activitableId: doc._id,
+          activitableType: "Thumbwar",
+          target: following.followee,
+          object: doc.creator
+        });
       });
     });
-  });
+  }
+  
+  if(doc.subject && !doc.subject.equals(doc.creator._id)) {
+    Activity.create({
+      isAnonymous: doc.isAnonymous,
+      body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
+      activitableId: doc._id,
+      activitableType: "Thumbwar",
+      target: doc.subject,
+      object: doc.creator
+    });
+  }
+  
+  
 })
 
 
@@ -65,7 +80,7 @@ ThumbwarSchema.post('save', function(doc) {
   if(doc.subject && !doc.subject.equals(doc.creator._id)) {
     Activity.create({
       isAnonymous: doc.isAnonymous,
-      body: "challenged you to a Thumbwar!",
+      body: ("You " + doc.assertion + " " + doc.body),
       activitableId: doc._id,
       activitableType: "Thumbwar",
       target: doc.subject,
@@ -73,19 +88,23 @@ ThumbwarSchema.post('save', function(doc) {
     });
   }
   
-  Following.find({follower: doc.creator}).exec()
-  .then(function(followings){
-    _.each(followings,function(following){
-      Activity.create({
-        isAnonymous: doc.isAnonymous,
-        body: "declared a Thumbwar!",
-        activitableId: doc._id,
-        activitableType: "Thumbwar",
-        target: following.followee,
-        object: doc.creator
+  if(!doc.isPrivate) {
+  
+    Following.find({follower: doc.creator}).exec()
+    .then(function(followings){
+      _.each(followings,function(following){
+        Activity.create({
+          isAnonymous: doc.isAnonymous,
+          body: ((doc.subject ? doc.subject.name : doc.subjectText) + " " + doc.assertion + " " + doc.body),
+          activitableId: doc._id,
+          activitableType: "Thumbwar",
+          target: following.followee,
+          object: doc.creator
+        });
       });
     });
-  });
+    
+  }
     
 });
 
