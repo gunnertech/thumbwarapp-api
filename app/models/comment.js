@@ -13,7 +13,7 @@ CommentSchema.post('save', function(doc) {
   var Thumbwar = require('./thumbwar');
   var User = require('./user');
   
-  Thumbwar.findById(doc.thumbwar).populate('creator').exec()
+  Thumbwar.findById(doc.thumbwar).populate('creator').populate('subject').exec()
   .then(function(thumbwar){
     thumbwar.comments.push(doc);
     thumbwar.save();
@@ -42,6 +42,16 @@ CommentSchema.post('save', function(doc) {
         object: doc.user
       });
        
+    }
+    
+    if(thumbwar.subject && !thumbwar.subject.equals(thumbwar.creator)) {
+      Activity.create({
+        body: doc.user.name + " commeonted on your ThumbWar!",
+        activitableId: thumbwar._id,
+        activitableType: "Thumbwar",
+        target: thumbwar.subject,
+        object: doc.user
+      });
     }    
     
   });
