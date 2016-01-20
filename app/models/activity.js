@@ -24,6 +24,9 @@ ActivitySchema.post('save', function(doc) {
   .then(function(count){
     Device.find({user: doc.target }).exec()
     .then(function(devices){
+      if(doc.target && doc.target.name == "Gina Bogini") {
+        console.log("~~~~~~~ DEVICES: " + devices)
+      }
       _.each(devices,function(device){
         var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
         var apnConnection = new apn.Connection({
@@ -46,6 +49,10 @@ ActivitySchema.post('save', function(doc) {
         note.payload = doc.toObject();
 
         apnConnection.pushNotification(note, (new apn.Device(device.token)));
+        
+        if(doc.target && doc.target.name == "Gina Bogini") {
+          console.log("~~~~~~~ message: " + note.alert)
+        }
         
       });
     });
