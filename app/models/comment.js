@@ -32,8 +32,6 @@ CommentSchema.post('save', function(doc) {
         }
       });
     });
-    
-    console.log("~~~~~HUH?")
 
     if(!doc.user.equals(thumbwar.creator)) {
       console.log("~~~~~~~ok")
@@ -41,9 +39,11 @@ CommentSchema.post('save', function(doc) {
         body: doc.user.name + " replied to your ThumbWar!",
         activitableId: thumbwar._id,
         activitableType: "Thumbwar",
-        target: thumbwar.creator,
+        target:  thumbwar.creator,
         object: doc.user
       });
+      
+      console.log("~~~~~~~done")
        
     }
     
