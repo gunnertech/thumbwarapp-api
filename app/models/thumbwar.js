@@ -50,6 +50,7 @@ ThumbwarSchema.pre('save', function (next) {
 ThumbwarSchema.post('findOneAndUpdate', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
+  var _this = this;
   
   if(!doc.isPrivate) {
     Following.find({followee: doc.creator}).exec()
@@ -58,6 +59,7 @@ ThumbwarSchema.post('findOneAndUpdate', function(doc) {
         Activity.create({
           isAnonymous: doc.isAnonymous,
           body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
+          pushBody: _this.creator.name + " " + (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
           activitableId: doc._id,
           activitableType: "Thumbwar",
           target: following.followee,
@@ -71,6 +73,7 @@ ThumbwarSchema.post('findOneAndUpdate', function(doc) {
     Activity.create({
       isAnonymous: doc.isAnonymous,
       body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
+      pushBody: _this.creator.name + " " + (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
       activitableId: doc._id,
       activitableType: "Thumbwar",
       target: doc.subject,
@@ -94,7 +97,8 @@ ThumbwarSchema.post('save', function(doc) {
   if(doc.subject && !doc.subject.equals(doc.creator._id)) {
     Activity.create({
       isAnonymous: doc.isAnonymous,
-      body: (_this.creator.name + ": You " + doc.assertion + " " + doc.body),
+      body: ("You " + doc.assertion + " " + doc.body),
+      pushBody: (_this.creator.name + ": You " + doc.assertion + " " + doc.body),
       activitableId: doc._id,
       activitableType: "Thumbwar",
       target: doc.subject,
@@ -119,7 +123,8 @@ ThumbwarSchema.post('save', function(doc) {
         _.each(followings,function(following){
           Activity.create({
             isAnonymous: doc.isAnonymous,
-            body: (_this.creator.name + ": " + subjectText + " " + doc.assertion + " " + doc.body),
+            body: (subjectText + " " + doc.assertion + " " + doc.body),
+            pushBody: (_this.creator.name + ": " + subjectText + " " + doc.assertion + " " + doc.body),
             activitableId: doc._id,
             activitableType: "Thumbwar",
             target: following.followee,

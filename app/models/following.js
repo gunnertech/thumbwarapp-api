@@ -12,7 +12,8 @@ FollowingSchema.post('save', function(doc) {
   var Activity = require('./activity');
   
   Activity.create({
-    body: doc.followee + " started following you!",
+    body: "started following you!",
+    pushBody: doc.followee + " started following you!",
     activitableId: doc._id,
     activitableType: "User",
     target: doc.followee,

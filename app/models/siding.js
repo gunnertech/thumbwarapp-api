@@ -27,6 +27,7 @@ SidingSchema.post('save', function(doc) {
   .then(function(thumbwar){
     Activity.create({
       body: (doc.choseOutcome == thumbwar.assertion ? "sided with you!" : "sided against you!"),
+      pushBody: doc.user.name + " " + (doc.choseOutcome == thumbwar.assertion ? "sided with you!" : "sided against you!"),
       activitableId: thumbwar._id,
       activitableType: "Thumbwar",
       target: thumbwar.creator,
@@ -36,6 +37,7 @@ SidingSchema.post('save', function(doc) {
     if(thumbwar.subject && !thumbwar.subject.equals(thumbwar.creator)) {
       Activity.create({
         body: (doc.choseOutcome != thumbwar.assertion ? "sided with you!" : "sided against you!"),
+        pushBody: doc.user.name + " " + (doc.choseOutcome != thumbwar.assertion ? "sided with you!" : "sided against you!"),
         activitableId: thumbwar._id,
         activitableType: "Thumbwar",
         target: thumbwar.subject,

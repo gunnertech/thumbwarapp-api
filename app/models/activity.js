@@ -8,6 +8,7 @@ var ActivitySchema   = new Schema({
   wasOpened: {type: Boolean, required: true, default: false},
   isAnonymous: {type: Boolean, required: true, default: false},
   body: {type: String, required: true},
+  pushBody: {type: String},
   activitableType: {type: String, required: true},
   activitableId: Schema.Types.ObjectId,
   data: Schema.Types.Mixed,
@@ -18,17 +19,13 @@ var ActivitySchema   = new Schema({
 ActivitySchema.post('save', function(doc) {
   var Device = require('./device');
   
-  console.log("~~~~~~ user: " + doc.target)
-  
   if(!doc.target){ return; }
   
   mongoose.model('Activity', ActivitySchema).count({target: doc.target, wasViewed: false}).exec()
   .then(function(count){
     Device.find({user: doc.target }).exec()
     .then(function(devices){
-      if(doc.target && doc.target.name == "Gina Bogini") {
-        console.log("~~~~~~~ DEVICES: " + devices)
-      }
+
       _.each(devices,function(device){
         var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
         var apnConnection = new apn.Connection({
@@ -47,21 +44,12 @@ ActivitySchema.post('save', function(doc) {
         note.expiry = Math.floor(Date.now() / 1000) + 3600; // Expires 1 hour from now.
         note.badge = count;
         note.sound = "ping.aiff";
-        note.alert = icon + " " + doc.body;
+        note.alert = icon + " " + (doc.pushBody || doc.body);
         // note.payload = doc.toObject();
-        
-        console.log("~~~~~~ note: " + note)
-        console.log(note)
-        console.log(note.payload)
-        console.log(note.alert)
-        console.log(note.badge)
         
 
         apnConnection.pushNotification(note, (new apn.Device(device.token)));
         
-        if(doc.target && doc.target.name == "Gina Bogini") {
-          console.log("~~~~~~~ message: " + note.alert)
-        }
         
       });
     });
