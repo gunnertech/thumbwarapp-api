@@ -12,6 +12,7 @@ CommentSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Thumbwar = require('./thumbwar');
   var User = require('./user');
+  var alertedUsers = [];
   
   Thumbwar.findById(doc.thumbwar).populate('creator').populate('subject').exec()
   .then(function(thumbwar){
@@ -21,7 +22,8 @@ CommentSchema.post('save', function(doc) {
     _.each(thumbwar.comments,function(comment){ 
       User.findById(comment.user).exec()
       .then(function(user){
-        if(comment.user != thumbwar.creator) {
+        if(comment.user != thumbwar.creator && !_.find(alertedUsers,user) {
+          alertedUsers.push(user)
           Activity.create({
             body: doc.user.name + " also replied to "+thumbwar.creator.name+"'s ThumbWar!",
             activitableId: thumbwar._id,
@@ -34,7 +36,7 @@ CommentSchema.post('save', function(doc) {
     });
 
     if(!doc.user.equals(thumbwar.creator)) {
-      console.log("~~~~~~~ok")
+      console.log("~~~~~~~ok " + doc.user.name)
       Activity.create({
         body: doc.user.name + " replied to your ThumbWar!",
         activitableId: thumbwar._id,
@@ -43,7 +45,7 @@ CommentSchema.post('save', function(doc) {
         object: doc.user
       });
       
-      console.log("~~~~~~~done")
+      console.log("~~~~~~~done " + doc.user)
        
     }
     
