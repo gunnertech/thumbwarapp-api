@@ -12,7 +12,7 @@ CommentSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Thumbwar = require('./thumbwar');
   var User = require('./user');
-  var alertedUsers = [doc.user];
+  var alertedUsers = [doc.user._id];
   
   Thumbwar.findById(doc.thumbwar).populate('creator').populate('subject').exec()
   .then(function(thumbwar){
@@ -22,8 +22,8 @@ CommentSchema.post('save', function(doc) {
     _.each(thumbwar.comments,function(comment){ 
       User.findById(comment.user).exec()
       .then(function(user){
-        if(comment.user != thumbwar.creator && !_.find(alertedUsers, function(u) { return u.equals(user); })) {
-          alertedUsers.push(user)
+        if(comment.user != thumbwar.creator && !_.find(alertedUsers, function(u) { return u._id.equals(user._id); })) {
+          alertedUsers.push(user._id)
           Activity.create({
             body: doc.user.name + " also replied to "+thumbwar.creator.name+"'s ThumbWar!",
             activitableId: thumbwar._id,

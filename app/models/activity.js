@@ -20,6 +20,8 @@ ActivitySchema.post('save', function(doc) {
   
   console.log("~~~~~~ user: " + doc.target)
   
+  if(!doc.target){ return; }
+  
   mongoose.model('Activity', ActivitySchema).count({target: doc.target, wasViewed: false}).exec()
   .then(function(count){
     Device.find({user: doc.target }).exec()
