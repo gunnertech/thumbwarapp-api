@@ -22,7 +22,7 @@ CommentSchema.post('save', function(doc) {
     _.each(thumbwar.comments,function(comment){ 
       User.findById(comment.user).exec()
       .then(function(user){
-        if(comment.user != thumbwar.creator && alertedUsers.indexOf(user) == -1) {
+        if(comment.user != thumbwar.creator && !_.find(alertedUsers, function(u) { return u.equals(user); })) {
           alertedUsers.push(user)
           Activity.create({
             body: doc.user.name + " also replied to "+thumbwar.creator.name+"'s ThumbWar!",
@@ -36,7 +36,6 @@ CommentSchema.post('save', function(doc) {
     });
 
     if(!doc.user.equals(thumbwar.creator)) {
-      console.log("~~~~~~~ok " + doc.user.name)
       Activity.create({
         body: doc.user.name + " replied to your ThumbWar!",
         activitableId: thumbwar._id,
@@ -44,14 +43,12 @@ CommentSchema.post('save', function(doc) {
         target:  thumbwar.creator,
         object: doc.user
       });
-      
-      console.log("~~~~~~~done " + thumbwar.creator)
        
     }
     
     if(thumbwar.subject && !thumbwar.subject.equals(thumbwar.creator)) {
       Activity.create({
-        body: doc.user.name + " commeonted on your ThumbWar!",
+        body: doc.user.name + " commented on your ThumbWar!",
         activitableId: thumbwar._id,
         activitableType: "Thumbwar",
         target: thumbwar.subject,
