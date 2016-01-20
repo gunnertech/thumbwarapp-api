@@ -12,7 +12,7 @@ CommentSchema.post('save', function(doc) {
   var Activity = require('./activity');
   var Thumbwar = require('./thumbwar');
   var User = require('./user');
-  var alertedUsers = [];
+  var alertedUsers = [doc.user];
   
   Thumbwar.findById(doc.thumbwar).populate('creator').populate('subject').exec()
   .then(function(thumbwar){
