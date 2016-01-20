@@ -48,7 +48,7 @@ ActivitySchema.post('save', function(doc) {
         note.badge = count;
         note.sound = "ping.aiff";
         note.alert = icon + " " + doc.body;
-        note.payload = doc.toObject();
+        // note.payload = doc.toObject();
         
         console.log("~~~~~~ note: " + note)
         console.log(note)
