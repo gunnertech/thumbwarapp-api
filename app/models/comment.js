@@ -22,7 +22,7 @@ CommentSchema.post('save', function(doc) {
     _.each(thumbwar.comments,function(comment){ 
       User.findById(comment.user).exec()
       .then(function(user){
-        if(comment.user != thumbwar.creator && !_.find(alertedUsers,user)) {
+        if(comment.user != thumbwar.creator && alertedUsers.indexOf(user) == -1) {
           alertedUsers.push(user)
           Activity.create({
             body: doc.user.name + " also replied to "+thumbwar.creator.name+"'s ThumbWar!",
@@ -45,7 +45,7 @@ CommentSchema.post('save', function(doc) {
         object: doc.user
       });
       
-      console.log("~~~~~~~done " + doc.user)
+      console.log("~~~~~~~done " + thumbwar.creator)
        
     }
     
