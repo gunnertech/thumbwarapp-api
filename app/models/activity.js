@@ -49,6 +49,8 @@ ActivitySchema.post('save', function(doc) {
         note.sound = "ping.aiff";
         note.alert = icon + " " + doc.body;
         note.payload = doc.toObject();
+        
+        console.log("~~~~~~ note: " + note)
 
         apnConnection.pushNotification(note, (new apn.Device(device.token)));
         
