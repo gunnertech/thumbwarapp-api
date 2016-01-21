@@ -4,9 +4,9 @@ var Report = require('../app/models/report');
 
 router.post('/', function(req, res) {
   
-  Siding.create(req.body)
-  .then(function(siding){
-    res.json(siding)
+  Report.create(req.body)
+  .then(function(report){
+    res.json(report)
   })
   .then(undefined, function (err) {
     console.log(err.stack)
