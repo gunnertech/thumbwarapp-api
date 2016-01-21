@@ -21,6 +21,7 @@ var activities = require('./routes/activities');
 var comments = require('./routes/comments');
 var sidings = require('./routes/sidings');
 var devices = require('./routes/devices');
+var reports = require('./routes/reports');
 
 /*** MODELS ****/
 var User = require('./app/models/user');
@@ -128,6 +129,7 @@ app.use('/:userId/activities', [parseMe,activities]);
 app.use('/:userId/sidings', [parseMe,sidings]);
 
 app.use('/devices', devices);
+app.use('/reports', reports);
 app.use('/thumbwars', thumbwars);
 app.use('/thumbwars/:thumbwarId/comments', [parseThumbwar,comments]);
 
