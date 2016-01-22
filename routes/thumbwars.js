@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../app/models/user');
 var Thumbwar = require('../app/models/thumbwar');
+var Following = require('../app/models/following');
 var Siding = require('../app/models/siding');
 var _ = require('lodash');
 var mongoose     = require('mongoose');
@@ -9,6 +10,19 @@ var mongoose     = require('mongoose');
 // function convertDateToUTC(date) {
 //     return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 // }
+
+var parseFollowers = function(req, res, next) {
+  if(req.query.filter == "friends") {
+    Following.find(followee: req.currentUser).exec()
+    .then(function(followings){
+      req.query.creator = {
+        $in: _.map(followings,function(following){ return following.follower; })
+      }
+    });
+  } else {
+    next();
+  }
+}
 
 var parseGetQuery = function (req, res, next) {
   if(req.query.pagination) {
@@ -25,6 +39,8 @@ var parseGetQuery = function (req, res, next) {
       }
     }
   }
+  
+  
   
   if(req.query.subject) {    
     req.query.creator = {
@@ -43,9 +59,6 @@ var parseGetQuery = function (req, res, next) {
 };
 
 router.get('/', [parseGetQuery,function(req, res) {  
-  
-  console.log(req.query)
-  
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
