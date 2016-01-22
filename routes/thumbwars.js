@@ -18,6 +18,7 @@ var parseFollowers = function(req, res, next) {
       req.query.creator = {
         $in: _.map(followings,function(following){ return following.follower; })
       }
+      next();
     });
   } else {
     next();
@@ -58,7 +59,7 @@ var parseGetQuery = function (req, res, next) {
   
 };
 
-router.get('/', [parseGetQuery,function(req, res) {  
+router.get('/', [parseFollowers,parseGetQuery,function(req, res) {  
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
