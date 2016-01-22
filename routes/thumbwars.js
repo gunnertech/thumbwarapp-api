@@ -13,7 +13,7 @@ var mongoose     = require('mongoose');
 
 var parseFollowers = function(req, res, next) {
   if(req.query.filter == "friends") {
-    Following.find(followee: req.currentUser).exec()
+    Following.find({followee: req.currentUser}).exec()
     .then(function(followings){
       req.query.creator = {
         $in: _.map(followings,function(following){ return following.follower; })
