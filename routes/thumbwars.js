@@ -12,7 +12,11 @@ var mongoose     = require('mongoose');
 // }
 
 var parseFollowers = function(req, res, next) {
-  if(req.query.filter == "friends") {
+  var filter = req.query.filter;
+  
+  delete req.query.filter;
+  
+  if(filter == "friends") {
     Following.find({followee: req.currentUser}).exec()
     .then(function(followings){
       req.query.creator = {
