@@ -16,7 +16,8 @@ var parseFollowers = function(req, res, next) {
   
   delete req.query.filter;
   
-  if(filter == "friends") {
+  switch(filter){
+  case "friends":
     Following.find({followee: req.currentUser}).exec()
     .then(function(followings){
       req.query.creator = {
@@ -24,7 +25,46 @@ var parseFollowers = function(req, res, next) {
       }
       next();
     });
-  } else {
+  case "won":
+    if(req.query.creator) {
+      req.query.outcome = "won";
+      next();
+    } else if(req.query.subject) {
+      req.query.outcome = "lost";
+      next();
+    } else if(req.query.sided) {
+      Siding.find({user: req.query.sided, didWin: true}).exec()
+      .then(function(sidings){
+        req.query.sidings = {
+          $in: sidings
+        }
+        next();
+      });
+    }
+  case "lost":
+    if(req.query.creator) {
+      req.query.outcome = "lost";
+      next();
+    } else if(req.query.subject) {
+      req.query.outcome = "won";
+      next();
+    } else if(req.query.sided) {
+      Siding.find({user: req.query.sided, didWin: false}).exec()
+      .then(function(sidings){
+        req.query.sidings = {
+          $in: sidings
+        }
+        next();
+      });
+    }
+  case "inProgress":
+    req.query.outcome = {
+      $nin: ["won","lost"]
+    }
+    next();
+  case "all":
+    next();
+  default:
     next();
   }
 }

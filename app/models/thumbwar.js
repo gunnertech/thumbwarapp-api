@@ -50,7 +50,21 @@ ThumbwarSchema.pre('save', function (next) {
 ThumbwarSchema.post('findOneAndUpdate', function(doc) {
   var Activity = require('./activity');
   var Following = require('./following');
+  var Siding = require('./siding');
   var _this = this;
+  
+  Siding.find({thumbwar: doc._id}).exec()
+  .then(function(sidings){
+    _.each(sidings,function(siding){ 
+      if(siding.chosenOutcome == doc.assertion && doc.outcome == "won") {
+        siding.didWin = true;
+      } else if(siding.chosenOutcome != doc.assertion && doc.outcome == "lost") {
+        siding.didWin = true;
+      } else {
+        siding.didWin = false;
+      }
+    });
+  });
   
   if(!doc.isPrivate) {
     Following.find({followee: doc.creator}).exec()
