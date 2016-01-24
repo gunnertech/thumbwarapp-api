@@ -25,6 +25,7 @@ var parseFollowers = function(req, res, next) {
       }
       next();
     });
+    break;
   case "won":
     if(req.query.creator) {
       req.query.outcome = "won";
@@ -41,6 +42,7 @@ var parseFollowers = function(req, res, next) {
         next();
       });
     }
+    break;
   case "lost":
     if(req.query.creator) {
       req.query.outcome = "lost";
@@ -57,15 +59,19 @@ var parseFollowers = function(req, res, next) {
         next();
       });
     }
+    break;
   case "inProgress":
     req.query.outcome = {
       $nin: ["won","lost"]
     }
     next();
+    break;
   case "all":
     next();
+    break;
   default:
     next();
+    break;
   }
 }
 
