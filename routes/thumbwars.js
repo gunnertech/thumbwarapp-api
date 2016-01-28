@@ -128,16 +128,24 @@ router.get('/', [parseFollowers,parseGetQuery,function(req, res) {
 }]);
 
 router.get('/subjects', [parseFollowers,parseGetQuery,function(req, res) { 
+  var time = new Date().getTime() - 2 * 24 * 60 * 60 * 1000;
   Thumbwar.aggregate([
-
+    {
+      $match: {
+        subjectText: {
+          $ne: "I"
+        },
+        createdAt: {$gt: new Date(time)}
+      }
+    },
     {
       $group: {
         _id: "$subjectText",
-        count: { $sum: 1 }
+        numOcc: { $sum: 1 }
       }
     },
     { 
-      $sort : { 'count' : 1 }
+      $sort : { 'numOcc' : 1 }
     }
   ],function (err, result) {
     if (err) {
