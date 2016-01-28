@@ -83,7 +83,7 @@ ThumbwarSchema.post('findOneAndUpdate', function(doc) {
     });
   }
   
-  if(doc && doc.subject && doc.creator && doc.subject.equals && !doc.subject.equals(doc.creator._id)) {
+  if(doc && doc.subject && doc.creator && doc.creator._id && doc.subject.equals && !doc.subject.equals(doc.creator._id)) {
     Activity.create({
       isAnonymous: doc.isAnonymous,
       body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
