@@ -145,7 +145,8 @@ router.get('/subjects', [parseFollowers,parseGetQuery,function(req, res) {
     }
   ],function (err, result) {
     if (err) {
-      next(err);
+    console.log(err)
+    res.json(err)
     } else {
       res.json(result);
     }
