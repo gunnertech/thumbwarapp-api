@@ -83,16 +83,20 @@ ThumbwarSchema.post('findOneAndUpdate', function(doc) {
     });
   }
   
-  if(doc && doc.subject && doc.creator && doc.creator._id && doc.subject.equals && !doc.subject.equals(doc.creator._id)) {
-    Activity.create({
-      isAnonymous: doc.isAnonymous,
-      body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
-      pushBody: _this.creator.name + " " + (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
-      activitableId: doc._id,
-      activitableType: "Thumbwar",
-      target: doc.subject,
-      object: doc.creator
-    });
+  try{ 
+    if(doc && doc.subject && doc.creator && doc.creator._id && doc.subject.equals && !doc.subject.equals(doc.creator._id)) {
+      Activity.create({
+        isAnonymous: doc.isAnonymous,
+        body: (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
+        pushBody: _this.creator.name + " " + (doc.outcome == 'won' ? "Declared Victory!" : "Admitted Defeat!"),
+        activitableId: doc._id,
+        activitableType: "Thumbwar",
+        target: doc.subject,
+        object: doc.creator
+      });
+    }
+  } catch(e) {
+    
   }
   
   
