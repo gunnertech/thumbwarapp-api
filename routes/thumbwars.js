@@ -136,7 +136,7 @@ router.get('/subjects', [parseFollowers,parseGetQuery,function(req, res) {
     },
     {
       $group: {
-        subjectText: null,
+        _id: "subjectText",
         count: { $sum: 1 }
       }
     },
