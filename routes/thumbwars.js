@@ -75,6 +75,7 @@ var parseFollowers = function(req, res, next) {
   }
 }
 
+
 var parseGetQuery = function (req, res, next) {
   if(req.query.pagination) {
     var pagination = req.query.pagination;
@@ -109,7 +110,7 @@ var parseGetQuery = function (req, res, next) {
   
 };
 
-router.get('/', [parseFollowers,parseGetQuery,function(req, res) {  
+router.get('/', [parseFollowers,parseGetQuery,function(req, res) { 
   Thumbwar.find(req.query)
   .populate('creator')
   .populate('subject')
@@ -123,6 +124,31 @@ router.get('/', [parseFollowers,parseGetQuery,function(req, res) {
   .then(undefined, function (err) {
     console.log(err);
     res.status(500).json(err)
+  });
+}]);
+
+router.get('/subjects', [parseFollowers,parseGetQuery,function(req, res) { 
+  Thumbwar.aggregate([
+    {
+      $match: {
+        subject: null
+      }
+    },
+    {
+      $group: {
+        subjectText: null,
+        count: { $sum: 1 }
+      }
+    },
+    { 
+      $sort : { 'count' : 1 }
+    }
+  ],function (err, result) {
+    if (err) {
+      next(err);
+    } else {
+      res.json(result);
+    }
   });
 }]);
 
