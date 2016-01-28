@@ -146,6 +146,9 @@ router.get('/subjects', [parseFollowers,parseGetQuery,function(req, res) {
     },
     { 
       $sort : { 'numOcc' : -1 }
+    },
+    { 
+      $limit : 5
     }
   ],function (err, result) {
     if (err) {
