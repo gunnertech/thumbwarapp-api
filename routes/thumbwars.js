@@ -129,11 +129,7 @@ router.get('/', [parseFollowers,parseGetQuery,function(req, res) {
 
 router.get('/subjects', [parseFollowers,parseGetQuery,function(req, res) { 
   Thumbwar.aggregate([
-    {
-      $match: {
-        subject: null
-      }
-    },
+
     {
       $group: {
         _id: "$subjectText",
