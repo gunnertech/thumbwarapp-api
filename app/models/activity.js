@@ -48,7 +48,7 @@ ActivitySchema.post('save', function(doc) {
         note.alert = icon + " " + (doc.pushBody || doc.body);
         
         if(doc.activitableSubType == "Created" && activitableType == "Thumbwar") {
-          node.category = "thumbwar-initiated"
+          note.category = "thumbwar-initiated"
         }
         
         //
