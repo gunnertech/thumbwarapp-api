@@ -47,9 +47,9 @@ ActivitySchema.post('save', function(doc) {
         note.sound = "ping.aiff";
         note.alert = icon + " " + (doc.pushBody || doc.body);
         
-        if(doc.activitableSubType == "Created" && activitableType == "Thumbwar") {
-          note.category = "thumbwar-initiated"
-        }
+        // if(doc.activitableSubType == "Created" && activitableType == "Thumbwar") {
+        //   note.category = "thumbwar-initiated"
+        // }
         
         //
         // note.payload = doc.toObject();
