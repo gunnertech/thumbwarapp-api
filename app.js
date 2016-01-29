@@ -8,6 +8,7 @@ var mongoose   = require('mongoose');
 var swig = require('swig');
 var methodOverride = require('method-override');
 var auth = require('basic-auth')
+var apn = require('apn');
 
 mongoose.Promise = require('bluebird');
 
@@ -22,6 +23,7 @@ var comments = require('./routes/comments');
 var sidings = require('./routes/sidings');
 var devices = require('./routes/devices');
 var reports = require('./routes/reports');
+
 
 /*** MODELS ****/
 var User = require('./app/models/user');
@@ -135,7 +137,17 @@ app.use('/thumbwars/:thumbwarId/comments', [parseThumbwar,comments]);
 
 
 
+var options = {
+    "batchFeedback": true,
+    "interval": 300
+};
 
+var feedback = new apn.Feedback(options);
+feedback.on("feedback", function(devices) {
+    devices.forEach(function(item) {
+        console.log(item)
+    });
+});
 
 
 // catch 404 and forward to error handler
