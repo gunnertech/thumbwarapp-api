@@ -10,6 +10,7 @@ var ActivitySchema   = new Schema({
   body: {type: String, required: true},
   pushBody: {type: String},
   activitableType: {type: String, required: true},
+  activitableSubType: {type: String},
   activitableId: Schema.Types.ObjectId,
   data: Schema.Types.Mixed,
   target: {type: Schema.Types.ObjectId, ref: 'User'},
@@ -45,6 +46,12 @@ ActivitySchema.post('save', function(doc) {
         note.badge = count;
         note.sound = "ping.aiff";
         note.alert = icon + " " + (doc.pushBody || doc.body);
+        
+        if(doc.activitableSubType == "Created" && activitableType == "Thumbwar") {
+          node.category = "thumbwar-initiated"
+        }
+        
+        //
         // note.payload = doc.toObject();
         
 
