@@ -29,6 +29,7 @@ ActivitySchema.post('save', function(doc) {
 
       _.each(devices,function(device){
         var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
+        console.log(pfx)
         var apnConnection = new apn.Connection({
           pfx: pfx,
           production: (process.env.NODE_ENV == "production"),
