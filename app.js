@@ -136,20 +136,6 @@ app.use('/thumbwars', thumbwars);
 app.use('/thumbwars/:thumbwarId/comments', [parseThumbwar,comments]);
 
 
-
-var options = {
-    "batchFeedback": true,
-    "interval": 300
-};
-
-var feedback = new apn.Feedback(options);
-feedback.on("feedback", function(devices) {
-    devices.forEach(function(item) {
-        console.log(item)
-    });
-});
-
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

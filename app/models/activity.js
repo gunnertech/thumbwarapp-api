@@ -16,6 +16,30 @@ var ActivitySchema   = new Schema({
   object: {type: Schema.Types.ObjectId, ref: 'User'}
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
+var options = {
+  "batchFeedback": true,
+  "interval": 300,
+  pfx: pfx,
+  production: (process.env.NODE_ENV == "production"),
+  passphrase: process.env.APNS_PASSPHRASE
+};
+
+var feedback = new apn.Feedback(options);
+
+feedback.on("feedback", function(devices) {
+  devices.forEach(function(item) {
+    console.log(item)
+  });
+});
+
+var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
+var apnConnection = new apn.Connection({
+  pfx: pfx,
+  production: (process.env.NODE_ENV == "production"),
+  passphrase: process.env.APNS_PASSPHRASE
+});
+
+
 ActivitySchema.post('save', function(doc) {
   var Device = require('./device');
   
@@ -27,12 +51,6 @@ ActivitySchema.post('save', function(doc) {
     .then(function(devices){
 
       _.each(devices,function(device){
-        var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
-        var apnConnection = new apn.Connection({
-          pfx: pfx,
-          production: (process.env.NODE_ENV == "production"),
-          passphrase: process.env.APNS_PASSPHRASE
-        });
         
         var note = new apn.Notification();
         var icon = "\uD83C\uDFC6";
