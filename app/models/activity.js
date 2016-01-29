@@ -10,7 +10,6 @@ var ActivitySchema   = new Schema({
   body: {type: String, required: true},
   pushBody: {type: String},
   activitableType: {type: String, required: true},
-  activitableSubType: {type: String},
   activitableId: Schema.Types.ObjectId,
   data: Schema.Types.Mixed,
   target: {type: Schema.Types.ObjectId, ref: 'User'},
@@ -29,7 +28,6 @@ ActivitySchema.post('save', function(doc) {
 
       _.each(devices,function(device){
         var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
-        console.log(pfx)
         var apnConnection = new apn.Connection({
           pfx: pfx,
           production: (process.env.NODE_ENV == "production"),
@@ -47,16 +45,7 @@ ActivitySchema.post('save', function(doc) {
         note.badge = count;
         note.sound = "ping.aiff";
         note.alert = icon + " " + (doc.pushBody || doc.body);
-        
-        // if(doc.activitableSubType == "Created" && activitableType == "Thumbwar") {
-        //   note.category = "thumbwar-initiated"
-        // }
-        
-        //
         // note.payload = doc.toObject();
-        
-        console.log("~~~~~~GO")
-        console.log(note)
         
 
         apnConnection.pushNotification(note, (new apn.Device(device.token)));

@@ -119,7 +119,6 @@ ThumbwarSchema.post('save', function(doc) {
       pushBody: (_this.creator.name + ": You " + doc.assertion + " " + doc.body),
       activitableId: doc._id,
       activitableType: "Thumbwar",
-      activitableSubType: "Created",
       target: doc.subject,
       object: doc.creator
     });
@@ -146,7 +145,6 @@ ThumbwarSchema.post('save', function(doc) {
             pushBody: (_this.creator.name + ": " + subjectText + " " + doc.assertion + " " + doc.body),
             activitableId: doc._id,
             activitableType: "Thumbwar",
-            activitableSubType: "Created",
             target: following.followee,
             object: doc.creator
           });
