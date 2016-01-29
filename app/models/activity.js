@@ -66,7 +66,7 @@ ActivitySchema.post('save', function(doc) {
         note.alert = icon + " " + (doc.pushBody || doc.body);
         // note.payload = doc.toObject();
         
-
+        console.log(note)
         apnConnection.pushNotification(note, (new apn.Device(device.token)));
         
         
