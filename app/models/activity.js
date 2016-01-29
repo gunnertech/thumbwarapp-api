@@ -16,6 +16,7 @@ var ActivitySchema   = new Schema({
   object: {type: Schema.Types.ObjectId, ref: 'User'}
 },{timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }});
 
+var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
 var options = {
   "batchFeedback": true,
   "interval": 300,
@@ -32,7 +33,7 @@ feedback.on("feedback", function(devices) {
   });
 });
 
-var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
+
 var apnConnection = new apn.Connection({
   pfx: pfx,
   production: (process.env.NODE_ENV == "production"),
