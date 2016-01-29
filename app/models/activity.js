@@ -31,8 +31,8 @@ ActivitySchema.post('save', function(doc) {
         var pfx = new Buffer(process.env.APNS_P12_CONTENTS, 'base64');
         var apnConnection = new apn.Connection({
           pfx: pfx,
-          production: (process.env.NODE_ENV == "production"),
-          passphrase: process.env.APNS_PASSPHRASE
+          production: (process.env.NODE_ENV == "production")
+          // passphrase: process.env.APNS_PASSPHRASE
         });
         
         var note = new apn.Notification();
